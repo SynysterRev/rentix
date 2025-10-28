@@ -1,9 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.14.36511.14 d17.14
+VisualStudioVersion = 17.14.36511.14
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rentix.API", "Rentix.API\Rentix.API.csproj", "{08126AA1-F02F-4D64-A9A9-AF72488F1E44}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rentix.Infrastructure", "Rentix.Infrastructure\Rentix.Infrastructure.csproj", "{F32BD75D-F581-4FE5-9755-136C34AFE9B2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rentix.Domain", "Rentix.Domain\Rentix.Domain.csproj", "{5BA65B9D-BF5D-4813-89E2-D1D5B46503FD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rentix.Application", "Rentix.Application\Rentix.Application.csproj", "{4D775BA4-BC1F-4DB5-8ED9-EF42E09B5D7F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +21,18 @@ Global
 		{08126AA1-F02F-4D64-A9A9-AF72488F1E44}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{08126AA1-F02F-4D64-A9A9-AF72488F1E44}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{08126AA1-F02F-4D64-A9A9-AF72488F1E44}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F32BD75D-F581-4FE5-9755-136C34AFE9B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F32BD75D-F581-4FE5-9755-136C34AFE9B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F32BD75D-F581-4FE5-9755-136C34AFE9B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F32BD75D-F581-4FE5-9755-136C34AFE9B2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5BA65B9D-BF5D-4813-89E2-D1D5B46503FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5BA65B9D-BF5D-4813-89E2-D1D5B46503FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5BA65B9D-BF5D-4813-89E2-D1D5B46503FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5BA65B9D-BF5D-4813-89E2-D1D5B46503FD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4D775BA4-BC1F-4DB5-8ED9-EF42E09B5D7F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4D775BA4-BC1F-4DB5-8ED9-EF42E09B5D7F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4D775BA4-BC1F-4DB5-8ED9-EF42E09B5D7F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4D775BA4-BC1F-4DB5-8ED9-EF42E09B5D7F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,4 +1,6 @@
 using Asp.Versioning;
+using Rentix.API.Middlewares;
+using Rentix.API.StartupExtensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,6 +26,8 @@ apiVersioningBuilder.AddApiExplorer(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.ConfigureServices(builder.Configuration, builder.Environment);
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -32,6 +36,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
     app.UseDeveloperExceptionPage();
+}
+else
+{
+    app.UseExceptionHandlingMiddleware();
 }
 
 app.UseHttpsRedirection();
