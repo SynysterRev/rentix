@@ -1,6 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using System;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Rentix.Domain.IdentityEntities;
+using Rentix.Infrastructure.DatabaseContext;
 
 namespace Rentix.API.StartupExtensions
 {
@@ -22,10 +23,22 @@ namespace Rentix.API.StartupExtensions
                     configuration["ConnectionStrings:Default"] = connectionString;
                 }
             }
-            //services.AddDbContext<ApplicationDbContext>(options =>
-            //{
-            //    options.UseNpgsql(configuration.GetConnectionString("Default"));
-            //});
+
+            services.AddDbContext<ApplicationDbContext>(options =>
+            {
+                options.UseNpgsql(configuration.GetConnectionString("Default"));
+            });
+
+            services.AddIdentity<ApplicationUser, ApplicationRole>(options =>
+            {
+                options.Password.RequiredLength = 6;
+                options.Password.RequireDigit = true;
+                options.Password.RequireUppercase = true;
+                options.Password.RequireNonAlphanumeric = false;
+                options.SignIn.RequireConfirmedEmail = false;
+            })
+            .AddEntityFrameworkStores<ApplicationDbContext>()
+            .AddDefaultTokenProviders();
 
             var originsString = configuration.GetValue<string>("AllowedOrigins");
             var defaultOrigins = new string[] { "http://localhost:4200" };
