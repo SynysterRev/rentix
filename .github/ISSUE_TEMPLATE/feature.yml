@@ -16,7 +16,7 @@ body:
       description: Describe your feature.
       placeholder: Your description here
     validations:
-      required: true
+      required: false
 
   - id: feature_type
     type: checkboxes
