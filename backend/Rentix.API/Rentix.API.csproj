@@ -20,6 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Rentix.Application\Rentix.Application.csproj" />
     <ProjectReference Include="..\Rentix.Infrastructure\Rentix.Infrastructure.csproj" />
   </ItemGroup>
 

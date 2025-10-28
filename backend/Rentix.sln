@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rentix.Infrastructure", "Re
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rentix.Domain", "Rentix.Domain\Rentix.Domain.csproj", "{5BA65B9D-BF5D-4813-89E2-D1D5B46503FD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rentix.Application", "Rentix.Application\Rentix.Application.csproj", "{4D775BA4-BC1F-4DB5-8ED9-EF42E09B5D7F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{5BA65B9D-BF5D-4813-89E2-D1D5B46503FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5BA65B9D-BF5D-4813-89E2-D1D5B46503FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5BA65B9D-BF5D-4813-89E2-D1D5B46503FD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4D775BA4-BC1F-4DB5-8ED9-EF42E09B5D7F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4D775BA4-BC1F-4DB5-8ED9-EF42E09B5D7F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4D775BA4-BC1F-4DB5-8ED9-EF42E09B5D7F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4D775BA4-BC1F-4DB5-8ED9-EF42E09B5D7F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
