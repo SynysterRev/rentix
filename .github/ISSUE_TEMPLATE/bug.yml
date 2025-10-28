@@ -1,0 +1,26 @@
+name: Bug Report
+description: Report a bug or issue
+title: "[Bug] "
+labels: ["bug"]
+body:
+  - type: textarea
+    id: bug_description
+    attributes:
+      label: Description du bug
+      description: Explique ce qui ne fonctionne pas.
+      placeholder: "Description ici"
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: bug_type
+    attributes:
+      type: checkboxes
+    attributes:
+      label: Bug type
+      options:
+        - label: Backend
+        - label: Frontend
+        - label: DevOps
+    validations:
+      required: true
