@@ -1,0 +1,6 @@
+@Rentix.API_HostAddress = http://localhost:5227
+
+GET {{Rentix.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
