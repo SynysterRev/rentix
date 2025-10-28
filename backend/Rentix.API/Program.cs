@@ -1,4 +1,5 @@
 using Asp.Versioning;
+using Rentix.API.Middlewares;
 using Rentix.API.StartupExtensions;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -36,8 +37,12 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
     app.UseDeveloperExceptionPage();
 }
+else
+{
+    app.UseExceptionHandlingMiddleware();
+}
 
-app.UseHttpsRedirection();
+    app.UseHttpsRedirection();
 
 app.UseCors();
 
