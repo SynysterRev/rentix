@@ -11,6 +11,13 @@ namespace Rentix.Infrastructure.DatabaseContext
         {
         }
 
+        public DbSet<Property> Properties { get; set; }
+        public DbSet<Lease> Leases { get; set; }
+        public DbSet<Document> Documents { get; set; }
+        public DbSet<Charge> Charges { get; set; }
+        public DbSet<Tenant> Tenants { get; set; }
+        public DbSet<Address> Addresses { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -24,7 +31,7 @@ namespace Rentix.Infrastructure.DatabaseContext
 
                 entity.HasOne(p => p.Landlord)
                       .WithMany(u => u.Properties)
-                      .HasForeignKey(p => p.UserId)
+                      .HasForeignKey(p => p.LandlordId)
                       .OnDelete(DeleteBehavior.Restrict);
 
                 entity.Property(p => p.MaxRent).HasPrecision(10, 2);
