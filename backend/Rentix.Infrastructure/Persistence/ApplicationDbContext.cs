@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Rentix.Domain.Entities;
 using Rentix.Domain.IdentityEntities;
 
-namespace Rentix.Infrastructure.DatabaseContext
+namespace Rentix.Infrastructure.Persistence
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, Guid>
     {
@@ -12,7 +12,7 @@ namespace Rentix.Infrastructure.DatabaseContext
         }
 
         public DbSet<Property> Properties { get; set; }
-        public DbSet<Lease> Leases { get; set; }
+        public DbSet<Document> Leases { get; set; }
         public DbSet<Document> Documents { get; set; }
         public DbSet<Charge> Charges { get; set; }
         public DbSet<Tenant> Tenants { get; set; }
@@ -22,25 +22,7 @@ namespace Rentix.Infrastructure.DatabaseContext
         {
             base.OnModelCreating(builder);
 
-            builder.Entity<Property>(entity =>
-            {
-                entity.HasOne(p => p.Address)
-                      .WithMany(a => a.Properties)
-                      .HasForeignKey(p => p.AddressId)
-                      .OnDelete(DeleteBehavior.Restrict);
-
-                entity.HasOne(p => p.Landlord)
-                      .WithMany(u => u.Properties)
-                      .HasForeignKey(p => p.LandlordId)
-                      .OnDelete(DeleteBehavior.Restrict);
-
-                entity.Property(p => p.MaxRent).HasPrecision(10, 2);
-                entity.Property(p => p.Surface).HasPrecision(10, 2);
-
-                entity.Property(p => p.Status).HasConversion<string>();
-            });
-
-            builder.Entity<Lease>(entity =>
+            builder.Entity<Document>(entity =>
             {
                 entity.Property(e => e.Notes)
                     .HasColumnType("text");

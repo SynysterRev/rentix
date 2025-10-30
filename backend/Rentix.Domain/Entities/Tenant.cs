@@ -26,6 +26,6 @@ namespace Rentix.Domain.Entities
         [Phone(ErrorMessage = "The phone number format is incorrect")]
         public string Phone { get; set; } = string.Empty;
 
-        public virtual ICollection<Lease> Leases { get; set; } = new List<Lease>();
+        public virtual ICollection<Document> Leases { get; set; } = new List<Document>();
     }
 }
