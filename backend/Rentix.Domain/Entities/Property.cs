@@ -43,7 +43,7 @@ namespace Rentix.Domain.Entities
         public virtual Address Address { get; set; } = null!;
 
         [Required(ErrorMessage = "The user id is required")]
-        public Guid UserId { get; set; }
+        public Guid LandlordId { get; set; }
 
         public virtual ApplicationUser Landlord { get; set; } = null!;
 
