@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Rentix.Application;
 using Rentix.Domain.IdentityEntities;
 using Rentix.Infrastructure.DatabaseContext;
+using System.Reflection;
 
 namespace Rentix.API.StartupExtensions
 {
@@ -23,6 +25,9 @@ namespace Rentix.API.StartupExtensions
                     configuration["ConnectionStrings:Default"] = connectionString;
                 }
             }
+
+            //Register MediatR
+            services.AddApplicationServices();
 
             services.AddDbContext<ApplicationDbContext>(options =>
             {

@@ -50,5 +50,28 @@ namespace Rentix.Domain.Entities
         public virtual ICollection<Document> Documents { get; set; } = new List<Document>();
         public virtual ICollection<Lease> Leases { get; set; } = new List<Lease>();
         public virtual ICollection<Charge> Charges { get; set; } = new List<Charge>();
+
+        private Property() { }
+
+        public static Property Create(
+            string name,
+            decimal maxRent,
+            PropertyStatus status,
+            decimal surface,
+            int numberRooms,
+            int addressId,
+            Guid landlordId)
+        {
+            return new Property
+            {
+                Name = name,
+                MaxRent = maxRent,
+                Status = status,
+                Surface = surface,
+                NumberRooms = numberRooms,
+                AddressId = addressId,
+                LandlordId = landlordId
+            };
+        }
     }
 }
