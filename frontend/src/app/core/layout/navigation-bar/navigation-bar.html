@@ -1,0 +1,29 @@
+<nav>
+    <ol>
+        <li class="m-2">
+            <button (click)="isVisible = !isVisible" class="flex items-center text-2xl font-bold hover:bg-gray-100 rounded-4xl w-full">
+                <lucide-angular [ngClass]="isVisible ? 'visible' : 'hidden'" [img]="HandCoins" class="w-12px h-12px m-2 "></lucide-angular>
+                <span [ngClass]="isVisible ? 'visible' : 'hidden'">Rentix</span>
+                <lucide-angular [img]="PanelRight" class="w-12px h-12px m-2 "></lucide-angular>
+            </button>
+        </li>
+        <li class="m-2">
+            <a routerLink="/dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" class="flex items-center hover:bg-gray-100 rounded-4xl">
+                <lucide-angular [img]="ChartLine" class="w-12px h-12px m-2"></lucide-angular>
+                <span [ngClass]="isVisible ? 'visible' : 'hidden'">Dashboard</span>
+            </a>
+        </li>
+        <li class="m-2">
+            <a routerLink="/real-estate-property" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" class="flex items-center hover:bg-gray-100 rounded-4xl">
+                <lucide-angular [img]="Building2" class="w-12px h-12px m-2"></lucide-angular>
+                <span [ngClass]="isVisible ? 'visible' : 'hidden'">Real estate property</span>
+            </a>
+        </li>
+        <li class="m-2"> 
+            <a routerLink="/settings" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" class="flex items-center hover:bg-gray-100 rounded-4xl">
+                <lucide-angular [img]="Settings" class="w-12px h-12px m-2"></lucide-angular>
+                <span [ngClass]="isVisible ? 'visible' : 'hidden'">Settings</span>
+            </a>
+        </li>
+    </ol>
+</nav>
