@@ -2,7 +2,9 @@
 using Microsoft.EntityFrameworkCore;
 using Rentix.Application;
 using Rentix.Domain.IdentityEntities;
+using Rentix.Domain.Repositories;
 using Rentix.Infrastructure.Persistence;
+using Rentix.Infrastructure.Persistence.Repositories;
 using System.Reflection;
 
 namespace Rentix.API.StartupExtensions
@@ -28,6 +30,8 @@ namespace Rentix.API.StartupExtensions
 
             //Register MediatR
             services.AddApplicationServices();
+
+            services.AddScoped<IPropertyRepository, PropertyRepository>();
 
             services.AddDbContext<ApplicationDbContext>(options =>
             {

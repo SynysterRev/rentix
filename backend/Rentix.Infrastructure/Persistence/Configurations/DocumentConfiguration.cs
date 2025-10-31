@@ -31,6 +31,7 @@ namespace Rentix.Infrastructure.Persistence.Configurations
                    .HasMaxLength(500);
 
             builder.Property(d => d.UploadAt)
+                   .HasDefaultValueSql("NOW()")
                    .IsRequired();
 
             builder.HasOne(d => d.Property)

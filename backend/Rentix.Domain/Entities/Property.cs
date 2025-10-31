@@ -27,7 +27,7 @@ namespace Rentix.Domain.Entities
         public virtual ApplicationUser Landlord { get; set; } = null!;
 
         public virtual ICollection<Document> Documents { get; set; } = new List<Document>();
-        public virtual ICollection<Document> Leases { get; set; } = new List<Document>();
+        public virtual ICollection<Lease> Leases { get; set; } = new List<Lease>();
         public virtual ICollection<Charge> Charges { get; set; } = new List<Charge>();
 
         private Property() { }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Rentix.Domain.Entities;
+using Rentix.Domain.ValueObjects;
 
 namespace Rentix.Infrastructure.Persistence.Configurations
 {
@@ -21,12 +22,18 @@ namespace Rentix.Infrastructure.Persistence.Configurations
                    .HasMaxLength(100);
 
             builder.Property(t => t.Email)
-                   .IsRequired()
-                   .HasMaxLength(200);
+            .HasConversion(
+                email => email.Value,
+                value => Email.Create(value))
+            .IsRequired()
+            .HasMaxLength(200);
 
             builder.Property(t => t.Phone)
-                   .IsRequired()
-                   .HasMaxLength(20);
+            .HasConversion(
+                phone => phone.Value,
+                value => Phone.Create(value))
+            .IsRequired()
+            .HasMaxLength(20);
 
             builder.HasMany(t => t.Leases)
                    .WithMany(l => l.Tenants)

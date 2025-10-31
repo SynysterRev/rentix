@@ -4,9 +4,9 @@ using Rentix.Domain.Entities;
 
 namespace Rentix.Infrastructure.Persistence.Configurations
 {
-    public class LeaseConfiguration : IEntityTypeConfiguration<Document>
+    public class LeaseConfiguration : IEntityTypeConfiguration<Lease>
     {
-        public void Configure(EntityTypeBuilder<Document> builder)
+        public void Configure(EntityTypeBuilder<Lease> builder)
         {
             builder.ToTable("Leases");
 

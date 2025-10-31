@@ -12,7 +12,7 @@ namespace Rentix.Infrastructure.Persistence
         }
 
         public DbSet<Property> Properties { get; set; }
-        public DbSet<Document> Leases { get; set; }
+        public DbSet<Lease> Leases { get; set; }
         public DbSet<Document> Documents { get; set; }
         public DbSet<Charge> Charges { get; set; }
         public DbSet<Tenant> Tenants { get; set; }
@@ -22,41 +22,7 @@ namespace Rentix.Infrastructure.Persistence
         {
             base.OnModelCreating(builder);
 
-            builder.Entity<Document>(entity =>
-            {
-                entity.Property(e => e.Notes)
-                    .HasColumnType("text");
-
-                entity.HasMany(l => l.Tenants)
-                    .WithMany(t => t.Leases)
-                    .UsingEntity(j => j.ToTable("lease_tenant"));
-
-                entity.HasOne(l => l.Property)
-                    .WithMany(p => p.Leases)
-                    .HasForeignKey(l => l.PropertyId)
-                    .OnDelete(DeleteBehavior.Restrict);
-
-                entity.Property(p => p.Deposit).HasPrecision(10, 2);
-                entity.Property(p => p.RentAmount).HasPrecision(10, 2);
-            });
-
-            builder.Entity<Document>()
-                .HasOne(d => d.Property)
-                .WithMany(p => p.Documents)
-                .HasForeignKey(d => d.PropertyId)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            builder.Entity<Charge>()
-                .HasOne(c => c.Property)
-                .WithMany(p => p.Charges)
-                .HasForeignKey(c => c.PropertyId)
-                .OnDelete(DeleteBehavior.Cascade);
-
-            builder.Entity<ApplicationUser>()
-                .HasOne(u => u.Address)
-                .WithMany(a => a.Users)
-                .HasForeignKey(u =>  u.AddressId)
-                .OnDelete(DeleteBehavior.Restrict);
+            builder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
         }
 
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
@@ -74,15 +40,25 @@ namespace Rentix.Infrastructure.Persistence
         private void UpdateTimestamps()
         {
             var entries = ChangeTracker.Entries()
-                .Where(e => e.Entity is BaseEntity &&
+                .Where(e => (e.Entity is BaseEntity || e.Entity is ApplicationUser) &&
                     (e.State == EntityState.Added || e.State == EntityState.Modified));
 
             foreach (var entry in entries)
             {
-                var entity = (BaseEntity)entry.Entity;
-                if (entry.State == EntityState.Added)
-                    entity.CreatedAt = DateTime.UtcNow;
-                entity.UpdatedAt = DateTime.UtcNow;
+                switch (entry.Entity)
+                {
+                    case BaseEntity baseEntity:
+                        if (entry.State == EntityState.Added)
+                            baseEntity.CreatedAt = DateTime.UtcNow;
+                        baseEntity.UpdatedAt = DateTime.UtcNow;
+                        break;
+
+                    case ApplicationUser appUser:
+                        if (entry.State == EntityState.Added)
+                            appUser.CreatedAt = DateTime.UtcNow;
+                        appUser.UpdatedAt = DateTime.UtcNow;
+                        break;
+                }
             }
         }
     }
