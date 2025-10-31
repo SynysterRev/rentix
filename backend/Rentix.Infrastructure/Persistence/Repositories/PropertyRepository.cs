@@ -1,9 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Rentix.Domain.Entities;
 using Rentix.Domain.Repositories;
-using Rentix.Infrastructure.DatabaseContext;
 
-namespace Rentix.Infrastructure.Repositories
+namespace Rentix.Infrastructure.Persistence.Repositories
 {
     public class PropertyRepository : IPropertyRepository
     {

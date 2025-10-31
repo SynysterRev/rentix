@@ -2,18 +2,21 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
-using Rentix.Infrastructure.DatabaseContext;
+using Rentix.Infrastructure.Persistence;
 
 #nullable disable
 
 namespace Rentix.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251031100753_RefactoEntities")]
+    partial class RefactoEntities
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -173,7 +176,7 @@ namespace Rentix.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Address");
+                    b.ToTable("Addresses", (string)null);
                 });
 
             modelBuilder.Entity("Rentix.Domain.Entities.Charge", b =>
@@ -211,7 +214,7 @@ namespace Rentix.Infrastructure.Migrations
 
                     b.HasIndex("PropertyId");
 
-                    b.ToTable("Charge");
+                    b.ToTable("Charges", (string)null);
                 });
 
             modelBuilder.Entity("Rentix.Domain.Entities.Document", b =>
@@ -248,13 +251,15 @@ namespace Rentix.Infrastructure.Migrations
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("UploadAt")
-                        .HasColumnType("timestamp with time zone");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasDefaultValueSql("NOW()");
 
                     b.HasKey("Id");
 
                     b.HasIndex("PropertyId");
 
-                    b.ToTable("Document");
+                    b.ToTable("Documents", (string)null);
                 });
 
             modelBuilder.Entity("Rentix.Domain.Entities.Lease", b =>
@@ -292,7 +297,7 @@ namespace Rentix.Infrastructure.Migrations
 
                     b.HasIndex("PropertyId");
 
-                    b.ToTable("Lease");
+                    b.ToTable("Leases", (string)null);
                 });
 
             modelBuilder.Entity("Rentix.Domain.Entities.Property", b =>
@@ -308,6 +313,9 @@ namespace Rentix.Infrastructure.Migrations
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("LandlordId")
+                        .HasColumnType("uuid");
 
                     b.Property<decimal>("MaxRent")
                         .HasPrecision(10, 2)
@@ -332,16 +340,13 @@ namespace Rentix.Infrastructure.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
-
                     b.HasKey("Id");
 
                     b.HasIndex("AddressId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("LandlordId");
 
-                    b.ToTable("Property");
+                    b.ToTable("Properties", (string)null);
                 });
 
             modelBuilder.Entity("Rentix.Domain.Entities.Tenant", b =>
@@ -380,7 +385,7 @@ namespace Rentix.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Tenant");
+                    b.ToTable("Tenants", (string)null);
                 });
 
             modelBuilder.Entity("Rentix.Domain.IdentityEntities.ApplicationRole", b =>
@@ -426,9 +431,13 @@ namespace Rentix.Infrastructure.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("text");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<string>("Email")
-                        .HasMaxLength(256)
-                        .HasColumnType("character varying(256)");
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("boolean");
@@ -451,7 +460,9 @@ namespace Rentix.Infrastructure.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("PhoneNumber")
-                        .HasColumnType("text");
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
 
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("boolean");
@@ -461,6 +472,9 @@ namespace Rentix.Infrastructure.Migrations
 
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("boolean");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("UserName")
                         .HasMaxLength(256)
@@ -551,7 +565,7 @@ namespace Rentix.Infrastructure.Migrations
                     b.HasOne("Rentix.Domain.Entities.Property", "Property")
                         .WithMany("Charges")
                         .HasForeignKey("PropertyId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Property");
@@ -589,7 +603,7 @@ namespace Rentix.Infrastructure.Migrations
 
                     b.HasOne("Rentix.Domain.IdentityEntities.ApplicationUser", "Landlord")
                         .WithMany("Properties")
-                        .HasForeignKey("UserId")
+                        .HasForeignKey("LandlordId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 

@@ -62,30 +62,51 @@ namespace Rentix.Domain.Entities
 
     public class Document
     {
-        [Key]
-        [Required]
         public int Id { get; set; }
-
-        [Required]
         public LeaseDocumentType DocumentType { get; set; }
-
-        [Required, MaxLength(255)]
         public string FileName { get; set; } = string.Empty;
-
-        [Required, MaxLength(50)]
         public string FileType { get; set; } = string.Empty;
-
-        [Required, MaxLength(500)]
         public string FilePath { get; set; } = string.Empty;
-
         public DateTime UploadAt { get; set; } = DateTime.UtcNow;
-
-        [MaxLength(500)]
         public string? Description {  get; set; } = string.Empty;
 
-        [Required]
         public int PropertyId { get; set; }
-
         public virtual Property Property { get; set; } = null!;
+
+        private Document() { }
+
+        public static Document Create(
+            LeaseDocumentType documentType,
+            string fileName,
+            string fileType,
+            string filePath,
+            string? description,
+            int propertyId)
+        {
+            if (string.IsNullOrWhiteSpace(fileType))
+            {
+                throw new ValidationException("The file type is required");
+            }
+
+            if (string.IsNullOrWhiteSpace(fileName))
+            {
+                throw new ValidationException("The file name is required");
+            }
+
+            if (string.IsNullOrWhiteSpace(filePath))
+            {
+                throw new ValidationException("The file path is required");
+            }
+
+            return new Document
+            {
+                Description = description,
+                PropertyId = propertyId,
+                FilePath = filePath,
+                DocumentType = documentType,
+                FileName = fileName,
+                FileType = fileType,
+            };
+        }
     }
 }
