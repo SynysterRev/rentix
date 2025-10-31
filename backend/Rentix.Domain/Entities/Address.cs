@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Rentix.Domain.Entities
 {
-    public class Address
+    public class Address : BaseEntity
     {
         public int Id { get; set; }
         public string Street { get; set; } = string.Empty;
