@@ -9,7 +9,7 @@ namespace Rentix.Application.RealEstate.DTOs
         PropertyStatus PropertyStatus,
         decimal Surface,
         int NumberRooms,
-        AddressDto address
+        AddressDto Address
         )
     {
         public bool IsAvailable => PropertyStatus == PropertyStatus.Available;

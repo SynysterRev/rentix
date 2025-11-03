@@ -12,6 +12,9 @@ namespace Rentix.Application.RealEstate.Commands.Create
     {
         public string Name { get; init; } = string.Empty;
         public decimal MaxRent { get; init; }
+        public decimal RentNoCharges { get; init; }
+        public decimal RentCharges { get; init; }
+        public decimal Deposit { get; init; }
         public PropertyStatus PropertyStatus { get; init; }
         public decimal Surface { get; init; }
         public int NumberRooms { get; init; }

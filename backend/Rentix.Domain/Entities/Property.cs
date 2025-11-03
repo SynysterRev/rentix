@@ -15,6 +15,9 @@ namespace Rentix.Domain.Entities
         public int Id { get; set; }
 
         public string Name { get; set; } = string.Empty;
+        public decimal RentNoCharges { get; set; }
+        public decimal RentCharges { get; set; }
+        public decimal Deposit { get; set; }
         public decimal MaxRent { get; set; }
         public PropertyStatus Status { get; set; }
         public decimal Surface { get; set; }
@@ -35,6 +38,9 @@ namespace Rentix.Domain.Entities
         public static Property Create(
             string name,
             decimal maxRent,
+            decimal deposit,
+            decimal rentNoCharges,
+            decimal rentCharges,
             PropertyStatus status,
             decimal surface,
             int numberRooms,
@@ -46,6 +52,15 @@ namespace Rentix.Domain.Entities
 
             if (maxRent <= 0)
                 throw new ArgumentException("Max rent must be positive.");
+
+            if (deposit <= 0)
+                throw new ArgumentException("Deposit must be positive.");
+
+            if (rentNoCharges <= 0)
+                throw new ArgumentException("Rent without charges must be positive.");
+
+            if (rentCharges <= 0)
+                throw new ArgumentException("Charges included in rent must be positive.");
 
             if (surface <= 0)
                 throw new ArgumentException("Surface must be positive.");
@@ -61,6 +76,9 @@ namespace Rentix.Domain.Entities
                 Surface = surface,
                 NumberRooms = numberRooms,
                 AddressId = addressId,
+                RentCharges = rentCharges,
+                RentNoCharges = rentNoCharges,
+                Deposit = deposit,
                 LandlordId = landlordId
             };
         }
