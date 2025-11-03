@@ -1,15 +1,14 @@
 ﻿using MediatR;
-using Rentix.Application.RealEstate.DTOs;
-using Rentix.Domain.Repositories;
+using Rentix.Application.Common.Interfaces;
+using Rentix.Application.RealEstate.DTOs.Properties;
 
 namespace Rentix.Application.RealEstate.Queries.List
 {
-    public class ListPropertiesQueryHandler(IPropertyRepository propertyRepository) : IRequestHandler<ListPropertiesQuery, List<PropertyDto>>
+    public class ListPropertiesQueryHandler(IPropertyQueries propertyQueries) : IRequestHandler<ListPropertiesQuery, List<PropertyListDto>>
     {
-        public async Task<List<PropertyDto>> Handle(ListPropertiesQuery request, CancellationToken cancellationToken)
+        public async Task<List<PropertyListDto>> Handle(ListPropertiesQuery request, CancellationToken cancellationToken)
         {
-            var properties = await propertyRepository.GetAllAsync();
-            return properties.Select(p => PropertyDto.FromEntity(p)).ToList();
+            return await propertyQueries.GetPropertyListAsync();
         }
     }
 }

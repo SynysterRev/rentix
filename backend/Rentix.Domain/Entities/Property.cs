@@ -33,6 +33,8 @@ namespace Rentix.Domain.Entities
         public virtual ICollection<Lease> Leases { get; set; } = new List<Lease>();
         public virtual ICollection<Charge> Charges { get; set; } = new List<Charge>();
 
+        public decimal TotalRent => RentNoCharges + RentCharges;
+
         private Property() { }
 
         public static Property Create(

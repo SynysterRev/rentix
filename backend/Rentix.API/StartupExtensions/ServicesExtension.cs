@@ -1,11 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Rentix.Application;
 using Rentix.Domain.IdentityEntities;
-using Rentix.Domain.Repositories;
+using Rentix.Infrastructure;
 using Rentix.Infrastructure.Persistence;
-using Rentix.Infrastructure.Persistence.Repositories;
-using System.Reflection;
 
 namespace Rentix.API.StartupExtensions
 {
@@ -13,30 +10,10 @@ namespace Rentix.API.StartupExtensions
     {
         public static void ConfigureServices(this IServiceCollection services, IConfiguration configuration, IHostEnvironment environment)
         {
-            if (environment.IsProduction())
-            {
-                var databaseUrl = Environment.GetEnvironmentVariable("DATABASE_URL");
-
-                if (!string.IsNullOrEmpty(databaseUrl))
-                {
-                    var uri = new Uri(databaseUrl);
-                    var userInfo = uri.UserInfo.Split(':');
-
-                    var connectionString = $"Host={uri.Host};Port={uri.Port};Database={uri.LocalPath.TrimStart('/')};Username={userInfo[0]};Password={userInfo[1]};SSL Mode=Require;Trust Server Certificate=true";
-
-                    configuration["ConnectionStrings:Default"] = connectionString;
-                }
-            }
-
             //Register MediatR
             services.AddApplicationServices();
 
-            services.AddScoped<IPropertyRepository, PropertyRepository>();
-
-            services.AddDbContext<ApplicationDbContext>(options =>
-            {
-                options.UseNpgsql(configuration.GetConnectionString("Default"));
-            });
+            services.AddInfrastructure(configuration, environment);
 
             services.AddIdentity<ApplicationUser, ApplicationRole>(options =>
             {
