@@ -1,6 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Rentix.Application.RealEstate.DTOs;
+using Rentix.Application.RealEstate.DTOs.Properties;
 using Rentix.Application.RealEstate.Queries.List;
 
 namespace Rentix.API.Controllers.v1
@@ -17,7 +17,7 @@ namespace Rentix.API.Controllers.v1
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<PropertyDto>>> GetProperties()
+        public async Task<ActionResult<List<PropertyListDto>>> GetProperties()
         {
             var properties = await _mediator.Send(new ListPropertiesQuery());
             _logger.LogInformation("Get all properties");

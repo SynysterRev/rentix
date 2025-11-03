@@ -1,6 +1,6 @@
 ﻿using Rentix.Domain.Entities;
 
-namespace Rentix.Application.RealEstate.DTOs
+namespace Rentix.Application.RealEstate.DTOs.Addresses
 {
     public record AddressDto(
         int Id,
