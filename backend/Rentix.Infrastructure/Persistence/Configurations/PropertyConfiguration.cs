@@ -20,6 +20,18 @@ namespace Rentix.Infrastructure.Persistence.Configurations
                    .IsRequired()
                    .HasPrecision(10, 2);
 
+            builder.Property(p => p.RentNoCharges)
+                   .IsRequired()
+                   .HasPrecision(10, 2);
+
+            builder.Property(p => p.RentCharges)
+                   .IsRequired()
+                   .HasPrecision(10, 2);
+
+            builder.Property(p => p.Deposit)
+                   .IsRequired()
+                   .HasPrecision(10, 2);
+
             builder.Property(p => p.Surface)
                    .IsRequired()
                    .HasPrecision(10, 2);

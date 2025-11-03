@@ -12,6 +12,9 @@ namespace Rentix.Application.RealEstate.Commands.Create
 
                 command.Name,
                 command.MaxRent,
+                command.Deposit,
+                command.RentNoCharges,
+                command.RentCharges,
                 command.PropertyStatus,
                 command.Surface,
                 command.NumberRooms,
