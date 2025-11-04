@@ -65,7 +65,6 @@ namespace Rentix.Domain.Entities
         public int Id { get; set; }
         public LeaseDocumentType DocumentType { get; set; }
         public string FileName { get; set; } = string.Empty;
-        public string FileType { get; set; } = string.Empty;
         public string FilePath { get; set; } = string.Empty;
         public DateTime UploadAt { get; set; } = DateTime.UtcNow;
         public string? Description {  get; set; } = string.Empty;
@@ -78,16 +77,10 @@ namespace Rentix.Domain.Entities
         public static Document Create(
             LeaseDocumentType documentType,
             string fileName,
-            string fileType,
             string filePath,
             string? description,
             int propertyId)
         {
-            if (string.IsNullOrWhiteSpace(fileType))
-            {
-                throw new ValidationException("The file type is required");
-            }
-
             if (string.IsNullOrWhiteSpace(fileName))
             {
                 throw new ValidationException("The file name is required");
@@ -105,7 +98,6 @@ namespace Rentix.Domain.Entities
                 FilePath = filePath,
                 DocumentType = documentType,
                 FileName = fileName,
-                FileType = fileType,
             };
         }
     }

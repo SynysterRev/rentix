@@ -3,7 +3,7 @@ using Rentix.Application.RealEstate.DTOs.Properties;
 
 namespace Rentix.Application.RealEstate.Queries.Detail
 {
-    public class DetailPropertyQuery : IRequest<PropertyListDto>
+    public record DetailPropertyQuery(int Id) : IRequest<PropertyDetailDto>
     {
     }
 }
