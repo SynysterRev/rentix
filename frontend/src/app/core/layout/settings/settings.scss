@@ -1,0 +1,15 @@
+@reference "#tailwind.css";
+
+@mixin mb($size){
+    @apply bg-red-300;
+}
+
+section {
+    header{
+        h1{
+            @apply text-3xl font-bold bg-amber-300;
+            @include test;
+        }
+    }
+}
+
