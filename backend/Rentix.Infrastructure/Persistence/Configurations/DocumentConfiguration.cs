@@ -19,10 +19,6 @@ namespace Rentix.Infrastructure.Persistence.Configurations
                    .IsRequired()
                    .HasMaxLength(255);
 
-            builder.Property(d => d.FileType)
-                   .IsRequired()
-                   .HasMaxLength(50);
-
             builder.Property(d => d.FilePath)
                    .IsRequired()
                    .HasMaxLength(500);

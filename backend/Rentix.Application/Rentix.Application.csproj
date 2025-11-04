@@ -16,8 +16,4 @@
     <ProjectReference Include="..\Rentix.Domain\Rentix.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="RealEstate\DTOs\Tenants\" />
-  </ItemGroup>
-
 </Project>
