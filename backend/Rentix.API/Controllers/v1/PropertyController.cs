@@ -29,7 +29,7 @@ namespace Rentix.API.Controllers.v1
         public async Task<ActionResult<PropertyDetailDto>> GetPropertyDetail(int id)
         {
             var property = await _mediator.Send(new DetailPropertyQuery(id));
-            _logger.LogInformation($"Get property with ID {id}");
+            _logger.LogInformation($"Get property with ID {id}"); 
             return Ok(property);
         }
     }
