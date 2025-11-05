@@ -32,11 +32,6 @@ namespace Rentix.Infrastructure.Persistence.Repositories
             return true;
         }
 
-        public async Task SaveChangesAsync()
-        {
-            await _dbContext.SaveChangesAsync();
-        }
-
         public void Update(Property property)
         {
             _dbContext.Properties.Update(property);
