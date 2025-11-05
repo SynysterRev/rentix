@@ -4,50 +4,53 @@ using Rentix.Application.RealEstate.Commands.Delete;
 using Rentix.Domain.Repositories;
 using Rentix.Application.Exceptions;
 
-public class DeletePropertyCommandHandlerTests
+namespace Rentix.Tests.Unit.RealEstate.Commands.Delete
 {
-    private readonly Mock<IPropertyRepository> _repoMock;
-    private readonly Mock<IUnitOfWork> _unitOfWorkMock;
-
-    public DeletePropertyCommandHandlerTests()
+    public class DeletePropertyCommandHandlerTests
     {
-        _repoMock = new Mock<IPropertyRepository>();
-        _unitOfWorkMock = new Mock<IUnitOfWork>();
-    }
+        private readonly Mock<IPropertyRepository> _repoMock;
+        private readonly Mock<IUnitOfWork> _unitOfWorkMock;
 
-    private DeletePropertyCommandHandler CreateHandler()
-    {
-        return new DeletePropertyCommandHandler(_repoMock.Object, _unitOfWorkMock.Object);
-    }
+        public DeletePropertyCommandHandlerTests()
+        {
+            _repoMock = new Mock<IPropertyRepository>();
+            _unitOfWorkMock = new Mock<IUnitOfWork>();
+        }
 
-    private void SetupDeleteAsync(int id, bool result)
-    {
-        _repoMock.Setup(r => r.DeleteAsync(id)).ReturnsAsync(result);
-    }
+        private DeletePropertyCommandHandler CreateHandler()
+        {
+            return new DeletePropertyCommandHandler(_repoMock.Object, _unitOfWorkMock.Object);
+        }
 
-    [Fact]
-    public async Task Handle_DeletesProperty_WhenExists()
-    {
-        // Arrange
-        SetupDeleteAsync(1, true);
-        var handler = CreateHandler();
+        private void SetupDeleteAsync(int id, bool result)
+        {
+            _repoMock.Setup(r => r.DeleteAsync(id)).ReturnsAsync(result);
+        }
 
-        // Act
-        await handler.Handle(new DeletePropertyCommand(1), CancellationToken.None);
+        [Fact]
+        public async Task Handle_DeletesProperty_WhenExists()
+        {
+            // Arrange
+            SetupDeleteAsync(1, true);
+            var handler = CreateHandler();
 
-        // Assert
-        _repoMock.Verify(r => r.DeleteAsync(1), Times.Once);
-    }
+            // Act
+            await handler.Handle(new DeletePropertyCommand(1), CancellationToken.None);
 
-    [Fact]
-    public async Task Handle_ThrowsNotFoundException_WhenNotExists()
-    {
-        // Arrange
-        SetupDeleteAsync(2, false);
-        var handler = CreateHandler();
+            // Assert
+            _repoMock.Verify(r => r.DeleteAsync(1), Times.Once);
+        }
 
-        // Act & Assert
-        await Assert.ThrowsAsync<NotFoundException>(() =>
-            handler.Handle(new DeletePropertyCommand(2), CancellationToken.None));
+        [Fact]
+        public async Task Handle_ThrowsNotFoundException_WhenNotExists()
+        {
+            // Arrange
+            SetupDeleteAsync(2, false);
+            var handler = CreateHandler();
+
+            // Act & Assert
+            await Assert.ThrowsAsync<NotFoundException>(() =>
+                handler.Handle(new DeletePropertyCommand(2), CancellationToken.None));
+        }
     }
 }
