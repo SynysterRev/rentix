@@ -24,10 +24,5 @@ namespace Rentix.Domain.Repositories
         /// <returns>An asynchronous task returning <c>true</c> if the deletion was successful; otherwise, <c>false</c>.</returns>
         public Task<bool> DeleteAsync(int id);
 
-        /// <summary>
-        /// Persists all pending changes to the database.
-        /// </summary>
-        /// <returns>An asynchronous task representing the save operation.</returns>
-        public Task SaveChangesAsync();
     }
 }
