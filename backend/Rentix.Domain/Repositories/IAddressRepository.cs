@@ -34,10 +34,5 @@ namespace Rentix.Domain.Repositories
         /// <returns>True if the address was found and removed; otherwise, false.</returns>
         Task<bool> DeleteAsync(int id);
 
-        /// <summary>
-        /// Persists all changes made in the context to the database asynchronously.
-        /// </summary>
-        /// <returns>A task representing the asynchronous save operation.</returns>
-        Task SaveChangesAsync();
     }
 }
