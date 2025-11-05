@@ -8,11 +8,34 @@ namespace Rentix.Tests.Unit.RealEstate.Commands.Create
 {
     public class CreatePropertyCommandValidatorTests
     {
+        private readonly CreatePropertyCommandValidator _validator;
+
+        public CreatePropertyCommandValidatorTests()
+        {
+            _validator = new CreatePropertyCommandValidator();
+        }
+
+        private CreatePropertyCommand CreateValidCommand()
+        {
+            return new CreatePropertyCommand
+            {
+                Name = "Valid Property",
+                MaxRent = 1000m,
+                RentCharges = 200m,
+                RentNoCharges = 800m,
+                Deposit = 500m,
+                PropertyStatus = PropertyStatus.Available,
+                Surface = 50m,
+                NumberRooms = 2,
+                AddressId = 1,
+                LandLordId = Guid.NewGuid()
+            };
+        }
+
         [Fact]
         public void Should_HaveValidationError_When_RequiredFieldsAreMissingOrInvalid()
         {
             // Arrange
-            var validator = new CreatePropertyCommandValidator();
             var command = new CreatePropertyCommand
             {
                 Name = "",
@@ -24,39 +47,26 @@ namespace Rentix.Tests.Unit.RealEstate.Commands.Create
             };
 
             // Act
-            var result = validator.Validate(command);
+            var result = _validator.Validate(command);
 
             // Assert
             result.IsValid.Should().BeFalse();
             result.Errors.Should().NotBeEmpty();
         }
 
-        //[Fact]
-        //public void Should_PassValidation_When_AllFieldsAreValid()
-        //{
-        //    // Arrange
-        //    var validator = new CreatePropertyCommandValidator();
-        //    var command = new CreatePropertyCommand
-        //    {
-        //        Name = "Valid Property",
-        //        MaxRent = 1000m,
-        //        RentCharges = 200m,
-        //        RentNoCharges = 800m, // Not validated, but included for completeness
-        //        Deposit = 500m,
-        //        PropertyStatus = PropertyStatus.Available,
-        //        Surface = 50m,
-        //        NumberRooms = 2,
-        //        AddressId = 1,
-        //        LandLordId = Guid.NewGuid()
-        //    };
+        [Fact]
+        public void Should_PassValidation_When_AllFieldsAreValid()
+        {
+            // Arrange
+            var command = CreateValidCommand();
 
-        //    // Act
-        //    var result = validator.Validate(command);
+            // Act
+            var result = _validator.Validate(command);
 
-        //    // Assert
-        //    result.IsValid.Should().BeTrue();
-        //    result.Errors.Should().BeEmpty();
-        //}
+            // Assert
+            result.IsValid.Should().BeTrue();
+            result.Errors.Should().BeEmpty();
+        }
 
         // Boundary value tests for numeric fields
         [Theory]
@@ -64,18 +74,8 @@ namespace Rentix.Tests.Unit.RealEstate.Commands.Create
         [InlineData(-1)] // Below min
         public void Should_HaveValidationError_When_MaxRent_IsInvalid(int maxRent)
         {
-            var validator = new CreatePropertyCommandValidator();
-            var command = new CreatePropertyCommand
-            {
-                Name = "Valid Property",
-                MaxRent = maxRent,
-                Surface = 50,
-                NumberRooms = 2,
-                AddressId = 1,
-                LandLordId = Guid.NewGuid(),
-                PropertyStatus = PropertyStatus.Available
-            };
-            var result = validator.Validate(command);
+            var command = CreateValidCommand() with { MaxRent = maxRent };
+            var result = _validator.Validate(command);
             result.IsValid.Should().BeFalse();
             result.Errors.Should().NotBeEmpty();
         }
@@ -85,18 +85,8 @@ namespace Rentix.Tests.Unit.RealEstate.Commands.Create
         [InlineData(-10)]
         public void Should_HaveValidationError_When_Surface_IsInvalid(int surface)
         {
-            var validator = new CreatePropertyCommandValidator();
-            var command = new CreatePropertyCommand
-            {
-                Name = "Valid Property",
-                MaxRent = 1000,
-                Surface = surface,
-                NumberRooms = 2,
-                AddressId = 1,
-                LandLordId = Guid.NewGuid(),
-                PropertyStatus = PropertyStatus.Available
-            };
-            var result = validator.Validate(command);
+            var command = CreateValidCommand() with { Surface = surface };
+            var result = _validator.Validate(command);
             result.IsValid.Should().BeFalse();
             result.Errors.Should().NotBeEmpty();
         }
@@ -106,18 +96,8 @@ namespace Rentix.Tests.Unit.RealEstate.Commands.Create
         [InlineData(-1)]
         public void Should_HaveValidationError_When_NumberRooms_IsInvalid(int numberRooms)
         {
-            var validator = new CreatePropertyCommandValidator();
-            var command = new CreatePropertyCommand
-            {
-                Name = "Valid Property",
-                MaxRent = 1000,
-                Surface = 50,
-                NumberRooms = numberRooms,
-                AddressId = 1,
-                LandLordId = Guid.NewGuid(),
-                PropertyStatus = PropertyStatus.Available
-            };
-            var result = validator.Validate(command);
+            var command = CreateValidCommand() with { NumberRooms = numberRooms };
+            var result = _validator.Validate(command);
             result.IsValid.Should().BeFalse();
             result.Errors.Should().NotBeEmpty();
         }
@@ -127,18 +107,8 @@ namespace Rentix.Tests.Unit.RealEstate.Commands.Create
         [InlineData(-5)]
         public void Should_HaveValidationError_When_AddressId_IsInvalid(int addressId)
         {
-            var validator = new CreatePropertyCommandValidator();
-            var command = new CreatePropertyCommand
-            {
-                Name = "Valid Property",
-                MaxRent = 1000,
-                Surface = 50,
-                NumberRooms = 2,
-                AddressId = addressId,
-                LandLordId = Guid.NewGuid(),
-                PropertyStatus = PropertyStatus.Available
-            };
-            var result = validator.Validate(command);
+            var command = CreateValidCommand() with { AddressId = addressId };
+            var result = _validator.Validate(command);
             result.IsValid.Should().BeFalse();
             result.Errors.Should().NotBeEmpty();
         }
@@ -147,18 +117,8 @@ namespace Rentix.Tests.Unit.RealEstate.Commands.Create
         [Fact]
         public void Should_HaveValidationError_When_Name_IsEmpty()
         {
-            var validator = new CreatePropertyCommandValidator();
-            var command = new CreatePropertyCommand
-            {
-                Name = "",
-                MaxRent = 1000,
-                Surface = 50,
-                NumberRooms = 2,
-                AddressId = 1,
-                LandLordId = Guid.NewGuid(),
-                PropertyStatus = PropertyStatus.Available
-            };
-            var result = validator.Validate(command);
+            var command = CreateValidCommand() with { Name = string.Empty };
+            var result = _validator.Validate(command);
             result.IsValid.Should().BeFalse();
             result.Errors.Should().NotBeEmpty();
         }
@@ -166,37 +126,17 @@ namespace Rentix.Tests.Unit.RealEstate.Commands.Create
         [Fact]
         public void Should_HaveValidationError_When_LandLordId_IsEmpty()
         {
-            var validator = new CreatePropertyCommandValidator();
-            var command = new CreatePropertyCommand
-            {
-                Name = "Valid Property",
-                MaxRent = 1000,
-                Surface = 50,
-                NumberRooms = 2,
-                AddressId = 1,
-                LandLordId = Guid.Empty,
-                PropertyStatus = PropertyStatus.Available
-            };
-            var result = validator.Validate(command);
+            var command = CreateValidCommand() with { LandLordId = Guid.Empty };
+            var result = _validator.Validate(command);
             result.IsValid.Should().BeFalse();
             result.Errors.Should().NotBeEmpty();
         }
 
         [Fact]
-        public void Should_HaveValidationError_When_PropertyStatus_IsMissing()
+        public void Should_HaveValidationError_When_Name_IsTooLong()
         {
-            var validator = new CreatePropertyCommandValidator();
-            var command = new CreatePropertyCommand
-            {
-                Name = "Valid Property",
-                MaxRent = 1000,
-                Surface = 50,
-                NumberRooms = 2,
-                AddressId = 1,
-                LandLordId = Guid.NewGuid(),
-                // PropertyStatus not set
-            };
-            var result = validator.Validate(command);
+            var command = CreateValidCommand() with { Name = new string('A', 256) };
+            var result = _validator.Validate(command);
             result.IsValid.Should().BeFalse();
             result.Errors.Should().NotBeEmpty();
         }

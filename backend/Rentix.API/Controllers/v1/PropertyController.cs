@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Rentix.Application.RealEstate.Commands.Create;
+using Rentix.Application.RealEstate.Commands.Delete;
 using Rentix.Application.RealEstate.DTOs.Properties;
 using Rentix.Application.RealEstate.Queries.Detail;
 using Rentix.Application.RealEstate.Queries.List;
@@ -39,6 +40,13 @@ namespace Rentix.API.Controllers.v1
         {
             var newProperty = await _mediator.Send(command);
             return CreatedAtAction(nameof(GetPropertyDetail), new { id = newProperty.Id }, newProperty);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteProperty(int id)
+        {
+            await _mediator.Send(new DeletePropertyCommand(id));
+            return NoContent();
         }
     }
 }
