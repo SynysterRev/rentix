@@ -4,18 +4,25 @@ namespace Rentix.Domain.Repositories
 {
     public interface IPropertyRepository
     {
-        //public Task<IEnumerable<Property>> GetAllAsync();
-        //public Task<Property?> GetByIdAsync(int id);
-        //public Task<Property?> GetByIdWithDetailsAsync(int id);
-        //public Task<IEnumerable<Property>> GetByLandlordIdAsync(Guid landlordId);
-        //public Task<IEnumerable<Property>> GetAvailablePropertiesAsync();
-        //public Task<bool> ExistsAsync(int id);
-        //public Task<int> CountAsync();
-
+        /// <summary>
+        /// Adds a new property to the database.
+        /// </summary>
+        /// <param name="property">The property entity to add.</param>
+        /// <returns>An asynchronous task returning the added <see cref="Property"/> with its generated ID.</returns>
         public Task<Property> AddAsync(Property property);
-        public Task UpdateAsync(Property property);
+
+        /// <summary>
+        /// Updates an existing property in the database.
+        /// </summary>
+        /// <param name="property">The property entity with updated values.</param>
+        public void Update(Property property);
+
+        /// <summary>
+        /// Deletes a property with the specified ID from the database.
+        /// </summary>
+        /// <param name="id">The unique identifier of the property to delete.</param>
+        /// <returns>An asynchronous task returning <c>true</c> if the deletion was successful; otherwise, <c>false</c>.</returns>
         public Task<bool> DeleteAsync(int id);
 
-        //public Task<IEnumerable<Property>> SearchAsync(string searchTerm);
     }
 }

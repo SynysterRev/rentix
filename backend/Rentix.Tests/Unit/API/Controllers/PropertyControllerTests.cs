@@ -1,13 +1,15 @@
-using Xunit;
-using Moq;
+using FluentAssertions;
 using MediatR;
-using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using Moq;
 using Rentix.API.Controllers.v1;
+using Rentix.Application.Exceptions;
 using Rentix.Application.RealEstate.DTOs.Properties;
 using Rentix.Application.RealEstate.Queries.Detail;
 using Rentix.Application.RealEstate.Queries.List;
 using Rentix.Domain.Entities;
+using Xunit;
 
 namespace Rentix.Tests.Unit.API.Controllers
 {
@@ -83,18 +85,15 @@ namespace Rentix.Tests.Unit.API.Controllers
         }
 
         [Fact]
-        public async Task GetPropertyDetail_ReturnsOk_WithNull_WhenNotFound()
+        public async Task GetPropertyDetail_ThrowNotFoundException_WithNull_WhenNotFound()
         {
             // Arrange
             _mediatorMock.Setup(m => m.Send(It.IsAny<DetailPropertyQuery>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync((PropertyDetailDto)null);
+                .ThrowsAsync(new NotFoundException("Property with ID 99 does not exist"));
 
-            // Act
-            var result = await _controller.GetPropertyDetail(99);
-
-            // Assert
-            var okResult = Assert.IsType<OkObjectResult>(result.Result);
-            Assert.Null(okResult.Value);
+            // Act & Assert
+            await Assert.ThrowsAsync<NotFoundException>(() =>
+                _controller.GetPropertyDetail(99));
         }
     }
 }

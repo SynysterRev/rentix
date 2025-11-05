@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Rentix.Application.RealEstate.Commands.Create;
 using Rentix.Application.RealEstate.DTOs.Properties;
 using Rentix.Application.RealEstate.Queries.Detail;
 using Rentix.Application.RealEstate.Queries.List;
@@ -29,8 +30,15 @@ namespace Rentix.API.Controllers.v1
         public async Task<ActionResult<PropertyDetailDto>> GetPropertyDetail(int id)
         {
             var property = await _mediator.Send(new DetailPropertyQuery(id));
-            _logger.LogInformation($"Get property with ID {id}");   
+            _logger.LogInformation($"Get property with ID {id}");
             return Ok(property);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<PropertyDetailDto>> CreateProperty([FromBody] CreatePropertyCommand command)
+        {
+            var newProperty = await _mediator.Send(command);
+            return CreatedAtAction(nameof(GetPropertyDetail), new { id = newProperty.Id }, newProperty);
         }
     }
 }
