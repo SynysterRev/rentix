@@ -8,8 +8,8 @@ namespace Rentix.Application.RealEstate.Commands.Create
         {
             RuleFor(x => x.Name).NotEmpty().MaximumLength(255);
             RuleFor(x => x.MaxRent).NotEmpty().GreaterThan(0);
-            RuleFor(x => x.RentNoCharges).NotEmpty().GreaterThan(0);
-            RuleFor(x => x.RentCharges).NotEmpty().GreaterThan(0);
+            RuleFor(x => x.RentNoCharges).GreaterThan(0);
+            RuleFor(x => x.RentCharges).GreaterThan(0);
             RuleFor(x => x.Deposit).NotEmpty().GreaterThan(0);
             RuleFor(x => x.PropertyStatus).NotEmpty();
             RuleFor(x => x.Surface).NotEmpty().GreaterThan(0);
