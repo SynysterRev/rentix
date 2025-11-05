@@ -18,6 +18,11 @@ namespace Rentix.Domain.Repositories
         IAddressRepository Addresses { get; }
 
         /// <summary>
+        /// Gets the tenant repository for managing Tenant entities.
+        /// </summary>
+        ITenantRepository Tenants { get; }
+
+        /// <summary>
         /// Persists all changes made in the context to the database asynchronously.
         /// </summary>
         /// <returns>A task representing the asynchronous save operation.</returns>

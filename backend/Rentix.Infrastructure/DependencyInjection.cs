@@ -39,6 +39,7 @@ namespace Rentix.Infrastructure
 
             services.AddScoped<IPropertyRepository, PropertyRepository>();
             services.AddScoped<IAddressRepository, AddressRepository>();
+            services.AddScoped<ITenantRepository, TenantRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IPropertyQueries, PropertyQueries>();
 
