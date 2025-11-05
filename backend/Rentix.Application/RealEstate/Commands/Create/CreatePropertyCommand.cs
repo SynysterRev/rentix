@@ -1,14 +1,11 @@
 ﻿using MediatR;
+using Rentix.Application.RealEstate.DTOs.Addresses;
+using Rentix.Application.RealEstate.DTOs.Properties;
 using Rentix.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Rentix.Application.RealEstate.Commands.Create
 {
-    public record CreatePropertyCommand() : IRequest<int>
+    public record CreatePropertyCommand() : IRequest<PropertyDetailDto>
     {
         public string Name { get; init; } = string.Empty;
         public decimal MaxRent { get; init; }
@@ -18,7 +15,8 @@ namespace Rentix.Application.RealEstate.Commands.Create
         public PropertyStatus PropertyStatus { get; init; }
         public decimal Surface { get; init; }
         public int NumberRooms { get; init; }
-        public int AddressId { get; init; }
+        public int? AddressId { get; init; }
+        public AddressCreateDto? AddressDto { get; init; }
         public Guid LandLordId { get; init; }
     }
 }
