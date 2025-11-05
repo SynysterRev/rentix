@@ -24,7 +24,7 @@ namespace Rentix.Application.RealEstate.Commands.Create
             {
                 RuleFor(x => x.AddressId!.Value)
                     .GreaterThan(0)
-                    .WithMessage("AddressId must be greather than 0.");
+                    .WithMessage("AddressId must be greater than 0.");
             });
 
             When(x => x.AddressDto != null, () =>
