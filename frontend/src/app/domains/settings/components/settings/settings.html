@@ -1,0 +1,36 @@
+<section>
+    <header>
+        <h1 class="text-3xl font-bold">Settings</h1>
+        <p class="text-sm font-light mt-2">Change your account settings</p>
+    </header>
+    <main class="flex flex-wrap mt-10">
+        <form class="flex flex-col min-w-2/3 bg-white rounded-2xl pt-5 pl-10 pr-10 pb-5 mb-5">
+            <h1 class="text-xl font-bold mb-5">Personal information</h1>
+            
+            <label class="mb-2" for="name">Your name</label>
+            <input class="bg-gray-100 rounded-xl pt-1 pb-1 pr-3 pl-3 mb-5 placeholder:text-gray-400 placeholder:italic" type="text" id="name" name="name" placeholder="John Doe">
+            
+            <label class="mb-2" for="email">E-mail address</label>
+            <input class="bg-gray-100 rounded-xl pt-1 pb-1 pr-3 pl-3 mb-5 placeholder:text-gray-400 placeholder:italic" type="email" id="email" name="email" placeholder="exemple@mail.com">
+            
+            <label class="mb-2" for="phonenumber">Phone number</label>
+            <input class="bg-gray-100 rounded-xl pt-1 pb-1 pr-3 pl-3 mb-5 placeholder:text-gray-400 placeholder:italic" type="email" id="phonenumber" name="phonenumber" placeholder="+33 6 12 34 56 78">
+
+            <button class="w-1/3 bg-gray-300 hover:bg-gray-400 rounded-xl p-2" type="submit">Save changes</button>
+        </form>
+        <form class="flex flex-col min-w-2/3 bg-white rounded-2xl pt-5 pl-10 pr-10 pb-5">
+            <h1 class="text-xl font-bold mb-5">Change password</h1>
+            
+            <label class="mb-2" for="actualpassword">Actual password</label>
+            <input class="bg-gray-100 rounded-xl pt-1 pb-1 pr-3 pl-3 mb-5 placeholder:text-gray-400 placeholder:italic" type="password" id="actualpassword" name="actualpassword">
+            
+            <label class="mb-2" for="newpassword">New password</label>
+            <input class="bg-gray-100 rounded-xl pt-1 pb-1 pr-3 pl-3 mb-5 placeholder:text-gray-400 placeholder:italic" type="password" id="newpassword" name="newpassword">
+            
+            <label class="mb-2" for="confirmnewpassword">Confirm new password</label>
+            <input class="bg-gray-100 rounded-xl pt-1 pb-1 pr-3 pl-3 mb-5 placeholder:text-gray-400 placeholder:italic" type="password" id="confirmnewpassword" name="confirmnewpassword">
+
+            <button class="w-1/3 bg-gray-300 hover:bg-gray-400 rounded-xl p-2" type="submit">Change password</button>
+        </form>
+    </main>
+</section>

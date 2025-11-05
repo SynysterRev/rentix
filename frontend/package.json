@@ -45,5 +45,8 @@
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
     "typescript": "~5.8.2"
+  },
+  "imports": {
+    "#tailwind.css": "./src/styles/tailwind.css"
   }
 }

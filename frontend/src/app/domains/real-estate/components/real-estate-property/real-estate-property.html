@@ -1,0 +1,17 @@
+<section>
+    <header>
+        <h1 class="text-3xl font-bold">Real estate property</h1>
+        <p class="text-sm font-light">Manage your rental properties</p>
+    </header>
+    <main>
+        <section>
+            @for (property of properties(); track property.id) {
+            <app-property-card [property]="property"></app-property-card>
+            <app-property-card [property]="property"></app-property-card>
+            <app-property-card [property]="property"></app-property-card>
+            <app-property-card [property]="property"></app-property-card>
+            <app-property-card [property]="property"></app-property-card>
+            }
+        </section>
+    </main>
+</section>

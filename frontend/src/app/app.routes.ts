@@ -1,7 +1,8 @@
 import { Routes } from '@angular/router';
 import { Dashboard } from './core/layout/dashboard/dashboard';
-import { RealEstateProperty } from './core/layout/real-estate-property/real-estate-property';
-import { Settings } from './core/layout/settings/settings';
+import { RealEstateProperty } from './domains/real-estate/components/real-estate-property/real-estate-property';
+import { Settings } from './domains/settings/components/settings/settings';
+
 
 
 export const routes: Routes = [
