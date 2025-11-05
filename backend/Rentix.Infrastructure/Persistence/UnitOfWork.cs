@@ -14,15 +14,18 @@ namespace Rentix.Infrastructure.Persistence
 
         public IPropertyRepository Properties { get; }
         public IAddressRepository Addresses { get; }
+        public ITenantRepository Tenants { get; }
 
         public UnitOfWork(
             ApplicationDbContext dbContext,
             IPropertyRepository propertyRepository,
-            IAddressRepository addressRepository)
+            IAddressRepository addressRepository,
+            ITenantRepository tenantRepository)
         {
             _dbContext = dbContext;
             Properties = propertyRepository;
             Addresses = addressRepository;
+            Tenants = tenantRepository;
         }
 
         /// <summary>
