@@ -57,7 +57,6 @@ namespace Rentix.Infrastructure.Persistence.Repositories
         public async Task<IEnumerable<Tenant>> GetActiveTenantsAsync()
         {
             return await _dbContext.Tenants
-                .Include(t => t.Leases)
                 .Where(t => t.Leases.Any(l => l.IsActive))
                 .ToListAsync();
         }
@@ -70,7 +69,6 @@ namespace Rentix.Infrastructure.Persistence.Repositories
         public async Task<IEnumerable<Tenant>> GetTenantsByLeaseIdAsync(int leaseId)
         {
             return await _dbContext.Tenants
-                .Include(t => t.Leases)
                 .Where(t => t.Leases.Any(l => l.Id == leaseId))
                 .ToListAsync();
         }
