@@ -21,59 +21,6 @@ namespace Rentix.Infrastructure.Persistence.Repositories
         }
 
         /// <summary>
-        /// Retrieves a Tenant entity by its unique identifier.
-        /// </summary>
-        /// <param name="id">The unique identifier of the tenant.</param>
-        /// <returns>The Tenant entity if found; otherwise, null.</returns>
-        public async Task<Tenant?> GetByIdAsync(int id)
-        {
-            return await _dbContext.Tenants.FindAsync(id);
-        }
-
-        /// <summary>
-        /// Retrieves a Tenant entity by email address.
-        /// </summary>
-        /// <param name="email">The email address of the tenant.</param>
-        /// <returns>The Tenant entity if found; otherwise, null.</returns>
-        public async Task<Tenant?> GetByEmailAsync(string email)
-        {
-            return await _dbContext.Tenants
-                .FirstOrDefaultAsync(t => t.Email.Value == email);
-        }
-
-        /// <summary>
-        /// Retrieves all Tenant entities from the database.
-        /// </summary>
-        /// <returns>A collection of all Tenant entities.</returns>
-        public async Task<IEnumerable<Tenant>> GetAllAsync()
-        {
-            return await _dbContext.Tenants.ToListAsync();
-        }
-
-        /// <summary>
-        /// Retrieves all active Tenants (those with at least one active lease).
-        /// </summary>
-        /// <returns>A collection of active Tenant entities.</returns>
-        public async Task<IEnumerable<Tenant>> GetActiveTenantsAsync()
-        {
-            return await _dbContext.Tenants
-                .Where(t => t.Leases.Any(l => l.IsActive))
-                .ToListAsync();
-        }
-
-        /// <summary>
-        /// Retrieves all Tenants associated with a specific lease.
-        /// </summary>
-        /// <param name="leaseId">The unique identifier of the lease.</param>
-        /// <returns>A collection of Tenant entities associated with the specified lease.</returns>
-        public async Task<IEnumerable<Tenant>> GetTenantsByLeaseIdAsync(int leaseId)
-        {
-            return await _dbContext.Tenants
-                .Where(t => t.Leases.Any(l => l.Id == leaseId))
-                .ToListAsync();
-        }
-
-        /// <summary>
         /// Adds a new Tenant entity to the persistence context.
         /// </summary>
         /// <param name="tenant">The Tenant entity to add.</param>
@@ -109,30 +56,6 @@ namespace Rentix.Infrastructure.Persistence.Repositories
 
             _dbContext.Tenants.Remove(tenant);
             return true;
-        }
-
-        /// <summary>
-        /// Checks if a tenant with the specified email address already exists.
-        /// </summary>
-        /// <param name="email">The email address to check.</param>
-        /// <returns>True if a tenant with the email exists; otherwise, false.</returns>
-        public async Task<bool> ExistsByEmailAsync(string email)
-        {
-            return await _dbContext.Tenants
-                .AnyAsync(t => t.Email.Value == email);
-        }
-
-        /// <summary>
-        /// Checks if a tenant with the specified email address exists, excluding a specific tenant ID.
-        /// Useful for update scenarios to check email uniqueness.
-        /// </summary>
-        /// <param name="email">The email address to check.</param>
-        /// <param name="excludeTenantId">The tenant ID to exclude from the check.</param>
-        /// <returns>True if another tenant with the email exists; otherwise, false.</returns>
-        public async Task<bool> ExistsByEmailAsync(string email, int excludeTenantId)
-        {
-            return await _dbContext.Tenants
-                .AnyAsync(t => t.Email.Value == email && t.Id != excludeTenantId);
         }
     }
 }
