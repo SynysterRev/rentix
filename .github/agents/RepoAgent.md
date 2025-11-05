@@ -1,6 +1,6 @@
 ---
 name: Expert Repo
-description:
+description: Focuses on creating repository without modifying production code
 ---
 
 # My Agent
