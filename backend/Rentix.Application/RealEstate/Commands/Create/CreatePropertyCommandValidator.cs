@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using Rentix.Domain.Entities;
 
 namespace Rentix.Application.RealEstate.Commands.Create
 {
@@ -7,18 +8,24 @@ namespace Rentix.Application.RealEstate.Commands.Create
         public CreatePropertyCommandValidator()
         {
             RuleFor(x => x.Name).NotEmpty().MaximumLength(255);
-            RuleFor(x => x.MaxRent).NotEmpty().GreaterThan(0);
+            RuleFor(x => x.MaxRent).GreaterThan(0);
             RuleFor(x => x.RentNoCharges).GreaterThan(0);
             RuleFor(x => x.RentCharges).GreaterThan(0);
-            RuleFor(x => x.Deposit).NotEmpty().GreaterThan(0);
-            RuleFor(x => x.PropertyStatus).NotEmpty();
-            RuleFor(x => x.Surface).NotEmpty().GreaterThan(0);
-            RuleFor(x => x.NumberRooms).NotEmpty().InclusiveBetween(1, 150);
+            RuleFor(x => x.Deposit).GreaterThan(0);
+            RuleFor(x => x.Surface).GreaterThan(0);
+            RuleFor(x => x.NumberRooms).InclusiveBetween(1, 150);
             RuleFor(x => x.LandLordId).NotEmpty();
 
             RuleFor(x => x)
                 .Must(cmd => cmd.AddressId.HasValue || cmd.AddressDto != null)
                 .WithMessage("Either AddressId or AddressDto must be provided.");
+
+            When(x => x.AddressId.HasValue, () =>
+            {
+                RuleFor(x => x.AddressId!.Value)
+                    .GreaterThan(0)
+                    .WithMessage("AddressId must be greather than 0.");
+            });
 
             When(x => x.AddressDto != null, () =>
             {
