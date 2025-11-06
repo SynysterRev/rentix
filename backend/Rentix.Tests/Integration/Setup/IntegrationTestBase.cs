@@ -12,7 +12,17 @@ namespace Rentix.Tests.Integration.Setup
         public IntegrationTestBase()
         {
             Factory = new CustomWebApplicationFactory<Program>();
-            Client = Factory.CreateClient();
+            
+            // Use WithWebHostBuilder to properly configure test services
+            var factoryWithOverrides = Factory.WithWebHostBuilder(builder =>
+            {
+                builder.ConfigureServices(services =>
+                {
+                    // This runs after DI is set up but before build, so we can properly replace services
+                });
+            });
+            
+            Client = factoryWithOverrides.CreateClient();
         }
 
         protected void CleanDatabase()
