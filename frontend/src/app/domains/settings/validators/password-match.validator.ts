@@ -2,8 +2,8 @@ import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 
 export function passwordMatchValidator(): ValidatorFn {
     return (formGroup: AbstractControl): ValidationErrors | null => {
-        const password = formGroup.get('password')?.value;
-        const confirmPassword = formGroup.get('confirmPassword')?.value;
+        const password = formGroup.get('newpassword')?.value;
+        const confirmPassword = formGroup.get('confirmnewpassword')?.value;
 
         // Si un des deux est vide, on ne valide pas (géré par Validators.required)
         if (!password || !confirmPassword) {

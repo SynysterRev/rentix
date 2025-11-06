@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from "@angular/common";
+import { passwordMatchValidator } from '../../validators/password-match.validator';
 
 @Component({
   selector: 'app-settings',
@@ -21,9 +22,10 @@ export class Settings {
 
   passwordForm = new FormGroup({
     actualpassword: new FormControl('', [Validators.required]),
-    newpassword: new FormControl('', [Validators.required, Validators.pattern(/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/)]),
-    confirmnewpassword: new FormControl('', [Validators.required, Validators.pattern(/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/)]),
-  });
+    newpassword: new FormControl('', [Validators.required, Validators.pattern(/(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*#?&^_-]).{8,}/)]),
+    confirmnewpassword: new FormControl('', [Validators.required, Validators.pattern(/(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*#?&^_-]).{8,}/)]),
+
+  }, { validators: passwordMatchValidator() });
 
   onSubmitUserForm() {
     if (this.userForm.valid) {
@@ -34,8 +36,8 @@ export class Settings {
   }
 
   onSubmitPasswordForm() {
-    if (this.userForm.valid) {
-      console.log('Form submitted:', this.userForm.value);
+    if (this.passwordForm.valid) {
+      console.log('Form submitted:', this.passwordForm.value);
     } else {
       console.log('Form is invalid');
     }
