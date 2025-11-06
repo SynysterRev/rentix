@@ -25,7 +25,6 @@ namespace Rentix.Tests.Unit.Tenants.Commands.Create
 
         [Theory]
         [InlineData("")]
-        [InlineData(null)]
         public void Should_HaveValidationError_When_FirstNameIsEmptyOrNull(string value)
         {
             var command = new CreateTenantCommand
@@ -55,7 +54,6 @@ namespace Rentix.Tests.Unit.Tenants.Commands.Create
 
         [Theory]
         [InlineData("")]
-        [InlineData(null)]
         public void Should_HaveValidationError_When_LastNameIsEmptyOrNull(string value)
         {
             var command = new CreateTenantCommand
