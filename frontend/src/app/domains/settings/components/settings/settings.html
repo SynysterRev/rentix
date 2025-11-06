@@ -1,36 +1,95 @@
 <section>
     <header>
-        <h1 class="text-3xl font-bold">Settings</h1>
-        <p class="text-sm font-light mt-2">Change your account settings</p>
+        <h1>Mon compte</h1>
+        <p>Modifier les paramètres de mon compte</p>
     </header>
-    <main class="flex flex-wrap mt-10">
-        <form class="flex flex-col min-w-2/3 bg-white rounded-2xl pt-5 pl-10 pr-10 pb-5 mb-5">
-            <h1 class="text-xl font-bold mb-5">Personal information</h1>
-            
-            <label class="mb-2" for="name">Your name</label>
-            <input class="bg-gray-100 rounded-xl pt-1 pb-1 pr-3 pl-3 mb-5 placeholder:text-gray-400 placeholder:italic" type="text" id="name" name="name" placeholder="John Doe">
-            
-            <label class="mb-2" for="email">E-mail address</label>
-            <input class="bg-gray-100 rounded-xl pt-1 pb-1 pr-3 pl-3 mb-5 placeholder:text-gray-400 placeholder:italic" type="email" id="email" name="email" placeholder="exemple@mail.com">
-            
-            <label class="mb-2" for="phonenumber">Phone number</label>
-            <input class="bg-gray-100 rounded-xl pt-1 pb-1 pr-3 pl-3 mb-5 placeholder:text-gray-400 placeholder:italic" type="email" id="phonenumber" name="phonenumber" placeholder="+33 6 12 34 56 78">
+    <main>
+        <form [formGroup]="userForm">
 
-            <button class="w-1/3 bg-gray-300 hover:bg-gray-400 rounded-xl p-2" type="submit">Save changes</button>
+            <h2>Modifier mes informations personnelles</h2>
+
+            <label for="name">Nom
+                @if (userForm.get('name')?.invalid) {
+                <span [class.has-error]="userForm.get('name')?.invalid">
+                    (Le nom doit contenir au moins 3 caractères.)
+                </span>
+                }
+            </label>
+            <input [class.has-error]="userForm.get('name')?.invalid" type="text" id="name" name="name"
+                placeholder="Dupont" formControlName="name" />
+
+            <label for="firstname">
+                Prénom
+                @if (userForm.get('firstname')?.invalid) {
+                <span [class.has-error]="userForm.get('firstname')?.invalid">
+                    (Le prénom doit contenir au moins 3 caractères.)
+                </span>
+                }
+            </label>
+            <input [class.has-error]="userForm.get('firstname')?.invalid" id="firstname" name="firstname"
+                placeholder="Jean" formControlName="firstname" />
+
+            <label for="email">
+                Adresse email
+                @if (userForm.get('email')?.invalid) {
+                <span [class.has-error]="userForm.get('email')?.invalid">
+                    (L'adresse email doit être au format : exemple@mail.com)
+                </span>
+                }
+            </label>
+            <input [class.has-error]="userForm.get('email')?.invalid" id="email" name="email"
+                placeholder="exemple@mail.com" formControlName="email" />
+
+            <label>
+                Numéro de téléphone
+                @if(userForm.get('phonenumber')?.invalid ){
+                <span [class.has-error]="userForm.get('phonenumber')?.invalid">(Le numéro de téléphone doit être au
+                    format : 0XXXXXXXXX)</span>
+                }
+            </label>
+            <input [class.has-error]="userForm.get('phonenumber')?.invalid" placeholder="0612345678"
+                formControlName="phonenumber" />
+
+            <button type="submit" [disabled]="userForm.invalid" (click)="onSubmitUserForm()">Enregistrer les
+                modifications</button>
         </form>
-        <form class="flex flex-col min-w-2/3 bg-white rounded-2xl pt-5 pl-10 pr-10 pb-5">
-            <h1 class="text-xl font-bold mb-5">Change password</h1>
-            
-            <label class="mb-2" for="actualpassword">Actual password</label>
-            <input class="bg-gray-100 rounded-xl pt-1 pb-1 pr-3 pl-3 mb-5 placeholder:text-gray-400 placeholder:italic" type="password" id="actualpassword" name="actualpassword">
-            
-            <label class="mb-2" for="newpassword">New password</label>
-            <input class="bg-gray-100 rounded-xl pt-1 pb-1 pr-3 pl-3 mb-5 placeholder:text-gray-400 placeholder:italic" type="password" id="newpassword" name="newpassword">
-            
-            <label class="mb-2" for="confirmnewpassword">Confirm new password</label>
-            <input class="bg-gray-100 rounded-xl pt-1 pb-1 pr-3 pl-3 mb-5 placeholder:text-gray-400 placeholder:italic" type="password" id="confirmnewpassword" name="confirmnewpassword">
 
-            <button class="w-1/3 bg-gray-300 hover:bg-gray-400 rounded-xl p-2" type="submit">Change password</button>
+        <form [formGroup]="passwordForm">
+
+            <h2>Modifier mon mot de passe</h2>
+
+            <label for="actualpassword">Mot de passe actuel
+                @if (passwordForm.get('actualpassword')?.invalid && passwordForm.get('actualpassword')?.touched) {
+                <span [class.has-error]="passwordForm.get('actualpassword')?.invalid && passwordForm.get('actualpassword')?.touched">
+                    (!--TODO)
+                </span>
+                }
+            </label>
+            <input [class.has-error]="passwordForm.get('actualpassword')?.invalid && passwordForm.get('actualpassword')?.touched" type="password" id="actualpassword"
+                name="actualpassword" formControlName="actualpassword" />
+
+            <label for="newpassword">Nouveau mot de passe
+                @if (passwordForm.get('newpassword')?.invalid && passwordForm.get('newpassword')?.touched) {
+                <span [class.has-error]="passwordForm.get('newpassword')?.invalid && passwordForm.get('newpassword')?.touched">
+                    (Le mot de passe doit contenir au moins 8 caractères, 1 majuscule, 1 minuscule, 1 chiffre, et 1 caractère spécial (@$!%*#?&^_-).)
+                </span>
+                }
+            </label>
+            <input [class.has-error]="passwordForm.get('newpassword')?.invalid  && passwordForm.get('newpassword')?.touched" type="password" id="newpassword"
+                name="newpassword" formControlName="newpassword" />
+
+            <label for="confirmnewpassword">Confirmer nouveau mot de passe
+                @if (passwordForm.get('confirmnewpassword')?.invalid  && passwordForm.get('confirmnewpassword')?.touched) {
+                <span [class.has-error]="passwordForm.get('confirmnewpassword')?.invalid  && passwordForm.get('confirmnewpassword')?.touched">
+                    (Le mot de passe doit contenir au moins 8 caractères, 1 majuscule, 1 minuscule, 1 chiffre, et 1 caractère spécial (@$!%*#?&^_-). Il doit correspondre au nouveau mot de passe.)
+                </span>
+                }
+            </label>
+            <input [class.has-error]="passwordForm.get('confirmnewpassword')?.invalid && passwordForm.get('confirmnewpassword')?.touched" type="password" id="confirmnewpassword"
+                name="confirmnewpassword" formControlName="confirmnewpassword" />
+
+            <button type="submit" [disabled]="passwordForm.invalid" (click)="onSubmitPasswordForm()">Changer mon mot de
+                passe</button>
         </form>
     </main>
 </section>

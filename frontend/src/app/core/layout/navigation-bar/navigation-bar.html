@@ -12,20 +12,20 @@
         <li class="m-2">
             <a routerLink="/dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" class="flex items-center hover:bg-gray-100 rounded-4xl">
                 <lucide-angular [img]="ChartLine" class="w-12px h-12px m-2"></lucide-angular>
-                <span [ngClass]="isVisible ? 'visible' : 'hidden'">Dashboard</span>
+                <span [ngClass]="isVisible ? 'visible' : 'hidden'">Tableau de bord</span>
             </a>
         </li>
         <li class="m-2">
             <a routerLink="/real-estate-property" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" class="flex items-center hover:bg-gray-100 rounded-4xl">
                 <lucide-angular [img]="Building2" class="w-12px h-12px m-2"></lucide-angular>
                 <!--It's this span who determinate the size of the navigation bar-->
-                <span [ngClass]="isVisible ? 'visible' : 'hidden'" class="w-60">Real estate property</span>
+                <span [ngClass]="isVisible ? 'visible' : 'hidden'" class="w-60">Mes biens</span>
             </a>
         </li>
         <li class="m-2"> 
             <a routerLink="/settings" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" class="flex items-center hover:bg-gray-100 rounded-4xl">
                 <lucide-angular [img]="Settings" class="w-12px h-12px m-2"></lucide-angular>
-                <span [ngClass]="isVisible ? 'visible' : 'hidden'">Settings</span>
+                <span [ngClass]="isVisible ? 'visible' : 'hidden'">Mon compte</span>
             </a>
         </li>
     </ol>
