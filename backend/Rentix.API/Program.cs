@@ -51,3 +51,7 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+// Partial class declaration to enable integration testing
+public partial class Program { }
+
