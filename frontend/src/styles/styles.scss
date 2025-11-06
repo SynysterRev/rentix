@@ -1,6 +1,15 @@
 @use "./tailwind.css";
 
-body{
+:root {
+    --prout: hsl(129, 53, 90);
+}
+
+@theme {
+    --color-background: oklch(0.9383 0.03 149.59);
+    --color-input: oklch(0.9383 0.03 149.59);
+}
+
+body {
     margin: 0;
     padding: 0;
 }

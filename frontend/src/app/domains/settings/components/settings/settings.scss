@@ -1,3 +1,4 @@
+@use "../../../../../styles/styles.scss";
 @reference "#tailwind.css";
 
 .has-error {
@@ -18,14 +19,19 @@
 }
 
 @mixin input() {
-    @apply bg-gray-100 rounded-xl pt-1 pb-1 pr-3 pl-3 mb-5 placeholder:text-gray-400 placeholder:italic;
+    @apply bg-input rounded-xl pt-1 pb-1 pr-3 pl-3 mb-5 placeholder:text-gray-400 placeholder:italic;
 }
 
 @mixin button() {
-    @apply w-1/3 bg-gray-300 hover:bg-gray-400 rounded-xl p-2;
+    @apply w-1/3 bg-gray-300 rounded-xl p-2;
 
-    &:disable {
+    &:disabled {
         @apply cursor-not-allowed;
+        @apply text-gray-400;
+    }
+
+    &:enabled{
+        @apply hover:bg-gray-400;
     }
 }
 
