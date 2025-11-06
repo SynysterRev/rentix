@@ -4,7 +4,7 @@
         <p class="text-sm font-light">Manage your rental properties</p>
     </header>
     <main>
-        <section>
+        <section class="flex flex-wrap">
             @for (property of properties(); track property.id) {
             <app-property-card [property]="property"></app-property-card>
             <app-property-card [property]="property"></app-property-card>

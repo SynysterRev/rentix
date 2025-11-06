@@ -1,1 +1,36 @@
-<p>{{property()?.address?.fullAddress}}</p>
+<mat-card class="m-3 p-3">
+    <mat-card-header class="flex-col-reverse">
+        <p>
+            @if(propertyIsAvailable()){
+            <span>Disponible</span>
+            }@else {
+            <span>Louée</span>
+            }
+        </p>
+        <mat-card-title>{{property()?.name}}</mat-card-title>
+        <mat-card-subtitle>{{property()?.address?.fullAddress}}</mat-card-subtitle>
+    </mat-card-header>
+    <!-- <img mat-card-image src="https://via.placeholder.com/150" alt="Card Image"> -->
+    <mat-card-content>
+        <section class="flex  bg-amber-300 rounded-2xl w-full p-2 m-2">
+            <lucide-angular [img]="UsersRound" class="w-12px h-12px m-2 bg-blue-400 rounded-4xl"></lucide-angular>
+            @if(propertyIsAvailable()){
+            <p>Aucun locataire</p>
+            }@else {
+            <p class="flex flex-col">
+                <span>{{property()?.tenantsNames}}</span>
+
+                <span>Locataire actuel</span>
+            </p>
+            }
+
+        </section>
+        <section class="flex justify-between">
+            <p>Loyer mensuel</p>
+            <p>{{property()?.totalRent}} €</p>
+        </section>
+    </mat-card-content>
+    <mat-card-actions class="content-center">
+        <button mat-button>Voir les détails</button>
+    </mat-card-actions>
+</mat-card>
