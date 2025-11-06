@@ -13,8 +13,19 @@ using Xunit;
 
 namespace Rentix.Tests.Integration.Tenants
 {
-    public class TenantIntegrationTests : IntegrationTestBase
+    public class TenantIntegrationTests : IClassFixture<CustomWebApplicationFactory>, IAsyncLifetime
     {
+        private readonly CustomWebApplicationFactory _factory;
+        private readonly HttpClient _client;
+        private readonly Guid _testLandlordId;
+
+        public TenantIntegrationTests(CustomWebApplicationFactory factory)
+        {
+            _factory = factory;
+            _client = _factory.CreateClient();
+            _testLandlordId = _factory.DefaultUserId;
+        }
+
         [Fact]
         public async Task GetTenant_ReturnsOk_WhenTenantExists()
         {
@@ -22,7 +33,7 @@ namespace Rentix.Tests.Integration.Tenants
             var tenantId = await SeedSingleTenantAsync();
 
             // Act
-            var response = await Client.GetAsync($"/api/v1/tenant/{tenantId}");
+            var response = await _client.GetAsync($"/api/v1/tenant/{tenantId}");
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -313,7 +324,7 @@ namespace Rentix.Tests.Integration.Tenants
             response.StatusCode.Should().Be(HttpStatusCode.NoContent);
 
             // Verify tenant is deleted by trying to get it
-            using var scope = Factory.Services.CreateScope();
+            using var scope = _factory.Services.CreateScope();
             var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
             var deletedTenant = await dbContext.Tenants.FindAsync(tenantId);
             deletedTenant.Should().BeNull();
@@ -348,7 +359,7 @@ namespace Rentix.Tests.Integration.Tenants
             var tenantId = createdTenant!.Id;
 
             // Read
-            var getResponse = await Client.GetAsync($"/api/v1/tenant/{tenantId}");
+            var getResponse = await _client.GetAsync($"/api/v1/tenant/{tenantId}");
             getResponse.StatusCode.Should().Be(HttpStatusCode.OK);
 
             // Update
@@ -370,7 +381,7 @@ namespace Rentix.Tests.Integration.Tenants
             deleteResponse.StatusCode.Should().Be(HttpStatusCode.NoContent);
 
             // Verify deletion
-            using var scope = Factory.Services.CreateScope();
+            using var scope = _factory.Services.CreateScope();
             var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
             var deletedTenant = await dbContext.Tenants.FindAsync(tenantId);
             deletedTenant.Should().BeNull();
@@ -412,7 +423,7 @@ namespace Rentix.Tests.Integration.Tenants
             response3.StatusCode.Should().Be(HttpStatusCode.Created);
 
             // Verify all were persisted
-            using var scope = Factory.Services.CreateScope();
+            using var scope = _factory.Services.CreateScope();
             var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
             var tenants = dbContext.Tenants.ToList();
             tenants.Should().HaveCount(3);
@@ -532,7 +543,7 @@ namespace Rentix.Tests.Integration.Tenants
         // Helper methods
         private async Task<int> SeedSingleTenantAsync()
         {
-            using var scope = Factory.Services.CreateScope();
+            using var scope = _factory.Services.CreateScope();
             var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
             var tenant = Tenant.Create(
@@ -545,6 +556,31 @@ namespace Rentix.Tests.Integration.Tenants
             await dbContext.SaveChangesAsync();
 
             return tenant.Id;
+        }
+
+        private async Task<HttpResponseMessage> PostAsync<T>(string url, T payload)
+        {
+            return await _client.PostAsJsonAsync(url, payload);
+        }
+
+        private async Task<HttpResponseMessage> PutAsync<T>(string url, T payload)
+        {
+            return await _client.PutAsJsonAsync(url, payload);
+        }
+
+        private async Task<HttpResponseMessage> DeleteAsync(string url)
+        {
+            return await _client.DeleteAsync(url);
+        }
+
+        public async Task InitializeAsync()
+        {
+            await _factory.ResetDatabaseAsync();
+        }
+
+        public Task DisposeAsync()
+        {
+            return Task.CompletedTask;
         }
     }
 }

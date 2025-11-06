@@ -26,7 +26,7 @@ namespace Rentix.Domain.Repositories
         /// Persists all changes made in the context to the database asynchronously.
         /// </summary>
         /// <returns>A task representing the asynchronous save operation.</returns>
-        Task SaveChangesAsync();
+        Task SaveChangesAsync(CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Persists all changes made in the context to the database synchronously.
@@ -37,18 +37,18 @@ namespace Rentix.Domain.Repositories
         /// Begins a new database transaction asynchronously.
         /// </summary>
         /// <returns>A task representing the asynchronous begin transaction operation.</returns>
-        Task BeginTransactionAsync();
+        Task BeginTransactionAsync(CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Commits the current database transaction asynchronously.
         /// </summary>
         /// <returns>A task representing the asynchronous commit operation.</returns>
-        Task CommitTransactionAsync();
+        Task CommitTransactionAsync(CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Rolls back the current database transaction asynchronously.
         /// </summary>
         /// <returns>A task representing the asynchronous rollback operation.</returns>
-        Task RollbackTransactionAsync();
+        Task RollbackTransactionAsync(CancellationToken cancellationToken = default);
     }
 }

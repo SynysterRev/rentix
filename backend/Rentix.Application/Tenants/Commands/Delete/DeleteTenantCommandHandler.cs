@@ -28,7 +28,7 @@ namespace Rentix.Application.Tenants.Commands.Delete
                 throw new NotFoundException($"Tenant with ID {request.TenantId} not found.");
             }
 
-            await _unitOfWork.SaveChangesAsync();
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
         }
     }
 }

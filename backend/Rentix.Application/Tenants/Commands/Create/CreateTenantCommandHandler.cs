@@ -28,7 +28,7 @@ namespace Rentix.Application.Tenants.Commands.Create
             var tenant = Domain.Entities.Tenant.Create(request.FirstName, request.LastName, email, phone);
 
             var createdTenant = await _tenantRepository.AddAsync(tenant);
-            await _unitOfWork.SaveChangesAsync();
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
 
             return TenantDto.FromEntity(createdTenant);
         }

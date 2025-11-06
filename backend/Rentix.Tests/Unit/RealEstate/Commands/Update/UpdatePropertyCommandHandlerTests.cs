@@ -83,7 +83,7 @@ namespace Rentix.Tests.Unit.RealEstate.Commands.Update
                 NumberRooms = 4
             };
             _propertyRepositoryMock.Setup(r => r.GetPropertyByIdAsync(1)).ReturnsAsync(property);
-            _unitOfWorkMock.Setup(u => u.SaveChangesAsync()).Returns(Task.CompletedTask);
+            _unitOfWorkMock.Setup(u => u.SaveChangesAsync(default)).Returns(Task.CompletedTask);
 
             // Act
             var result = await _handler.Handle(command, CancellationToken.None);
@@ -95,7 +95,7 @@ namespace Rentix.Tests.Unit.RealEstate.Commands.Update
             result.Deposit.Should().Be(300);
             result.Surface.Should().Be(80);
             result.NumberRooms.Should().Be(4);
-            _unitOfWorkMock.Verify(u => u.SaveChangesAsync(), Times.Once);
+            _unitOfWorkMock.Verify(u => u.SaveChangesAsync(default), Times.Once);
         }
 
         [Fact]
@@ -111,7 +111,7 @@ namespace Rentix.Tests.Unit.RealEstate.Commands.Update
                 Address = new AddressUpdateDto(1, "New Street", "New City", "12345", "New Country", "New Complement")
             };
             _propertyRepositoryMock.Setup(r => r.GetPropertyByIdAsync(1)).ReturnsAsync(property);
-            _unitOfWorkMock.Setup(u => u.SaveChangesAsync()).Returns(Task.CompletedTask);
+            _unitOfWorkMock.Setup(u => u.SaveChangesAsync(default)).Returns(Task.CompletedTask);
 
             // Act
             var result = await _handler.Handle(command, CancellationToken.None);
@@ -132,7 +132,7 @@ namespace Rentix.Tests.Unit.RealEstate.Commands.Update
             property.Id = 1;
             var command = new UpdatePropertyCommand(1);
             _propertyRepositoryMock.Setup(r => r.GetPropertyByIdAsync(1)).ReturnsAsync(property);
-            _unitOfWorkMock.Setup(u => u.SaveChangesAsync()).Returns(Task.CompletedTask);
+            _unitOfWorkMock.Setup(u => u.SaveChangesAsync(default)).Returns(Task.CompletedTask);
 
             // Act
             var result = await _handler.Handle(command, CancellationToken.None);
@@ -154,7 +154,7 @@ namespace Rentix.Tests.Unit.RealEstate.Commands.Update
             property.Id = 1;
             var command = new UpdatePropertyCommand(1) { Name = "Name" };
             _propertyRepositoryMock.Setup(r => r.GetPropertyByIdAsync(1)).ReturnsAsync(property);
-            _unitOfWorkMock.Setup(u => u.SaveChangesAsync()).ThrowsAsync(new Exception("DB error"));
+            _unitOfWorkMock.Setup(u => u.SaveChangesAsync(default)).ThrowsAsync(new Exception("DB error"));
 
             // Act
             Func<Task> act = async () => await _handler.Handle(command, CancellationToken.None);

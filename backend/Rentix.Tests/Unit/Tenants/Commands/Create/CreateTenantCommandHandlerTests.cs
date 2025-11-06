@@ -48,7 +48,7 @@ namespace Rentix.Tests.Unit.Tenants.Commands.Create
             };
             var tenant = CreateTestTenant();
             _tenantRepositoryMock.Setup(r => r.AddAsync(It.IsAny<Tenant>())).ReturnsAsync(tenant);
-            _unitOfWorkMock.Setup(u => u.SaveChangesAsync()).Returns(Task.CompletedTask);
+            _unitOfWorkMock.Setup(u => u.SaveChangesAsync(default)).Returns(Task.CompletedTask);
 
             // Act
             var result = await _handler.Handle(command, CancellationToken.None);
@@ -60,7 +60,7 @@ namespace Rentix.Tests.Unit.Tenants.Commands.Create
             result.Email.Should().Be(tenant.Email);
             result.PhoneNumber.Should().Be(tenant.Phone);
             _tenantRepositoryMock.Verify(r => r.AddAsync(It.IsAny<Tenant>()), Times.Once);
-            _unitOfWorkMock.Verify(u => u.SaveChangesAsync(), Times.Once);
+            _unitOfWorkMock.Verify(u => u.SaveChangesAsync(default), Times.Once);
         }
 
         [Fact]
@@ -96,7 +96,7 @@ namespace Rentix.Tests.Unit.Tenants.Commands.Create
             };
             var tenant = CreateTestTenant();
             _tenantRepositoryMock.Setup(r => r.AddAsync(It.IsAny<Tenant>())).ReturnsAsync(tenant);
-            _unitOfWorkMock.Setup(u => u.SaveChangesAsync()).ThrowsAsync(new Exception("DB error"));
+            _unitOfWorkMock.Setup(u => u.SaveChangesAsync(default)).ThrowsAsync(new Exception("DB error"));
 
             // Act
             Func<Task> act = async () => await _handler.Handle(command, CancellationToken.None);
