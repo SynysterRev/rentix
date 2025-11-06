@@ -2,10 +2,6 @@
 using Rentix.Application.Exceptions;
 using Rentix.Application.RealEstate.DTOs.Properties;
 using Rentix.Domain.Repositories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Rentix.Application.RealEstate.Commands.Update
@@ -28,7 +24,7 @@ namespace Rentix.Application.RealEstate.Commands.Update
                 throw new NotFoundException($"Property with ID {request.propertyId} not found");
             }
 
-            if (request.Address != null)
+            if (request.Address != null && property.Address != null)
             {
                 property.Address.UpdateDetails(
                     request.Address.Street,
