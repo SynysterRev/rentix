@@ -84,5 +84,73 @@ namespace Rentix.Domain.Entities
                 LandlordId = landlordId
             };
         }
+
+        public void UpdateDetails(
+            string? name = null,
+            decimal? deposit = null,
+            decimal? rentNoCharges = null,
+            decimal? rentCharges = null,
+            PropertyStatus? status = null,
+            decimal? surface = null,
+            int? numberRooms = null,
+            int? addressId = null)
+        {
+            if (name is not null)
+            {
+                if (string.IsNullOrWhiteSpace(name))
+                {
+                    throw new ArgumentException("Property name cannot be empty.");
+                }
+                Name = name;
+            }
+            if (deposit is not null)
+            {
+                if (deposit <= 0)
+                {
+                    throw new ArgumentException("Deposit must be positive.");
+                }
+                Deposit = deposit.Value;
+            }
+            if (rentNoCharges is not null)
+            {
+                if (rentNoCharges <= 0)
+                {
+                    throw new ArgumentException("Rent without charges must be positive.");
+                }
+                RentNoCharges = rentNoCharges.Value;
+            }
+            if (rentCharges is not null)
+            {
+                if (rentCharges <= 0)
+                {
+                    throw new ArgumentException("Charges included in rent must be positive.");
+                }
+                RentCharges = rentCharges.Value;
+            }
+            if (status is not null)
+            {
+                Status = status.Value;
+            }
+            if (surface is not null)
+            {
+                if (surface <= 0)
+                {
+                    throw new ArgumentException("Surface must be positive.");
+                }
+                Surface = surface.Value;
+            }
+            if (numberRooms is not null)
+            {
+                if (numberRooms < 1 || numberRooms > 150)
+                {
+                    throw new ArgumentException("Number of rooms must be between 1 and 150.");
+                }
+                NumberRooms = numberRooms.Value;
+            }
+            if (addressId is not null)
+            {
+                AddressId = addressId.Value;
+            }
+        }
     }
 }

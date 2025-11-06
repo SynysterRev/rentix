@@ -57,5 +57,34 @@ namespace Rentix.Domain.Entities
                 PostalCode = postalCode
             };
         }
+
+        public void UpdateDetails(
+            string? street = null,
+            string? postalCode = null,
+            string? city = null,
+            string? country = null,
+            string? complement = null)
+        {
+            if (!string.IsNullOrWhiteSpace(street))
+            {
+                Street = street;
+            }
+            if (!string.IsNullOrWhiteSpace(city))
+            {
+                City = city;
+            }
+            if (!string.IsNullOrWhiteSpace(postalCode))
+            {
+                PostalCode = postalCode;
+            }
+            if (!string.IsNullOrWhiteSpace(country))
+            {
+                Country = country;
+            }
+            if (complement != null)
+            {
+                Complement = complement;
+            }
+        }
     }
 }

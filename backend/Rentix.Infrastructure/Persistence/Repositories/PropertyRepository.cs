@@ -32,9 +32,11 @@ namespace Rentix.Infrastructure.Persistence.Repositories
             return true;
         }
 
-        public void Update(Property property)
+        public async Task<Property?> GetPropertyByIdAsync(int id)
         {
-            _dbContext.Properties.Update(property);
+            return await _dbContext.Properties
+                .Include(p => p.Address)
+                .FirstOrDefaultAsync(p => p.Id == id);
         }
     }
 }

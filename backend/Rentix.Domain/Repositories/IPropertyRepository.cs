@@ -12,10 +12,11 @@ namespace Rentix.Domain.Repositories
         public Task<Property> AddAsync(Property property);
 
         /// <summary>
-        /// Updates an existing property in the database.
+        /// Retrieves an existing property in the database.
         /// </summary>
-        /// <param name="property">The property entity with updated values.</param>
-        public void Update(Property property);
+        /// <param name="id">The id of the property entity.</param>
+        /// <returns>An asynchronous task returning the founded <see cref="Property"/> if any, otherwise null</returns>
+        public Task<Property?> GetPropertyByIdAsync(int id);
 
         /// <summary>
         /// Deletes a property with the specified ID from the database.
