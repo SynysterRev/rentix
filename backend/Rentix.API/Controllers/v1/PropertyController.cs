@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Rentix.Application.RealEstate.Commands.Create;
 using Rentix.Application.RealEstate.Commands.Delete;
+using Rentix.Application.RealEstate.Commands.Update;
 using Rentix.Application.RealEstate.DTOs.Properties;
 using Rentix.Application.RealEstate.Queries.Detail;
 using Rentix.Application.RealEstate.Queries.List;
@@ -47,6 +48,17 @@ namespace Rentix.API.Controllers.v1
         {
             await _mediator.Send(new DeletePropertyCommand(id));
             return NoContent();
+        }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult<PropertyDetailDto>> UpdateProperty(int id, [FromBody] UpdatePropertyCommand command)
+        {
+            if (id != command.propertyId)
+            {
+                return BadRequest("Property ID mismatch");
+            }
+            var updatedProperty = await _mediator.Send(command);
+            return Ok(updatedProperty);
         }
     }
 }

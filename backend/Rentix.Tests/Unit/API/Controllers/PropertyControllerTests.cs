@@ -6,6 +6,7 @@ using Moq;
 using Rentix.API.Controllers.v1;
 using Rentix.Application.Exceptions;
 using Rentix.Application.RealEstate.Commands.Delete;
+using Rentix.Application.RealEstate.Commands.Update;
 using Rentix.Application.RealEstate.DTOs.Properties;
 using Rentix.Application.RealEstate.Queries.Detail;
 using Rentix.Application.RealEstate.Queries.List;
@@ -14,6 +15,7 @@ using Xunit;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Threading;
+using Rentix.Application.RealEstate.DTOs.Addresses;
 
 namespace Rentix.Tests.Unit.API.Controllers
 {
@@ -126,6 +128,94 @@ namespace Rentix.Tests.Unit.API.Controllers
 
             // Act & Assert
             await Assert.ThrowsAsync<NotFoundException>(() => _controller.DeleteProperty(99));
+        }
+
+        [Fact]
+        public async Task UpdateProperty_ReturnsOk_WhenUpdateIsSuccessful()
+        {
+            // Arrange
+            var command = new UpdatePropertyCommand(1)
+            {
+                Name = "Updated Name",
+                RentNoCharges =900m,
+                Address = new AddressUpdateDto(1, "Street", "City", "12345", "Country", null)
+            };
+            var updatedDto = new PropertyDetailDto { Id =1, Name = "Updated Name" };
+            _mediatorMock.Setup(m => m.Send(command, It.IsAny<CancellationToken>())).ReturnsAsync(updatedDto);
+
+            // Act
+            var result = await _controller.UpdateProperty(1, command);
+
+            // Assert
+            var okResult = Assert.IsType<OkObjectResult>(result.Result);
+            okResult.Value.Should().Be(updatedDto);
+        }
+
+        [Fact]
+        public async Task UpdateProperty_ReturnsBadRequest_WhenIdMismatch()
+        {
+            // Arrange
+            var command = new UpdatePropertyCommand(2)
+            {
+                Name = "Name"
+            };
+
+            // Act
+            var result = await _controller.UpdateProperty(1, command);
+
+            // Assert
+            var badRequest = Assert.IsType<BadRequestObjectResult>(result.Result);
+            badRequest.Value.Should().Be("Property ID mismatch");
+        }
+
+        [Fact]
+        public async Task UpdateProperty_ThrowsNotFoundException_WhenPropertyNotFound()
+        {
+            // Arrange
+            var command = new UpdatePropertyCommand(99)
+            {
+                Name = "Name"
+            };
+            _mediatorMock.Setup(m => m.Send(command, It.IsAny<CancellationToken>())).ThrowsAsync(new NotFoundException("Property not found"));
+
+            // Act & Assert
+            await Assert.ThrowsAsync<NotFoundException>(() => _controller.UpdateProperty(99, command));
+        }
+
+        [Fact]
+        public async Task UpdateProperty_CallsMediatorWithCorrectCommand()
+        {
+            // Arrange
+            var command = new UpdatePropertyCommand(1)
+            {
+                Name = "Name"
+            };
+            var updatedDto = new PropertyDetailDto { Id =1, Name = "Name" };
+            _mediatorMock.Setup(m => m.Send(command, It.IsAny<CancellationToken>())).ReturnsAsync(updatedDto);
+
+            // Act
+            await _controller.UpdateProperty(1, command);
+
+            // Assert
+            _mediatorMock.Verify(m => m.Send(command, It.IsAny<CancellationToken>()), Times.Once);
+        }
+
+        [Fact]
+        public async Task UpdateProperty_ReturnsInternalServerError_OnUnexpectedException()
+        {
+            // Arrange
+            var command = new UpdatePropertyCommand(1)
+            {
+                Name = "Name"
+            };
+            _mediatorMock.Setup(m => m.Send(command, It.IsAny<CancellationToken>())).ThrowsAsync(new System.Exception("Unexpected error"));
+
+            // Act
+            var result = await Record.ExceptionAsync(() => _controller.UpdateProperty(1, command));
+
+            // Assert
+            result.Should().BeOfType<System.Exception>();
+            result.Message.Should().Be("Unexpected error");
         }
     }
 }

@@ -1,7 +1,6 @@
 using FluentAssertions;
 using Rentix.Application.RealEstate.Commands.Create;
 using Xunit;
-using System;
 using Rentix.Domain.Entities;
 
 namespace Rentix.Tests.Unit.RealEstate.Commands.Create
