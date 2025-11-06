@@ -1,11 +1,4 @@
 ﻿using FluentValidation;
-using Rentix.Application.RealEstate.Commands.Create.Property;
-using Rentix.Domain.ValueObjects;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Rentix.Application.Tenants.Commands.Create
 {
