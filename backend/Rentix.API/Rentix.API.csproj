@@ -6,6 +6,7 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 		<UserSecretsId>d5ec62f4-10a5-468f-aa4c-efdf02b56f7d</UserSecretsId>
 		<DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+		<InternalsVisibleTo>Rentix.Tests</InternalsVisibleTo>
 	</PropertyGroup>
 
 	<ItemGroup>
