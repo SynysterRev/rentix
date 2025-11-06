@@ -39,6 +39,10 @@ namespace Rentix.API.Middlewares
                         statusCode = StatusCodes.Status400BadRequest;
                         errorMessage = e.Message;
                         break;
+                    case ArgumentException:
+                        statusCode = StatusCodes.Status400BadRequest;
+                        errorMessage = e.Message;
+                        break;
                     case UnauthorizedAccessException:
                         statusCode = StatusCodes.Status401Unauthorized;
                         errorMessage = e.Message;

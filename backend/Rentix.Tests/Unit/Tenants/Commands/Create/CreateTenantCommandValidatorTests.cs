@@ -1,6 +1,5 @@
 using FluentValidation.TestHelper;
 using Rentix.Application.Tenants.Commands.Create;
-using Rentix.Domain.ValueObjects;
 using Xunit;
 
 namespace Rentix.Tests.Unit.Tenants.Commands.Create
@@ -16,8 +15,8 @@ namespace Rentix.Tests.Unit.Tenants.Commands.Create
             {
                 FirstName = "John",
                 LastName = "Doe",
-                Email = Email.Create("john@doe.com"),
-                Phone = Phone.Create("0601020304")
+                Email = "john@doe.com",
+                Phone = "0601020304"
             };
             var result = _validator.TestValidate(command);
             result.ShouldNotHaveAnyValidationErrors();
@@ -31,8 +30,8 @@ namespace Rentix.Tests.Unit.Tenants.Commands.Create
             {
                 FirstName = value,
                 LastName = "Doe",
-                Email = Email.Create("john@doe.com"),
-                Phone = Phone.Create("0601020304")
+                Email = "john@doe.com",
+                Phone = "0601020304"
             };
             var result = _validator.TestValidate(command);
             result.ShouldHaveValidationErrorFor("FirstName");
@@ -45,8 +44,8 @@ namespace Rentix.Tests.Unit.Tenants.Commands.Create
             {
                 FirstName = new string('A', 101),
                 LastName = "Doe",
-                Email = Email.Create("john@doe.com"),
-                Phone = Phone.Create("0601020304")
+                Email = "john@doe.com",
+                Phone = "0601020304"
             };
             var result = _validator.TestValidate(command);
             result.ShouldHaveValidationErrorFor("FirstName");
@@ -60,8 +59,8 @@ namespace Rentix.Tests.Unit.Tenants.Commands.Create
             {
                 FirstName = "John",
                 LastName = value,
-                Email = Email.Create("john@doe.com"),
-                Phone = Phone.Create("0601020304")
+                Email = "john@doe.com",
+                Phone = "0601020304"
             };
             var result = _validator.TestValidate(command);
             result.ShouldHaveValidationErrorFor("LastName");
@@ -74,8 +73,8 @@ namespace Rentix.Tests.Unit.Tenants.Commands.Create
             {
                 FirstName = "John",
                 LastName = new string('A', 101),
-                Email = Email.Create("john@doe.com"),
-                Phone = Phone.Create("0601020304")
+                Email = "john@doe.com",
+                Phone = "0601020304"
             };
             var result = _validator.TestValidate(command);
             result.ShouldHaveValidationErrorFor("LastName");
@@ -89,7 +88,7 @@ namespace Rentix.Tests.Unit.Tenants.Commands.Create
                 FirstName = "John",
                 LastName = "Doe",
                 Email = null!,
-                Phone = Phone.Create("0601020304")
+                Phone = "0601020304"
             };
             var result = _validator.TestValidate(command);
             result.ShouldHaveValidationErrorFor("Email");
@@ -102,7 +101,7 @@ namespace Rentix.Tests.Unit.Tenants.Commands.Create
             {
                 FirstName = "John",
                 LastName = "Doe",
-                Email = Email.Create("john@doe.com"),
+                Email = "john@doe.com",
                 Phone = null!
             };
             var result = _validator.TestValidate(command);

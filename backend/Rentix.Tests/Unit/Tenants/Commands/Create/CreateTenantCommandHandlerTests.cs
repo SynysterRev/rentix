@@ -43,8 +43,8 @@ namespace Rentix.Tests.Unit.Tenants.Commands.Create
             {
                 FirstName = "John",
                 LastName = "Doe",
-                Email = Email.Create("john@doe.com"),
-                Phone = Phone.Create("0601020304")
+                Email = "john@doe.com",
+                Phone = "0601020304"
             };
             var tenant = CreateTestTenant();
             _tenantRepositoryMock.Setup(r => r.AddAsync(It.IsAny<Tenant>())).ReturnsAsync(tenant);
@@ -71,8 +71,8 @@ namespace Rentix.Tests.Unit.Tenants.Commands.Create
             {
                 FirstName = "John",
                 LastName = "Doe",
-                Email = Email.Create("john@doe.com"),
-                Phone = Phone.Create("0601020304")
+                Email = "john@doe.com",
+                Phone = "0601020304"
             };
             _tenantRepositoryMock.Setup(r => r.AddAsync(It.IsAny<Tenant>())).ThrowsAsync(new Exception("DB error"));
 
@@ -91,8 +91,8 @@ namespace Rentix.Tests.Unit.Tenants.Commands.Create
             {
                 FirstName = "John",
                 LastName = "Doe",
-                Email = Email.Create("john@doe.com"),
-                Phone = Phone.Create("0601020304")
+                Email = "john@doe.com",
+                Phone = "0601020304"
             };
             var tenant = CreateTestTenant();
             _tenantRepositoryMock.Setup(r => r.AddAsync(It.IsAny<Tenant>())).ReturnsAsync(tenant);

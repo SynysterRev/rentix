@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Rentix.Application.Tenants.Commands.Create;
 using Rentix.Application.Tenants.Commands.Delete;
+using Rentix.Application.Tenants.Commands.Update;
+using Rentix.Application.Tenants.DTOs.Tenants;
 
 namespace Rentix.API.Controllers.v1
 {
@@ -30,6 +32,18 @@ namespace Rentix.API.Controllers.v1
             var tenant = await _mediator.Send(command);
             _logger.LogInformation($"Create tenant with ID {tenant.Id}");
             return CreatedAtAction(nameof(GetTenant), new { id = tenant.Id }, tenant);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateTenant(int id, [FromBody] UpdateTenantCommand command)
+        {
+            if (id != command.TenantId)
+            {
+                return BadRequest("ID mismatch");
+            }
+            var updatedTenant = await _mediator.Send(command);
+            _logger.LogInformation($"Update tenant with ID {id}");
+            return Ok(updatedTenant);
         }
 
         [HttpDelete("{id}")]

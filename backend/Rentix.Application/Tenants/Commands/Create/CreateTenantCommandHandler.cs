@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Rentix.Application.Tenants.DTOs.Tenants;
 using Rentix.Domain.Repositories;
+using Rentix.Domain.ValueObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,7 +23,9 @@ namespace Rentix.Application.Tenants.Commands.Create
 
         public async Task<TenantDto> Handle(CreateTenantCommand request, CancellationToken cancellationToken)
         {
-            var tenant = Domain.Entities.Tenant.Create(request.FirstName, request.LastName, request.Email, request.Phone);
+            var email = Email.Create(request.Email);
+            var phone = Phone.Create(request.Phone);
+            var tenant = Domain.Entities.Tenant.Create(request.FirstName, request.LastName, email, phone);
 
             var createdTenant = await _tenantRepository.AddAsync(tenant);
             await _unitOfWork.SaveChangesAsync();
