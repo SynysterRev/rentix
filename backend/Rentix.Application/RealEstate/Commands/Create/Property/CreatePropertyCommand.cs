@@ -3,7 +3,7 @@ using Rentix.Application.RealEstate.DTOs.Addresses;
 using Rentix.Application.RealEstate.DTOs.Properties;
 using Rentix.Domain.Entities;
 
-namespace Rentix.Application.RealEstate.Commands.Create
+namespace Rentix.Application.RealEstate.Commands.Create.Property
 {
     public record CreatePropertyCommand() : IRequest<PropertyDetailDto>
     {

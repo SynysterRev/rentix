@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using Rentix.Domain.Entities;
 
-namespace Rentix.Application.RealEstate.Commands.Create
+namespace Rentix.Application.RealEstate.Commands.Create.Property
 {
     public class CreatePropertyCommandValidator : AbstractValidator<CreatePropertyCommand>
     {

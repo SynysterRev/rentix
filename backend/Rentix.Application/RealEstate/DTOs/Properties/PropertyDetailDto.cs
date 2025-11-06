@@ -1,6 +1,6 @@
 ﻿using Rentix.Application.RealEstate.DTOs.Addresses;
 using Rentix.Application.RealEstate.DTOs.Documents;
-using Rentix.Application.RealEstate.DTOs.Tenants;
+using Rentix.Application.Tenants.DTOs.Tenants;
 using Rentix.Domain.Entities;
 using System.Linq;
 
