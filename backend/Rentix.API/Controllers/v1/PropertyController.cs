@@ -1,6 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Rentix.Application.RealEstate.Commands.Create;
+using Rentix.Application.RealEstate.Commands.Create.Property;
 using Rentix.Application.RealEstate.Commands.Delete;
 using Rentix.Application.RealEstate.Commands.Update;
 using Rentix.Application.RealEstate.DTOs.Properties;
@@ -40,6 +40,7 @@ namespace Rentix.API.Controllers.v1
         public async Task<ActionResult<PropertyDetailDto>> CreateProperty([FromBody] CreatePropertyCommand command)
         {
             var newProperty = await _mediator.Send(command);
+            _logger.LogInformation($"Create property with ID {newProperty.Id}");
             return CreatedAtAction(nameof(GetPropertyDetail), new { id = newProperty.Id }, newProperty);
         }
 
@@ -47,6 +48,7 @@ namespace Rentix.API.Controllers.v1
         public async Task<ActionResult> DeleteProperty(int id)
         {
             await _mediator.Send(new DeletePropertyCommand(id));
+            _logger.LogInformation($"Delete property with ID {id}");
             return NoContent();
         }
 
@@ -58,6 +60,7 @@ namespace Rentix.API.Controllers.v1
                 return BadRequest("Property ID mismatch");
             }
             var updatedProperty = await _mediator.Send(command);
+            _logger.LogInformation($"Update property with ID {id}");
             return Ok(updatedProperty);
         }
     }

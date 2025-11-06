@@ -37,5 +37,29 @@ namespace Rentix.Domain.Entities
                 Phone = phone
             };
         }
+
+        public void UpdateDetails(
+            string? firstName,
+            string? lastName,
+            Email? email,
+            Phone? phone)
+        {
+            if (!string.IsNullOrWhiteSpace(firstName))
+            {
+                FirstName = firstName;
+            }
+            if (!string.IsNullOrWhiteSpace(lastName))
+            {
+                LastName = lastName;
+            }
+            if (email is not null)
+            {
+                Email = email;
+            }
+            if (phone is not null)
+            {
+                Phone = phone;
+            }
+        }
     }
 }

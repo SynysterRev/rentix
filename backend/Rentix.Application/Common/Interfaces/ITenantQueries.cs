@@ -1,4 +1,4 @@
-using Rentix.Application.RealEstate.DTOs.Tenants;
+using Rentix.Application.Tenants.DTOs.Tenants;
 
 namespace Rentix.Application.Common.Interfaces
 {

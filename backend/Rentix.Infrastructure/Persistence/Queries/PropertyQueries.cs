@@ -3,7 +3,7 @@ using Rentix.Application.Common.Interfaces;
 using Rentix.Application.RealEstate.DTOs.Addresses;
 using Rentix.Application.RealEstate.DTOs.Documents;
 using Rentix.Application.RealEstate.DTOs.Properties;
-using Rentix.Application.RealEstate.DTOs.Tenants;
+using Rentix.Application.Tenants.DTOs.Tenants;
 
 namespace Rentix.Infrastructure.Persistence.Queries
 {
