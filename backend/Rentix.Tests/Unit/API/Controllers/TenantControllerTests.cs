@@ -45,6 +45,7 @@ namespace Rentix.Tests.Unit.API.Controllers
 
             // Assert
             var createdResult = Assert.IsType<CreatedAtActionResult>(result);
+            Assert.NotNull(createdResult.Value);
             createdResult.Value.Should().Be(tenantDto);
             createdResult?.RouteValues?["id"].Should().Be(tenantDto.Id);
         }
@@ -151,14 +152,14 @@ namespace Rentix.Tests.Unit.API.Controllers
 
             // Assert
             Assert.IsType<NoContentResult>(result);
-            _mediatorMock.Verify(m => m.Send(It.Is<DeleteTenantCommand>(c => c.TenantId ==1), It.IsAny<CancellationToken>()), Times.Once);
+            _mediatorMock.Verify(m => m.Send(It.Is<DeleteTenantCommand>(c => c.TenantId == 1), It.IsAny<CancellationToken>()), Times.Once);
         }
 
         [Fact]
         public async Task DeleteTenant_ReturnsInternalServerError_OnException()
         {
             // Arrange
-            _mediatorMock.Setup(m => m.Send(It.IsAny<DeleteTenantCommand>(), It.IsAny<CancellationToken>())). ThrowsAsync(new System.Exception("Unexpected error"));
+            _mediatorMock.Setup(m => m.Send(It.IsAny<DeleteTenantCommand>(), It.IsAny<CancellationToken>())).ThrowsAsync(new System.Exception("Unexpected error"));
 
             // Act
             var result = await Record.ExceptionAsync(() => _controller.DeleteTenant(1));
@@ -168,7 +169,7 @@ namespace Rentix.Tests.Unit.API.Controllers
             result.Message.Should().Be("Unexpected error");
         }
 
-        private UpdateTenantCommand GetSampleUpdateCommand(int id =1)
+        private UpdateTenantCommand GetSampleUpdateCommand(int id = 1)
         {
             return new UpdateTenantCommand(id)
             {
@@ -179,7 +180,7 @@ namespace Rentix.Tests.Unit.API.Controllers
             };
         }
 
-        private TenantDto GetSampleUpdatedTenantDto(int id =1)
+        private TenantDto GetSampleUpdatedTenantDto(int id = 1)
         {
             return new TenantDto(id, "Jane", "Smith", Email.Create("jane@smith.com"), Phone.Create("0601020305"));
         }
@@ -198,9 +199,8 @@ namespace Rentix.Tests.Unit.API.Controllers
             // Assert
             var okResult = Assert.IsType<OkObjectResult>(result);
             okResult.Value.Should().Be(tenantDto);
-            var returnedDto = okResult.Value as TenantDto;
-            returnedDto.Should().NotBeNull();
-            returnedDto!.FirstName.Should().Be("Jane");
+            var returnedDto = Assert.IsType<TenantDto>(okResult.Value);
+            returnedDto.FirstName.Should().Be("Jane");
             returnedDto.LastName.Should().Be("Smith");
             returnedDto.Email.Value.Should().Be("jane@smith.com");
             returnedDto.PhoneNumber.Value.Should().Be("0601020305");
