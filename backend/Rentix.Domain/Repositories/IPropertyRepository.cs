@@ -15,7 +15,7 @@ namespace Rentix.Domain.Repositories
         /// Retrieves an existing property in the database.
         /// </summary>
         /// <param name="id">The id of the property entity.</param>
-        /// <returns>An asynchronous task returning the founded <see cref="Property"/> if any, otherwise null</returns>
+        /// <returns>An asynchronous task returning the found <see cref="Property"/> if any, otherwise null</returns>
         public Task<Property?> GetPropertyByIdAsync(int id);
 
         /// <summary>
