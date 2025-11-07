@@ -13,6 +13,15 @@ namespace Rentix.Tests.Unit.RealEstate.Queries.List
 {
     public class ListPropertiesQueryHandlerTests
     {
+        private readonly Mock<IPropertyQueries> _propertyQueriesMock;
+        private readonly ListPropertiesQueryHandler _handler;
+
+        public ListPropertiesQueryHandlerTests()
+        {
+            _propertyQueriesMock = new Mock<IPropertyQueries>();
+            _handler = new ListPropertiesQueryHandler(_propertyQueriesMock.Object);
+        }
+
         [Fact]
         public async Task Handle_ShouldReturnListOfProperties()
         {
@@ -36,17 +45,42 @@ namespace Rentix.Tests.Unit.RealEstate.Queries.List
                     null!
                 )
             };
-            var propertyQueriesMock = new Mock<IPropertyQueries>();
-            propertyQueriesMock.Setup(x => x.GetPropertyListAsync())
+            _propertyQueriesMock.Setup(x => x.GetPropertyListAsync())
                 .ReturnsAsync(expectedList);
-            var handler = new ListPropertiesQueryHandler(propertyQueriesMock.Object);
             var query = new ListPropertiesQuery();
 
             // Act
-            var result = await handler.Handle(query, CancellationToken.None);
+            var result = await _handler.Handle(query, CancellationToken.None);
 
             // Assert
             result.Should().BeEquivalentTo(expectedList);
+        }
+
+        [Fact]
+        public async Task Handle_ShouldReturnEmptyList_WhenNoPropertiesExist()
+        {
+            // Arrange
+            _propertyQueriesMock.Setup(x => x.GetPropertyListAsync())
+                .ReturnsAsync(new List<PropertyListDto>());
+            var query = new ListPropertiesQuery();
+
+            // Act
+            var result = await _handler.Handle(query, CancellationToken.None);
+
+            // Assert
+            result.Should().BeEmpty();
+        }
+
+        [Fact]
+        public async Task Handle_ShouldThrowException_WhenRepositoryThrows()
+        {
+            // Arrange
+            _propertyQueriesMock.Setup(x => x.GetPropertyListAsync())
+                .ThrowsAsync(new System.Exception("Repository error"));
+            var query = new ListPropertiesQuery();
+
+            // Act & Assert
+            await Assert.ThrowsAsync<System.Exception>(() => _handler.Handle(query, CancellationToken.None));
         }
     }
 }

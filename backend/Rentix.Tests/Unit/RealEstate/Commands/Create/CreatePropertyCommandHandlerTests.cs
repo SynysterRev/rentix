@@ -1,21 +1,56 @@
-using System.Threading;
-using System.Threading.Tasks;
 using FluentAssertions;
 using Moq;
-using Rentix.Application.RealEstate.Commands.Create;
+using Rentix.Application.Exceptions;
 using Rentix.Domain.Entities;
 using Rentix.Domain.Repositories;
 using Xunit;
-using System;
+using Rentix.Application.RealEstate.DTOs.Addresses;
+using System.ComponentModel.DataAnnotations;
+using Rentix.Application.RealEstate.Commands.Create.Property;
 
 namespace Rentix.Tests.Unit.RealEstate.Commands.Create
 {
     public class CreatePropertyCommandHandlerTests
     {
+        private readonly Mock<IAddressRepository> _addressRepoMock;
+        private readonly Mock<IPropertyRepository> _propertyRepoMock;
+        private readonly Mock<IUnitOfWork> _unitOfWorkMock;
+
+        public CreatePropertyCommandHandlerTests()
+        {
+            _addressRepoMock = new Mock<IAddressRepository>();
+            _propertyRepoMock = new Mock<IPropertyRepository>();
+            _unitOfWorkMock = new Mock<IUnitOfWork>();
+        }
+
+        private CreatePropertyCommandHandler CreateHandler()
+        {
+            return new CreatePropertyCommandHandler(_propertyRepoMock.Object, _addressRepoMock.Object, _unitOfWorkMock.Object);
+        }
+
+        private CreatePropertyCommand CreateValidCommand(int addressId, Guid landlordId)
+        {
+            return new CreatePropertyCommand
+            {
+                Name = "Test Property",
+                MaxRent = 1000,
+                Deposit = 500,
+                RentNoCharges = 800,
+                RentCharges = 200,
+                PropertyStatus = PropertyStatus.Available,
+                Surface = 50,
+                NumberRooms = 2,
+                AddressId = addressId,
+                LandLordId = landlordId
+            };
+        }
+
         [Fact]
-        public async Task Handle_ShouldCreatePropertyAndReturnId()
+        public async Task Handle_WithValidAddressId_ShouldCreatePropertyAndReturnPropertyDto()
         {
             // Arrange
+            var address = Address.Create("Street", "Postal", "City", "Country", null);
+            address.Id = 1;
             var property = Property.Create(
                 "Test Property",
                 1000,
@@ -25,14 +60,77 @@ namespace Rentix.Tests.Unit.RealEstate.Commands.Create
                 PropertyStatus.Available,
                 50,
                 2,
-                1,
+                address.Id,
                 Guid.NewGuid()
             );
             property.Id = 42;
-            var repoMock = new Mock<IPropertyRepository>();
-            repoMock.Setup(r => r.AddAsync(It.IsAny<Property>()))
-                .ReturnsAsync(property);
-            var handler = new CreatePropertyCommandHandler(repoMock.Object);
+
+            _addressRepoMock.Setup(r => r.GetByIdAsync(address.Id)).ReturnsAsync(address);
+            _propertyRepoMock.Setup(r => r.AddAsync(It.IsAny<Property>())).ReturnsAsync(property);
+            _unitOfWorkMock.Setup(u => u.SaveChangesAsync()).Returns(Task.CompletedTask);
+
+            var handler = CreateHandler();
+            var command = CreateValidCommand(address.Id, property.LandlordId);
+
+            // Act
+            var result = await handler.Handle(command, CancellationToken.None);
+
+            // Assert
+            result.Should().NotBeNull();
+            result.Id.Should().Be(property.Id);
+            result.Name.Should().Be(property.Name);
+            result.Address.Should().NotBeNull();
+            result.Address.Street.Should().Be(address.Street);
+            result.Address.City.Should().Be(address.City);
+            result.Address.PostalCode.Should().Be(address.PostalCode);
+            result.Address.Country.Should().Be(address.Country);
+
+            _addressRepoMock.Verify(r => r.GetByIdAsync(address.Id), Times.Once);
+            _propertyRepoMock.Verify(r => r.AddAsync(It.IsAny<Property>()), Times.Once);
+            _unitOfWorkMock.Verify(u => u.SaveChangesAsync(), Times.Once);
+        }
+
+        [Fact]
+        public async Task Handle_WithNonExistentAddressId_ShouldThrowNotFoundException()
+        {
+            // Arrange
+            _addressRepoMock.Setup(r => r.GetByIdAsync(It.IsAny<int>())).ReturnsAsync((Address?)null);
+            var handler = CreateHandler();
+            var command = CreateValidCommand(999, Guid.NewGuid());
+
+            // Act
+            Func<Task> act = async () => await handler.Handle(command, CancellationToken.None);
+
+            // Assert
+            await act.Should().ThrowAsync<NotFoundException>()
+                .WithMessage("Address with ID 999 not found");
+        }
+
+        [Fact]
+        public async Task Handle_WithAddressDto_ShouldCreateAddressAndPropertyAndReturnPropertyDto()
+        {
+            // Arrange
+            var address = Address.Create("Street", "Postal", "City", "Country", null);
+            address.Id = 2;
+            var property = Property.Create(
+                "Test Property",
+                1000,
+                500,
+                800,
+                200,
+                PropertyStatus.Available,
+                50,
+                2,
+                address.Id,
+                Guid.NewGuid()
+            );
+            property.Id = 43;
+
+            _addressRepoMock.Setup(r => r.AddAsync(It.IsAny<Address>())).ReturnsAsync(address);
+            _propertyRepoMock.Setup(r => r.AddAsync(It.IsAny<Property>())).ReturnsAsync(property);
+            _unitOfWorkMock.Setup(u => u.SaveChangesAsync()).Returns(Task.CompletedTask);
+
+            var handler = CreateHandler();
             var command = new CreatePropertyCommand
             {
                 Name = property.Name,
@@ -43,7 +141,8 @@ namespace Rentix.Tests.Unit.RealEstate.Commands.Create
                 PropertyStatus = property.Status,
                 Surface = property.Surface,
                 NumberRooms = property.NumberRooms,
-                AddressId = property.AddressId,
+                AddressDto = new AddressCreateDto(
+                    address.Street, address.City, address.PostalCode, address.Country, address.Complement),
                 LandLordId = property.LandlordId
             };
 
@@ -51,8 +150,71 @@ namespace Rentix.Tests.Unit.RealEstate.Commands.Create
             var result = await handler.Handle(command, CancellationToken.None);
 
             // Assert
-            result.Should().Be(property.Id);
-            repoMock.Verify(r => r.AddAsync(It.IsAny<Property>()), Times.Once);
+            result.Should().NotBeNull();
+            result.Id.Should().Be(property.Id);
+            result.Name.Should().Be(property.Name);
+            result.Address.Should().NotBeNull();
+            result.Address.Street.Should().Be(address.Street);
+            result.Address.City.Should().Be(address.City);
+            result.Address.PostalCode.Should().Be(address.PostalCode);
+            result.Address.Country.Should().Be(address.Country);
+
+            _addressRepoMock.Verify(r => r.AddAsync(It.IsAny<Address>()), Times.Once);
+            _propertyRepoMock.Verify(r => r.AddAsync(It.IsAny<Property>()), Times.Once);
+            _unitOfWorkMock.Verify(u => u.SaveChangesAsync(), Times.Once);
+        }
+
+        [Fact]
+        public async Task Handle_WithoutAddressIdOrDto_ShouldThrowInvalidOperationException()
+        {
+            // Arrange
+            var handler = CreateHandler();
+            var command = new CreatePropertyCommand
+            {
+                Name = "Test",
+                MaxRent = 1000,
+                Deposit = 500,
+                RentNoCharges = 800,
+                RentCharges = 200,
+                PropertyStatus = PropertyStatus.Available,
+                Surface = 50,
+                NumberRooms = 2,
+                LandLordId = Guid.NewGuid()
+                // No AddressId, no AddressDto
+            };
+
+            // Act
+            Func<Task> act = async () => await handler.Handle(command, CancellationToken.None);
+
+            // Assert
+            await act.Should().ThrowAsync<InvalidOperationException>()
+                .WithMessage("Address must be resolved before creating a property.");
+        }
+
+        [Fact]
+        public async Task Handle_WithAddressDtoMissingFields_ShouldThrowInvalidOperationException()
+        {
+            // Arrange
+            var handler = CreateHandler();
+            var command = new CreatePropertyCommand
+            {
+                Name = "Test",
+                MaxRent = 1000,
+                Deposit = 500,
+                RentNoCharges = 800,
+                RentCharges = 200,
+                PropertyStatus = PropertyStatus.Available,
+                Surface = 50,
+                NumberRooms = 2,
+                AddressDto = new AddressCreateDto("", "", "", "", null),
+                LandLordId = Guid.NewGuid()
+            };
+
+            // Act
+            Func<Task> act = async () => await handler.Handle(command, CancellationToken.None);
+
+            // Assert
+            await act.Should().ThrowAsync<ValidationException>();
         }
     }
 }
