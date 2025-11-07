@@ -5,7 +5,7 @@ using Rentix.Domain.Entities;
 using Rentix.Domain.Repositories;
 using System.Net;
 
-namespace Rentix.Application.RealEstate.Commands.Create
+namespace Rentix.Application.RealEstate.Commands.Create.Property
 {
     public class CreatePropertyCommandHandler : IRequestHandler<CreatePropertyCommand, PropertyDetailDto>
     {
@@ -22,7 +22,7 @@ namespace Rentix.Application.RealEstate.Commands.Create
 
         public async Task<PropertyDetailDto> Handle(CreatePropertyCommand command, CancellationToken cancellationToken)
         {
-            Address? address = null;
+            Domain.Entities.Address? address = null;
             if (command.AddressId.HasValue)
             {
                 address = await _addressRepository.GetByIdAsync(command.AddressId.Value);
@@ -42,7 +42,7 @@ namespace Rentix.Application.RealEstate.Commands.Create
                 throw new InvalidOperationException("Address must be resolved before creating a property.");
             }
 
-            var property = Property.Create(
+            var property = Domain.Entities.Property.Create(
 
                 command.Name,
                 command.MaxRent,

@@ -1,12 +1,12 @@
 using FluentAssertions;
 using Moq;
-using Rentix.Application.RealEstate.Commands.Create;
 using Rentix.Application.Exceptions;
 using Rentix.Domain.Entities;
 using Rentix.Domain.Repositories;
 using Xunit;
 using Rentix.Application.RealEstate.DTOs.Addresses;
 using System.ComponentModel.DataAnnotations;
+using Rentix.Application.RealEstate.Commands.Create.Property;
 
 namespace Rentix.Tests.Unit.RealEstate.Commands.Create
 {

@@ -19,11 +19,6 @@ namespace Rentix.Infrastructure.Persistence.Repositories
             return tenant;
         }
 
-        public void Update(Tenant tenant)
-        {
-            _dbContext.Tenants.Update(tenant);
-        }
-
         public async Task<bool> DeleteAsync(int id)
         {
             var tenant = await _dbContext.Tenants.FindAsync(id);
@@ -35,6 +30,18 @@ namespace Rentix.Infrastructure.Persistence.Repositories
 
             _dbContext.Tenants.Remove(tenant);
             return true;
+        }
+
+        public async Task<Tenant?> GetTenantByIdAsync(int id)
+        {
+            return await _dbContext.Tenants
+                .FirstOrDefaultAsync(t => t.Id == id);
+        }
+
+        public async Task<Tenant?> GetTenantByEmailAsync(string email)
+        {
+            return await _dbContext.Tenants
+                .FirstOrDefaultAsync(t => t.Email.Value == email);
         }
     }
 }
