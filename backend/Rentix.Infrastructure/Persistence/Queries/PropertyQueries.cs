@@ -45,8 +45,8 @@ namespace Rentix.Infrastructure.Persistence.Queries
                             t.Id,
                             t.FirstName,
                             t.LastName,
-                            t.Email,
-                            t.Phone))
+                            t.Email.Value,
+                            t.Phone.Value))
                         .ToList(),
                     LeaseStartDate = p.Leases
                         .Where(l => l.IsActive)

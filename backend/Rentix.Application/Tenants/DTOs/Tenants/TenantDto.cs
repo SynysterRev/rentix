@@ -8,8 +8,8 @@ namespace Rentix.Application.Tenants.DTOs.Tenants
         int Id,
         string FirstName,
         string LastName,
-        Email Email,
-        Phone PhoneNumber)
+        string Email,
+        string PhoneNumber)
     {
         public string FullName => FirstName + " " + LastName;
 
@@ -22,8 +22,8 @@ namespace Rentix.Application.Tenants.DTOs.Tenants
                 tenant.Id,
                 tenant.FirstName,
                 tenant.LastName,
-                tenant.Email,
-                tenant.Phone
+                tenant.Email.Value,
+                tenant.Phone.Value
             );
         }
     }
