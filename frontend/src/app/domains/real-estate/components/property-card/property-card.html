@@ -23,7 +23,9 @@
             <p class="text-sm ml-4">Aucun locataire</p>
             }@else {
             <p class="flex flex-col text-sm ml-4 mr-4">
-                <span>{{property()?.tenantsNames}}</span>
+                @for (tenant of property()!.tenants; track tenant.id) {
+                <span>{{tenant.fullName}}</span>
+                }
 
                 <span>Locataire actuel</span>
             </p>

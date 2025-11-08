@@ -4,29 +4,35 @@ import { PropertyDTO } from '../../models/property.model';
 import { PropertyService } from '../../services/property';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
+import { LucideAngularModule, CircleAlert, MapPin, Euro, FileText, UsersRound, Mail, Phone, Calendar } from "lucide-angular";
 
 @Component({
   selector: 'app-property-details',
-  imports: [CommonModule],
+  imports: [LucideAngularModule],
   templateUrl: './property-details.html',
   styleUrl: './property-details.scss',
 })
 export class PropertyDetails {
-  produitId: number = 0;
-
+  propertyId: number = 0;
   private propertyService = inject(PropertyService);
   private destroyRef = inject(DestroyRef);
   property = signal<PropertyDTO | null>(null);
+  readonly MapPin = MapPin;
+  readonly CircleAlert = CircleAlert;
+  readonly Euro = Euro;
+  readonly FileText = FileText;
+  readonly UsersRound = UsersRound;
+  readonly Mail = Mail;
+  readonly Phone = Phone;
+  readonly Calendar = Calendar;
 
   constructor(private route: ActivatedRoute) {
     this.route.paramMap.subscribe(params => {
       const newId = Number(params.get('id'));
-      if (newId !== this.produitId) {
+      if (newId !== this.propertyId) {
         this.loadProduit(newId);
-        console.log(this.property());
       }
     });
-    console.log(this.property());
   }
 
   loadProduit(id: number) {
