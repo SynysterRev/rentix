@@ -47,7 +47,7 @@ namespace Rentix.Tests.Unit.Tenants.Update
             result.Id.Should().Be(tenant.Id);
             result.FirstName.Should().Be("Jane");
             result.LastName.Should().Be("Smith");
-            result.Email.Value.Should().Be("jane@smith.com");
+            result.Email.Should().Be("jane@smith.com");
             //result.PhoneNumber.Value.Should().Be("0601020305");
         }
 

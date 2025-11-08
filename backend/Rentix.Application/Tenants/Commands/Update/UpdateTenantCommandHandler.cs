@@ -3,11 +3,6 @@ using Rentix.Application.Exceptions;
 using Rentix.Application.Tenants.DTOs.Tenants;
 using Rentix.Domain.Repositories;
 using Rentix.Domain.ValueObjects;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Rentix.Application.Tenants.Commands.Update
 {
@@ -27,7 +22,7 @@ namespace Rentix.Application.Tenants.Commands.Update
             var tenant = await _tenantRepository.GetTenantByIdAsync(request.TenantId);
             if (tenant == null)
             {
-                throw new NotFoundException($"Tenant with ID {request.TenantId} not found");
+                throw new NotFoundException($"Tenant with ID {request.TenantId} not found.");
             }
 
             tenant.UpdateDetails(

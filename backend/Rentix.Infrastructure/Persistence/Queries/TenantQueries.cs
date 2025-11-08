@@ -24,8 +24,8 @@ namespace Rentix.Infrastructure.Persistence.Queries
                     t.Id,
                     t.FirstName,
                     t.LastName,
-                    t.Email,
-                    t.Phone))
+                    t.Email.Value,
+                    t.Phone.Value))
                 .ToListAsync();
         }
 
@@ -38,8 +38,8 @@ namespace Rentix.Infrastructure.Persistence.Queries
                     t.Id,
                     t.FirstName,
                     t.LastName,
-                    t.Email,
-                    t.Phone))
+                    t.Email.Value,
+                    t.Phone.Value))
                 .FirstOrDefaultAsync();
         }
 
@@ -52,8 +52,8 @@ namespace Rentix.Infrastructure.Persistence.Queries
                     t.Id,
                     t.FirstName,
                     t.LastName,
-                    t.Email,
-                    t.Phone))
+                    t.Email.Value,
+                    t.Phone.Value))
                 .FirstOrDefaultAsync();
         }
 
@@ -66,8 +66,8 @@ namespace Rentix.Infrastructure.Persistence.Queries
                     t.Id,
                     t.FirstName,
                     t.LastName,
-                    t.Email,
-                    t.Phone))
+                    t.Email.Value,
+                    t.Phone.Value))
                 .ToListAsync();
         }
 
@@ -80,8 +80,8 @@ namespace Rentix.Infrastructure.Persistence.Queries
                     t.Id,
                     t.FirstName,
                     t.LastName,
-                    t.Email,
-                    t.Phone))
+                    t.Email.Value,
+                    t.Phone.Value))
                 .ToListAsync();
         }
 
