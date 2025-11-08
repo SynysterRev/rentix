@@ -57,8 +57,8 @@ namespace Rentix.Tests.Unit.Tenants.Commands.Create
             result.Id.Should().Be(tenant.Id);
             result.FirstName.Should().Be(tenant.FirstName);
             result.LastName.Should().Be(tenant.LastName);
-            result.Email.Should().Be(tenant.Email);
-            result.PhoneNumber.Should().Be(tenant.Phone);
+            result.Email.Should().Be(tenant.Email.Value);
+            result.PhoneNumber.Should().Be(tenant.Phone.Value);
             _tenantRepositoryMock.Verify(r => r.AddAsync(It.IsAny<Tenant>()), Times.Once);
             _unitOfWorkMock.Verify(u => u.SaveChangesAsync(), Times.Once);
         }

@@ -37,7 +37,7 @@ namespace Rentix.Tests.Unit.API.Controllers
                 Email = "john@doe.com",
                 Phone = "0601020304"
             };
-            var tenantDto = new TenantDto(1, "John", "Doe", Email.Create(command.Email), Phone.Create(command.Phone));
+            var tenantDto = new TenantDto(1, "John", "Doe", command.Email, command.Phone);
             _mediatorMock.Setup(m => m.Send(command, It.IsAny<CancellationToken>())).ReturnsAsync(tenantDto);
 
             // Act
@@ -61,7 +61,7 @@ namespace Rentix.Tests.Unit.API.Controllers
                 Email = "john@doe.com",
                 Phone = "0601020304"
             };
-            var tenantDto = new TenantDto(1, "John", "Doe", Email.Create(command.Email), Phone.Create(command.Phone));
+            var tenantDto = new TenantDto(1, "John", "Doe", command.Email, command.Phone);
             _mediatorMock.Setup(m => m.Send(command, It.IsAny<CancellationToken>())).ReturnsAsync(tenantDto);
 
             // Act
@@ -182,7 +182,7 @@ namespace Rentix.Tests.Unit.API.Controllers
 
         private TenantDto GetSampleUpdatedTenantDto(int id = 1)
         {
-            return new TenantDto(id, "Jane", "Smith", Email.Create("jane@smith.com"), Phone.Create("0601020305"));
+            return new TenantDto(id, "Jane", "Smith", "jane@smith.com", "0601020305");
         }
 
         [Fact]
@@ -202,8 +202,8 @@ namespace Rentix.Tests.Unit.API.Controllers
             var returnedDto = Assert.IsType<TenantDto>(okResult.Value);
             returnedDto.FirstName.Should().Be("Jane");
             returnedDto.LastName.Should().Be("Smith");
-            returnedDto.Email.Value.Should().Be("jane@smith.com");
-            returnedDto.PhoneNumber.Value.Should().Be("0601020305");
+            returnedDto.Email.Should().Be("jane@smith.com");
+            returnedDto.PhoneNumber.Should().Be("0601020305");
         }
 
         [Fact]
