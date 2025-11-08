@@ -1,19 +1,41 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, DestroyRef, inject, input, OnInit, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { PropertyDTO } from '../../models/property.model';
+import { PropertyService } from '../../services/property';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-property-details',
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './property-details.html',
   styleUrl: './property-details.scss',
 })
-export class PropertyDetails implements OnInit {
-  id!: string;
+export class PropertyDetails {
+  produitId: number = 0;
 
-  constructor(private route: ActivatedRoute) { }
+  private propertyService = inject(PropertyService);
+  private destroyRef = inject(DestroyRef);
+  property = signal<PropertyDTO | null>(null);
 
-  ngOnInit(): void {
-    this.id = this.route.snapshot.paramMap.get('id')!; // Get the 'id' from the route
-    console.log('Dynamic ID:', this.id);
+  constructor(private route: ActivatedRoute) {
+    this.route.paramMap.subscribe(params => {
+      const newId = Number(params.get('id'));
+      if (newId !== this.produitId) {
+        this.loadProduit(newId);
+        console.log(this.property());
+      }
+    });
+    console.log(this.property());
+  }
+
+  loadProduit(id: number) {
+    this.propertyService.getPropertyDetails(id)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(response => {
+        this.property.set(response);
+        console.log(this.property());
+      });
   }
 }
+
