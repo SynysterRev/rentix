@@ -1,14 +1,16 @@
 <!-- HEADER -->
-<section>
-    <h1>{{property()?.address?.street}}
-        @if(property()?.address?.complement !== ""){
-        , {{property()?.address?.complement}}
-        }
-    </h1>
-    <h2>
-        <lucide-angular [img]="MapPin"></lucide-angular>
-        <span>{{property()?.address?.city}}</span>
-    </h2>
+<section class="bg-border space flex justify-between items-center">
+    <section>
+        <h1>{{property()?.address?.street}}
+            @if(property()?.address?.complement !== ""){
+            , {{property()?.address?.complement}}
+            }
+        </h1>
+        <h2 class="flex items-center">
+            <lucide-angular [img]="MapPin"></lucide-angular>
+            <span>{{property()?.address?.city}}</span>
+        </h2>
+    </section>
     <p>
         @if(property()?.isAvailable){
         <span>Disponible</span>
@@ -19,82 +21,94 @@
 </section>
 
 <!-- ZONE LOYER ENCADRE -->
-<section>
+<section class="bg-border space flex items-center">
     <lucide-angular [img]="CircleAlert"></lucide-angular>
-    <p>Zone à loyer encadré :</p>
-    <p>Loyer maximum autorisé : €1200 (Zone A)</p>
+    <section>
+        <p>Zone à loyer encadré :</p>
+        <p>Loyer maximum autorisé : €1200 (Zone A)</p>
+    </section>
 </section>
 
 <!-- INFORMATION SUR LA PROPRIETE -->
-<section>
-    <p>Information sur la propriété</p>
-    <lucide-angular [img]="Euro"></lucide-angular>
-    <p>Loyer mensuel</p>
-    <p>{{property()?.totalRent}}€</p>
+<section class="bg-border space">
+    <h3>Information sur la propriété</h3>
+    <section class="flex items-center">
+        <lucide-angular [img]="Euro"></lucide-angular>
+        <section>
+            <p>Loyer mensuel : </p>
+            <p>{{property()?.maxRent}} €</p>
+        </section>
+    </section>
 </section>
 
 <!-- ACTIVITE RECENTE -->
-<section>
-    <p>Activité récente</p>
+<section class="bg-border space">
+    <h3>Activité récente</h3>
 </section>
 
 <!-- ACTIONS RAPIDES -->
-<section>
-    <p>Actions rapides</p>
-    <button>
-        <lucide-angular [img]="FileText"></lucide-angular> Ajouter une transaction
-    </button>
-    <button>
-        <lucide-angular [img]="Calendar"></lucide-angular> Planifier un rappel
-    </button>
-    <button>
-        Terminer le bail
-    </button>
+<section class="bg-border space">
+    <h3>Actions rapides</h3>
+    <section>
+        <button (click)="addTransaction()">
+            <lucide-angular [img]="FileText"></lucide-angular> Ajouter une transaction
+        </button>
+        <button (click)="addReminder()">
+            <lucide-angular [img]="Calendar"></lucide-angular> Planifier un rappel
+        </button>
+        <button (click)="endLease()">
+            <lucide-angular [img]="CalendarOff"></lucide-angular> Terminer le bail
+        </button>
+        <button (click)="deleteProperty()">
+            <lucide-angular [img]="Trash2"></lucide-angular> Supprimer le bien
+        </button>
+    </section>
 </section>
 
 <!-- LOCATAIRE ACTUEL -->
-<section>
-    <p>
+<section class="bg-border space">
+    <h3 class="flex justify-between items-center">
         <span>Locataire actuel</span>
-        <button>
+        <button (click)="generateRentReceipt()">
             <lucide-angular [img]="FileText"></lucide-angular> Générer quittance
         </button>
-    </p>
-    <p>
+    </h3>
+    <p class="flex items-center">
         <lucide-angular [img]="UsersRound"></lucide-angular>
         <!-- <span>{{property()?.tenants}}</span> -->
-        @for (tenant of property()!.tenants; track tenant.id) {
-        <span>{{tenant.fullName}}</span>
+        @for (tenant of property()?.tenants; track tenant.id) {
+        <span class=" p-1">{{tenant.fullName}}</span>
         }
     </p>
-    <section>
+    <section class="flex items-center">
         <lucide-angular [img]="Mail"></lucide-angular>
-        <p>
+        <p class="flex flex-col p-1">
             <span>Email</span>
-            @for (tenant of property()!.tenants; track tenant.id) {
+            @for (tenant of property()?.tenants; track tenant.id) {
             <span>{{tenant.email}}</span>
             }
         </p>
     </section>
-    <section>
+    <section class="flex items-center">
         <lucide-angular [img]="Phone"></lucide-angular>
-        <p>
+        <p class="flex flex-col p-1">
             <span>Téléphone</span>
-            @for (tenant of property()!.tenants; track tenant.id) {
+            @for (tenant of property()?.tenants; track tenant.id) {
             <span>{{tenant.phoneNumber}}</span>
             }
         </p>
     </section>
-    <section>
+    <section class="flex items-center border-t-2 border-green-200">
         <lucide-angular [img]="Calendar"></lucide-angular>
-        <p>
+        <p class="flex flex-col p-1">
             <span>Période de bail</span>
-            <!-- RECUP Période du locataire -->
+            <span>{{property()?.leaseStartDate | date:'shortDate'}} - {{property()?.leaseStartDate |
+                date:'shortDate'}}</span>
         </p>
     </section>
 </section>
 
 <!-- DOCUMENTS -->
-<section>
-    <p>Documents</p>
+<section class="bg-border space">
+    <h3>Documents</h3>
 </section>

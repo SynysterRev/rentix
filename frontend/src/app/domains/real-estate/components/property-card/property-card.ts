@@ -15,8 +15,4 @@ export class PropertyCard {
   readonly UsersRound = UsersRound;
   readonly MapPin = MapPin;
   property = input<PropertyDTO>();
-
-  propertyIsAvailable() {
-    return this.property()?.isAvailable;
-  }
 }

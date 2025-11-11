@@ -2,7 +2,7 @@
     <mat-card-header class="flex-col-reverse">
         <section class="flex items-center justify-between">
             <mat-card-title>{{property()?.name}}</mat-card-title>
-            @if(propertyIsAvailable()){
+            @if(property()?.isAvailable){
             <span>Disponible</span>
             }@else {
             <span class="text-sm">Louée</span>
@@ -18,26 +18,23 @@
     <!-- <img mat-card-image src="https://via.placeholder.com/150" alt="Card Image"> -->
     <mat-card-content>
         <section class="flex items-center bg-background rounded-2xl w-full pt-2 pb-2 mt-2 mb-2">
-            <lucide-angular [img]="UsersRound" class="w-6px h-6px m-2 bg-whiterounded-4xl"></lucide-angular>
-            @if(propertyIsAvailable()){
+            <lucide-angular [img]="UsersRound" class="w-6px h-6px m-2 bg-secondary rounded-4xl"></lucide-angular>
+            @if(property()?.isAvailable){
             <p class="text-sm ml-4">Aucun locataire</p>
             }@else {
             <p class="flex flex-col text-sm ml-4 mr-4">
-                @for (tenant of property()!.tenants; track tenant.id) {
-                <span>{{tenant.fullName}}</span>
+                @for (tenant of property()?.tenantsNames; track property()?.id) {
+                <span>{{tenant}}</span>
                 }
-
                 <span>Locataire actuel</span>
             </p>
             }
 
         </section>
-        <section class="flex justify-between border-t pt-">
+        <section class="flex justify-between border-t">
             <p>Loyer mensuel</p>
             <p>{{property()?.totalRent}} €</p>
         </section>
     </mat-card-content>
-    <mat-card-actions class="justify-center" class="hidden">
-        <button mat-button class="hidden">Voir les détails</button>
-    </mat-card-actions>
+    <a class="hidden">Voir les détails</a>
 </mat-card>

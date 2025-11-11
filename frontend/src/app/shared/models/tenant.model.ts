@@ -3,6 +3,6 @@ export interface TenantDTO {
     firstName: string,
     lastName: string,
     email: string,
-    phoneNumber: number,
+    phoneNumber: string,
     fullName: string
 }
