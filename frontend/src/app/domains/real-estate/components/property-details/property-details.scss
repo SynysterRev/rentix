@@ -1,0 +1,30 @@
+@reference "#tailwind.css";
+@import "../../../../../styles/styles.scss";
+
+@mixin padding-margin($padding, $margin) {
+    padding: calc(var(--spacing) * $padding);
+    margin: calc(var(--spacing) * $margin);
+}
+
+@mixin bg-white-rounded-border-green {
+    @apply bg-white rounded-xl border-2 border-green-700;
+}
+
+
+.bg-border {
+    @include bg-white-rounded-border-green();
+}
+
+.space {
+    @include padding-margin(4, 4);
+}
+
+lucide-angular {
+    @include padding-margin(2, 2);
+    @apply bg-secondary rounded-4xl;
+}
+
+button{
+    @include padding-margin(1, 1);
+    @apply flex items-center rounded-xl border-2 border-secondary hover:cursor-pointer hover:bg-background;
+}

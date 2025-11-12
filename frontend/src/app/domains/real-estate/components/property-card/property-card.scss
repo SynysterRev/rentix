@@ -1,0 +1,10 @@
+@reference "#tailwind.css";
+@import "../../../../../styles/styles.scss";
+
+mat-card{
+    @apply bg-white rounded-2xl;
+    &:hover{
+        @apply shadow-lg shadow-tertiary inset-shadow-xs inset-shadow-tertiary;
+        @apply cursor-pointer;
+    }
+}

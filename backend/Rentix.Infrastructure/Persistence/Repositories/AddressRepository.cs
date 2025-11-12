@@ -24,11 +24,6 @@ namespace Rentix.Infrastructure.Persistence.Repositories
             return address;
         }
 
-        public void Update(Address address)
-        {
-            _dbContext.Addresses.Update(address);
-        }
-
         public async Task<bool> DeleteAsync(int id)
         {
             var address = await _dbContext.Addresses.FindAsync(id);

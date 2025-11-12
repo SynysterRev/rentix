@@ -2,28 +2,28 @@
     <ol>
         <li class="m-2 flex">
             <p class="flex items-center text-2xl font-bold rounded-4xl w-full" [ngClass]="isVisible ? 'visible' : 'hidden'">
-                <lucide-angular [img]="HandCoins" class="w-12px h-12px m-2 "></lucide-angular>
+                <lucide-angular [img]="HandCoins" class="w-12px h-12px m-2"></lucide-angular>
                 <span>Rentix</span>
             </p>
-            <button (click)="isVisible = !isVisible" class="flex items-center hover:bg-gray-100 rounded-4xl cursor-pointer">
-                <lucide-angular [img]="PanelRight" class="w-12px h-12px m-2 "></lucide-angular>
+            <button (click)="isVisible = !isVisible" class="flex items-center hover:bg-background rounded-4xl cursor-pointer">
+                <lucide-angular [img]="PanelRight" class="w-12px h-12px m-2"></lucide-angular>
             </button>
         </li>
         <li class="m-2">
-            <a routerLink="/dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" class="flex items-center hover:bg-gray-100 rounded-4xl">
+            <a routerLink="/dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" class="flex items-center hover:bg-background rounded-4xl">
                 <lucide-angular [img]="ChartLine" class="w-12px h-12px m-2"></lucide-angular>
                 <span [ngClass]="isVisible ? 'visible' : 'hidden'">Tableau de bord</span>
             </a>
         </li>
         <li class="m-2">
-            <a routerLink="/real-estate-property" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" class="flex items-center hover:bg-gray-100 rounded-4xl">
+            <a routerLink="/real-estate-property" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" class="flex items-center hover:bg-background rounded-4xl">
                 <lucide-angular [img]="Building2" class="w-12px h-12px m-2"></lucide-angular>
                 <!--It's this span who determinate the size of the navigation bar-->
                 <span [ngClass]="isVisible ? 'visible' : 'hidden'" class="w-60">Mes biens</span>
             </a>
         </li>
         <li class="m-2"> 
-            <a routerLink="/settings" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" class="flex items-center hover:bg-gray-100 rounded-4xl">
+            <a routerLink="/settings" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" class="flex items-center hover:bg-background rounded-4xl">
                 <lucide-angular [img]="Settings" class="w-12px h-12px m-2"></lucide-angular>
                 <span [ngClass]="isVisible ? 'visible' : 'hidden'">Mon compte</span>
             </a>

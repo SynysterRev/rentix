@@ -1,10 +1,10 @@
 <section>
     <header>
-        <h1 class="text-3xl font-bold">Real estate property</h1>
-        <p class="text-sm font-light">Manage your rental properties</p>
+        <h1 class="text-3xl font-bold">Mes biens</h1>
+        <p class="text-sm font-light">Gérer tous mes biens</p>
     </header>
-    <main>
-        <section>
+    <main class="flex justify-center">
+        <section class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
             @for (property of properties(); track property.id) {
             <app-property-card [property]="property"></app-property-card>
             <app-property-card [property]="property"></app-property-card>

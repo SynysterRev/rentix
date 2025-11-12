@@ -23,4 +23,8 @@
     <ProjectReference Include="..\Rentix.Domain\Rentix.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Templates\" />
+  </ItemGroup>
+
 </Project>

@@ -1,0 +1,78 @@
+import { Component, DestroyRef, inject, input, OnInit, signal } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { PropertyDetailsDTO } from '../../models/property.model';
+import { PropertyService } from '../../services/property';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { CommonModule, DatePipe } from '@angular/common';
+import { LucideAngularModule, CircleAlert, MapPin, Euro, FileText, UsersRound, Mail, Phone, Calendar, CalendarOff, Trash2 } from "lucide-angular";
+
+@Component({
+  selector: 'app-property-details',
+  imports: [LucideAngularModule, DatePipe],
+  templateUrl: './property-details.html',
+  styleUrl: './property-details.scss',
+})
+export class PropertyDetails {
+
+  propertyId: number = 0;
+
+  private propertyService = inject(PropertyService);
+  private destroyRef = inject(DestroyRef);
+  property = signal<PropertyDetailsDTO | null>(null);
+
+  readonly MapPin = MapPin;
+  readonly CircleAlert = CircleAlert;
+  readonly Euro = Euro;
+  readonly FileText = FileText;
+  readonly UsersRound = UsersRound;
+  readonly Mail = Mail;
+  readonly Phone = Phone;
+  readonly Calendar = Calendar;
+  readonly CalendarOff = CalendarOff;
+  readonly Trash2 = Trash2;
+
+  constructor(private route: ActivatedRoute) {
+    this.route.paramMap.subscribe(params => {
+      const newId = Number(params.get('id'));
+      if (newId !== this.propertyId) {
+        this.loadPropertyDetails(newId);
+        this.propertyId = newId;
+      }
+    });
+  }
+
+  loadPropertyDetails(id: number) {
+    this.propertyService.getPropertyDetails(id)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(response => {
+        //this.property.set(response);
+        ///////////////////////////////////////////!--TODO UPDATE DE LISTE
+      });
+  }
+
+  endLease() {
+    console.log("Fin de la location - Actions à déterminer")
+  }
+
+  addReminder() {
+    console.log("Ajouter un rappel - Actions à déterminer")
+  }
+
+  addTransaction() {
+    console.log("Ajout d'une transaction - Actions à déterminer")
+  }
+
+  generateRentReceipt() {
+    console.log("Generation d'une quittance - Actions à déterminer")
+  }
+
+  deleteProperty() {
+    this.propertyService.deleteProperty(this.propertyId)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(response => {
+        this.property.set(response);
+      });
+  }
+
+}
+

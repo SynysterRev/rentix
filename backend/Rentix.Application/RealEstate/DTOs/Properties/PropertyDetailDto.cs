@@ -45,8 +45,8 @@ namespace Rentix.Application.RealEstate.DTOs.Properties
                         t.Id,
                         t.FirstName,
                         t.LastName,
-                        t.Email,
-                        t.Phone
+                        t.Email.Value,
+                        t.Phone.Value
                     )).ToList()
                     : new List<TenantDto>(),
                 Address = property.Address != null
