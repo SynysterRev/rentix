@@ -34,11 +34,6 @@ namespace Rentix.Infrastructure.Persistence.Configurations
                    .WithOne(u => u.Address)
                    .HasForeignKey(u => u.AddressId)
                    .OnDelete(DeleteBehavior.Restrict);
-
-            builder.HasMany(a => a.Properties)
-                   .WithOne(p => p.Address)
-                   .HasForeignKey(p => p.AddressId)
-                   .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }
