@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Rentix.Domain.Entities;
+using System.Reflection.Emit;
 
 namespace Rentix.Infrastructure.Persistence.Configurations
 {
@@ -25,6 +26,9 @@ namespace Rentix.Infrastructure.Persistence.Configurations
 
             builder.Property(d => d.Description)
                    .HasMaxLength(500);
+
+            builder.Property(d => d.EntityType)
+                   .HasConversion<string>();
 
             builder.Property(d => d.UploadAt)
                    .HasDefaultValueSql("NOW()")

@@ -16,6 +16,7 @@ namespace Rentix.Domain.Entities
         public virtual Property Property { get; set; } = null!;
 
         public virtual ICollection<Tenant> Tenants { get; set; } = new List<Tenant>();
+        public virtual ICollection<Payment>? Payments { get; set; } = new List<Payment>();
 
         private Lease() { }
 

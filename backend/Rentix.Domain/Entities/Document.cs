@@ -60,6 +60,14 @@ namespace Rentix.Domain.Entities
         HOARules,
     }
 
+    public enum DocumentEntityType
+    {
+        Property,
+        Lease,
+        Tenant,
+        Charge
+    }
+
     public class Document
     {
         public int Id { get; set; }
@@ -71,6 +79,9 @@ namespace Rentix.Domain.Entities
 
         public int PropertyId { get; set; }
         public virtual Property Property { get; set; } = null!;
+
+        public DocumentEntityType? EntityType { get; set; }
+        public int? EntityId { get; set; }
 
         private Document() { }
 

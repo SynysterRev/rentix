@@ -17,6 +17,7 @@ namespace Rentix.Infrastructure.Persistence
         public DbSet<Charge> Charges { get; set; }
         public DbSet<Tenant> Tenants { get; set; }
         public DbSet<Address> Addresses { get; set; }
+        public DbSet<Payment> Payments { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
