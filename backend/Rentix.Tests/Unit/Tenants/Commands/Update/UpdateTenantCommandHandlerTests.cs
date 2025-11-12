@@ -30,7 +30,7 @@ namespace Rentix.Tests.Unit.Tenants.Update
             var tenant = Tenant.Create("John", "Doe", Email.Create("john@doe.com"), Phone.Create("0601020304"));
             tenant.Id = 1;
             _tenantRepositoryMock.Setup(r => r.GetTenantByIdAsync(1)).ReturnsAsync(tenant);
-            _unitOfWorkMock.Setup(u => u.SaveChangesAsync()).Returns(Task.CompletedTask);
+            _unitOfWorkMock.Setup(u => u.SaveChangesAsync(default)).Returns(Task.CompletedTask);
 
             var command = new UpdateTenantCommand(1)
             {
@@ -74,7 +74,7 @@ namespace Rentix.Tests.Unit.Tenants.Update
             var tenant = Tenant.Create("John", "Doe", Email.Create("john@doe.com"), Phone.Create("0601020304"));
             tenant.Id = 1;
             _tenantRepositoryMock.Setup(r => r.GetTenantByIdAsync(1)).ReturnsAsync(tenant);
-            _unitOfWorkMock.Setup(u => u.SaveChangesAsync()).ThrowsAsync(new Exception("DB error"));
+            _unitOfWorkMock.Setup(u => u.SaveChangesAsync(default)).ThrowsAsync(new Exception("DB error"));
 
             var command = new UpdateTenantCommand(1)
             {

@@ -25,7 +25,7 @@ namespace Rentix.Application.RealEstate.Commands.Delete
                 throw new NotFoundException($"Property with ID {request.propertyId} not found.");
             }
 
-            await _unitOfWork.SaveChangesAsync();
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
         }
     }
 }

@@ -1,12 +1,14 @@
 using FluentAssertions;
+using Microsoft.Extensions.Logging;
 using Moq;
+using Rentix.API.Controllers.v1;
 using Rentix.Application.Exceptions;
+using Rentix.Application.RealEstate.Commands.Create.Property;
+using Rentix.Application.RealEstate.DTOs.Addresses;
 using Rentix.Domain.Entities;
 using Rentix.Domain.Repositories;
-using Xunit;
-using Rentix.Application.RealEstate.DTOs.Addresses;
 using System.ComponentModel.DataAnnotations;
-using Rentix.Application.RealEstate.Commands.Create.Property;
+using Xunit;
 
 namespace Rentix.Tests.Unit.RealEstate.Commands.Create
 {
@@ -14,6 +16,7 @@ namespace Rentix.Tests.Unit.RealEstate.Commands.Create
     {
         private readonly Mock<IAddressRepository> _addressRepoMock;
         private readonly Mock<IPropertyRepository> _propertyRepoMock;
+        private readonly Mock<ILogger<CreatePropertyCommandHandler>> _loggerMock;
         private readonly Mock<IUnitOfWork> _unitOfWorkMock;
 
         public CreatePropertyCommandHandlerTests()
@@ -21,11 +24,12 @@ namespace Rentix.Tests.Unit.RealEstate.Commands.Create
             _addressRepoMock = new Mock<IAddressRepository>();
             _propertyRepoMock = new Mock<IPropertyRepository>();
             _unitOfWorkMock = new Mock<IUnitOfWork>();
+            _loggerMock = new Mock<ILogger<CreatePropertyCommandHandler>>();
         }
 
         private CreatePropertyCommandHandler CreateHandler()
         {
-            return new CreatePropertyCommandHandler(_propertyRepoMock.Object, _addressRepoMock.Object, _unitOfWorkMock.Object);
+            return new CreatePropertyCommandHandler(_propertyRepoMock.Object, _addressRepoMock.Object, _unitOfWorkMock.Object, _loggerMock.Object);
         }
 
         private CreatePropertyCommand CreateValidCommand(int addressId, Guid landlordId)
@@ -67,7 +71,7 @@ namespace Rentix.Tests.Unit.RealEstate.Commands.Create
 
             _addressRepoMock.Setup(r => r.GetByIdAsync(address.Id)).ReturnsAsync(address);
             _propertyRepoMock.Setup(r => r.AddAsync(It.IsAny<Property>())).ReturnsAsync(property);
-            _unitOfWorkMock.Setup(u => u.SaveChangesAsync()).Returns(Task.CompletedTask);
+            _unitOfWorkMock.Setup(u => u.SaveChangesAsync(default)).Returns(Task.CompletedTask);
 
             var handler = CreateHandler();
             var command = CreateValidCommand(address.Id, property.LandlordId);
@@ -87,7 +91,7 @@ namespace Rentix.Tests.Unit.RealEstate.Commands.Create
 
             _addressRepoMock.Verify(r => r.GetByIdAsync(address.Id), Times.Once);
             _propertyRepoMock.Verify(r => r.AddAsync(It.IsAny<Property>()), Times.Once);
-            _unitOfWorkMock.Verify(u => u.SaveChangesAsync(), Times.Once);
+            _unitOfWorkMock.Verify(u => u.SaveChangesAsync(default), Times.Once);
         }
 
         [Fact]
@@ -128,7 +132,7 @@ namespace Rentix.Tests.Unit.RealEstate.Commands.Create
 
             _addressRepoMock.Setup(r => r.AddAsync(It.IsAny<Address>())).ReturnsAsync(address);
             _propertyRepoMock.Setup(r => r.AddAsync(It.IsAny<Property>())).ReturnsAsync(property);
-            _unitOfWorkMock.Setup(u => u.SaveChangesAsync()).Returns(Task.CompletedTask);
+            _unitOfWorkMock.Setup(u => u.SaveChangesAsync(default)).Returns(Task.CompletedTask);
 
             var handler = CreateHandler();
             var command = new CreatePropertyCommand
@@ -161,7 +165,7 @@ namespace Rentix.Tests.Unit.RealEstate.Commands.Create
 
             _addressRepoMock.Verify(r => r.AddAsync(It.IsAny<Address>()), Times.Once);
             _propertyRepoMock.Verify(r => r.AddAsync(It.IsAny<Property>()), Times.Once);
-            _unitOfWorkMock.Verify(u => u.SaveChangesAsync(), Times.Once);
+            _unitOfWorkMock.Verify(u => u.SaveChangesAsync(default), Times.Exactly(2));
         }
 
         [Fact]

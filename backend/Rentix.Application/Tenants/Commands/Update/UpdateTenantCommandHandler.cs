@@ -32,7 +32,7 @@ namespace Rentix.Application.Tenants.Commands.Update
                 request.Phone != null ? Phone.Create(request.Phone) : null
             );
 
-            await _unitOfWork.SaveChangesAsync();
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
 
             return TenantDto.FromEntity(tenant);
         }

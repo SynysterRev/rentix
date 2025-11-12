@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.Extensions.Logging;
 using Rentix.Application.Exceptions;
 using Rentix.Application.RealEstate.DTOs.Properties;
 using Rentix.Domain.Entities;
@@ -12,54 +13,78 @@ namespace Rentix.Application.RealEstate.Commands.Create.Property
         private readonly IPropertyRepository _propertyRepository;
         private readonly IAddressRepository _addressRepository;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly ILogger<CreatePropertyCommandHandler> _logger;
 
-        public CreatePropertyCommandHandler(IPropertyRepository propertyRepository, IAddressRepository addressRepository, IUnitOfWork unitOfWork)
+        public CreatePropertyCommandHandler(
+            IPropertyRepository propertyRepository,
+            IAddressRepository addressRepository,
+            IUnitOfWork unitOfWork,
+            ILogger<CreatePropertyCommandHandler> logger)
         {
             _propertyRepository = propertyRepository;
             _addressRepository = addressRepository;
             _unitOfWork = unitOfWork;
+            _logger = logger;
         }
 
         public async Task<PropertyDetailDto> Handle(CreatePropertyCommand command, CancellationToken cancellationToken)
         {
-            Domain.Entities.Address? address = null;
-            if (command.AddressId.HasValue)
+            await _unitOfWork.BeginTransactionAsync(cancellationToken);
+
+            try
             {
-                address = await _addressRepository.GetByIdAsync(command.AddressId.Value);
+                Domain.Entities.Address? address = null;
+                if (command.AddressId.HasValue)
+                {
+                    address = await _addressRepository.GetByIdAsync(command.AddressId.Value);
+
+                    if (address == null)
+                    {
+                        throw new NotFoundException($"Address with ID {command.AddressId.Value} not found");
+                    }
+                }
+                else if (command.AddressDto != null)
+                {
+                    address = await _addressRepository.AddAsync(command.AddressDto.ToEntity());
+                    await _unitOfWork.SaveChangesAsync(cancellationToken);
+                }
 
                 if (address == null)
                 {
-                    throw new NotFoundException($"Address with ID {command.AddressId.Value} not found");
+                    throw new InvalidOperationException("Address must be resolved before creating a property.");
                 }
+
+                var property = Domain.Entities.Property.Create(
+
+                    command.Name,
+                    command.MaxRent,
+                    command.Deposit,
+                    command.RentNoCharges,
+                    command.RentCharges,
+                    command.PropertyStatus,
+                    command.Surface,
+                    command.NumberRooms,
+                    address.Id,
+                    command.LandLordId
+                );
+                var createdProperty = await _propertyRepository.AddAsync(property);
+                await _unitOfWork.SaveChangesAsync(cancellationToken);
+                await _unitOfWork.CommitTransactionAsync(cancellationToken);
+
+                createdProperty.Address = address;
+                return PropertyDetailDto.FromEntity(createdProperty);
             }
-            else if (command.AddressDto != null)
+            catch (NotFoundException)
             {
-                address = await _addressRepository.AddAsync(command.AddressDto.ToEntity());
+                await _unitOfWork.RollbackTransactionAsync(cancellationToken);
+                throw;
             }
-
-            if (address == null)
+            catch (Exception ex)
             {
-                throw new InvalidOperationException("Address must be resolved before creating a property.");
+                _logger.LogError(ex, "Error creating property with address");
+                await _unitOfWork.RollbackTransactionAsync(cancellationToken);
+                throw;
             }
-
-            var property = Domain.Entities.Property.Create(
-
-                command.Name,
-                command.MaxRent,
-                command.Deposit,
-                command.RentNoCharges,
-                command.RentCharges,
-                command.PropertyStatus,
-                command.Surface,
-                command.NumberRooms,
-                address.Id,
-                command.LandLordId
-            );
-            var createdProperty = await _propertyRepository.AddAsync(property);
-            await _unitOfWork.SaveChangesAsync();
-
-            createdProperty.Address = address;
-            return PropertyDetailDto.FromEntity(createdProperty);
         }
     }
 }

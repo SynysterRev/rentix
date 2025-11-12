@@ -26,14 +26,14 @@ namespace Rentix.Tests.Unit.Tenants.Commands.Delete
             // Arrange
             var command = new DeleteTenantCommand(1);
             _tenantRepositoryMock.Setup(r => r.DeleteAsync(1)).ReturnsAsync(true);
-            _unitOfWorkMock.Setup(u => u.SaveChangesAsync()).Returns(Task.CompletedTask);
+            _unitOfWorkMock.Setup(u => u.SaveChangesAsync(default)).Returns(Task.CompletedTask);
 
             // Act
             await _handler.Handle(command, CancellationToken.None);
 
             // Assert
             _tenantRepositoryMock.Verify(r => r.DeleteAsync(1), Times.Once);
-            _unitOfWorkMock.Verify(u => u.SaveChangesAsync(), Times.Once);
+            _unitOfWorkMock.Verify(u => u.SaveChangesAsync(default), Times.Once);
         }
 
         [Fact]

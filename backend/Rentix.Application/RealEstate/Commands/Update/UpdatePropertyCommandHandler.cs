@@ -42,7 +42,7 @@ namespace Rentix.Application.RealEstate.Commands.Update
                 request.Status,
                 request.Surface, 
                 request.NumberRooms);
-            await _unitOfWork.SaveChangesAsync();
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
 
             return PropertyDetailDto.FromEntity(property);
         }
