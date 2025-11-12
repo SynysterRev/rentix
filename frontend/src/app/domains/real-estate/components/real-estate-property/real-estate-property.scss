@@ -1,0 +1,12 @@
+@use "../../../../../styles/styles.scss";
+@reference "#tailwind.css";
+
+@mixin padding-margin($padding, $margin) {
+    padding: calc(var(--spacing) * $padding);
+    margin: calc(var(--spacing) * $margin);
+}
+
+button{
+    @include padding-margin(1, 1);
+    @apply flex items-center rounded-xl border-2 border-secondary hover:cursor-pointer hover:bg-background;
+}

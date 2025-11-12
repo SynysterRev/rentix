@@ -1,5 +1,5 @@
+@use "../../../../../styles/styles.scss";
 @reference "#tailwind.css";
-@import "../../../../../styles/styles.scss";
 
 mat-card{
     @apply bg-white rounded-2xl;

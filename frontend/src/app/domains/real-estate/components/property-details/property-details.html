@@ -25,7 +25,7 @@
     <lucide-angular [img]="CircleAlert"></lucide-angular>
     <section>
         <p>Zone à loyer encadré :</p>
-        <p>Loyer maximum autorisé : €1200 (Zone A)</p>
+        <p>Loyer maximum autorisé : {{property()?.maxRent}}€ (Zone A)</p>
     </section>
 </section>
 
@@ -51,7 +51,7 @@
     <h3>Actions rapides</h3>
     <section>
         <button (click)="addTransaction()">
-            <lucide-angular [img]="FileText"></lucide-angular> Ajouter une transaction
+            <lucide-angular [img]="FileText"/> Ajouter une transaction
         </button>
         <button (click)="addReminder()">
             <lucide-angular [img]="Calendar"></lucide-angular> Planifier un rappel

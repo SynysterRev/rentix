@@ -4,6 +4,7 @@ import { MatCardModule } from '@angular/material/card';
 import { CommonModule } from '@angular/common';
 import { LucideAngularModule, UsersRound, MapPin } from "lucide-angular";
 import { RouterLink } from '@angular/router';
+import { PropertyStatus } from '../../../../shared/models/property-status.model';
 
 @Component({
   selector: 'app-property-card',
@@ -15,4 +16,15 @@ export class PropertyCard {
   readonly UsersRound = UsersRound;
   readonly MapPin = MapPin;
   property = input<PropertyDTO>();
+
+  getPropertyStatus(): string{
+    const labels = {
+    [PropertyStatus.Available]: 'Disponible',
+    [PropertyStatus.Rented]: 'Loué',
+    [PropertyStatus.UnderMaintenance]: 'En maintenance',
+    [PropertyStatus.Unavailable]: 'Indisponible'
+  };
+
+    return labels[this.property()?.propertyStatus!];
+  }
 }

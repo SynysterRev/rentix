@@ -45,7 +45,7 @@ export class PropertyDetails {
     this.propertyService.getPropertyDetails(id)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(response => {
-        //this.property.set(response);
+        this.property.set(response);
         ///////////////////////////////////////////!--TODO UPDATE DE LISTE
       });
   }
@@ -67,10 +67,12 @@ export class PropertyDetails {
   }
 
   deleteProperty() {
+    //Message popup de confirmation
     this.propertyService.deleteProperty(this.propertyId)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(response => {
         this.property.set(response);
+        //Call le routerLink pour renvoyer sur la page "Mes biens"
       });
   }
 

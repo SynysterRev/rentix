@@ -2,11 +2,7 @@
     <mat-card-header class="flex-col-reverse">
         <section class="flex items-center justify-between">
             <mat-card-title>{{property()?.name}}</mat-card-title>
-            @if(property()?.isAvailable){
-            <span>Disponible</span>
-            }@else {
-            <span class="text-sm">Louée</span>
-            }
+            <span class="text-sm">{{getPropertyStatus()}}</span>
         </section>
         <mat-card-subtitle><span>{{property()?.address?.street}}</span>
             <section class="flex items-center">
@@ -19,7 +15,7 @@
     <mat-card-content>
         <section class="flex items-center bg-background rounded-2xl w-full pt-2 pb-2 mt-2 mb-2">
             <lucide-angular [img]="UsersRound" class="w-6px h-6px m-2 bg-secondary rounded-4xl"></lucide-angular>
-            @if(property()?.isAvailable){
+            @if(property()?.tenantsNames?.length == 0){
             <p class="text-sm ml-4">Aucun locataire</p>
             }@else {
             <p class="flex flex-col text-sm ml-4 mr-4">

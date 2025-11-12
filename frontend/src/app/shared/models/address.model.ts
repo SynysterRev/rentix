@@ -7,3 +7,11 @@ export interface AddressDTO {
     complement: string,
     fullAddress: string
 }
+
+export interface AddressCreateDTO {
+    street: string,
+    city: string,
+    postalCode: string,
+    country: string,
+    complement: string,
+}

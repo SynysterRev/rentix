@@ -1,0 +1,10 @@
+@use "../../../../../styles/styles.scss";
+@reference "#tailwind.css";
+
+mat-card-title{
+    @apply flex justify-between;
+}
+
+mat-dialog-content{
+
+}

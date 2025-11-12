@@ -1,5 +1,5 @@
+@use "../../../../../styles/styles.scss";
 @reference "#tailwind.css";
-@import "../../../../../styles/styles.scss";
 
 @mixin padding-margin($padding, $margin) {
     padding: calc(var(--spacing) * $padding);

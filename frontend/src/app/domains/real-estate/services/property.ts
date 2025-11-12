@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { PropertyDetailsDTO, PropertyDTO } from '../models/property.model';
+import { PropertyCreateDTO, PropertyDetailsDTO, PropertyDTO } from '../models/property.model';
 import { environment } from '../../../../environments/environment';
 
 @Injectable({
@@ -23,5 +23,9 @@ export class PropertyService {
 
   deleteProperty(id: number) : Observable<PropertyDetailsDTO>{
     return this.http.delete<PropertyDetailsDTO>(`${this.apiUrl}/property/${id}`, this.headers);
+  }
+
+  createProperty(property: PropertyCreateDTO) : Observable<PropertyDetailsDTO>{
+    return this.http.post<PropertyDetailsDTO>(`${this.apiUrl}/property`, property, this.headers);
   }
 }
