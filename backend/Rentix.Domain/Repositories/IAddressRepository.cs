@@ -22,12 +22,6 @@ namespace Rentix.Domain.Repositories
         Task<Address> AddAsync(Address address);
 
         /// <summary>
-        /// Updates an existing Address entity in the persistence context.
-        /// </summary>
-        /// <param name="address">The Address entity to update.</param>
-        void Update(Address address);
-
-        /// <summary>
         /// Removes an Address entity by its unique identifier.
         /// </summary>
         /// <param name="id">The unique identifier of the address to remove.</param>
