@@ -1,6 +1,6 @@
 ﻿using Rentix.Application.RealEstate.DTOs.Properties;
 
-namespace Rentix.Application.Common.Interfaces
+namespace Rentix.Application.Common.Interfaces.Queries
 {
     public interface IPropertyQueries
     {

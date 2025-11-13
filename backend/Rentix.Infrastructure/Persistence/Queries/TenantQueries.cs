@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using Rentix.Application.Common.Interfaces;
+using Rentix.Application.Common.Interfaces.Queries;
 using Rentix.Application.Tenants.DTOs.Tenants;
 
 namespace Rentix.Infrastructure.Persistence.Queries

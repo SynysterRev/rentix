@@ -7,12 +7,12 @@ using Rentix.Application.Tenants.DTOs.Tenants;
 
 namespace Rentix.API.Controllers.v1
 {
-    public class TenantController : BaseController
+    public class TenantsController : BaseController
     {
         private readonly IMediator _mediator;
-        private readonly ILogger<TenantController> _logger;
+        private readonly ILogger<TenantsController> _logger;
 
-        public TenantController(IMediator mediator, ILogger<TenantController> logger)
+        public TenantsController(IMediator mediator, ILogger<TenantsController> logger)
         {
             _mediator = mediator;
             _logger = logger;

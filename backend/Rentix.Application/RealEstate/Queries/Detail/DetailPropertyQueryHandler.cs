@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using Rentix.Application.Common.Interfaces;
+using Rentix.Application.Common.Interfaces.Queries;
 using Rentix.Application.Exceptions;
 using Rentix.Application.RealEstate.DTOs.Properties;
 

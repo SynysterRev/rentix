@@ -74,8 +74,10 @@ namespace Rentix.Domain.Entities
         public LeaseDocumentType DocumentType { get; set; }
         public string FileName { get; set; } = string.Empty;
         public string FilePath { get; set; } = string.Empty;
+        public string ContentType { get; set; } = string.Empty;
         public DateTime UploadAt { get; set; } = DateTime.UtcNow;
-        public string? Description {  get; set; } = string.Empty;
+        public string? Description { get; set; } = string.Empty;
+        public long FileSizeInBytes { get; set; }
 
         public int PropertyId { get; set; }
         public virtual Property Property { get; set; } = null!;
@@ -89,8 +91,12 @@ namespace Rentix.Domain.Entities
             LeaseDocumentType documentType,
             string fileName,
             string filePath,
-            string? description,
-            int propertyId)
+            string contentType,
+            long fileSizeInBytes,
+            int propertyId,
+            DocumentEntityType? EntityType,
+            int? EntityId,
+            string? description)
         {
             if (string.IsNullOrWhiteSpace(fileName))
             {
@@ -102,6 +108,16 @@ namespace Rentix.Domain.Entities
                 throw new ValidationException("The file path is required");
             }
 
+            if (string.IsNullOrWhiteSpace(contentType))
+            {
+                throw new ValidationException("The content type is required");
+            }
+
+            if (fileSizeInBytes <= 0)
+            {
+                throw new ValidationException("The file size must be greater than zero");
+            }
+
             return new Document
             {
                 Description = description,
@@ -109,6 +125,10 @@ namespace Rentix.Domain.Entities
                 FilePath = filePath,
                 DocumentType = documentType,
                 FileName = fileName,
+                EntityType = EntityType,
+                EntityId = EntityId,
+                FileSizeInBytes = fileSizeInBytes,
+                ContentType = contentType
             };
         }
     }

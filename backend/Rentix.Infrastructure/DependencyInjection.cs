@@ -3,17 +3,19 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Rentix.Application.Common.Interfaces;
+using Rentix.Application.Common.Interfaces.Queries;
 using Rentix.Domain.Repositories;
 using Rentix.Infrastructure.Persistence;
 using Rentix.Infrastructure.Persistence.Queries;
 using Rentix.Infrastructure.Persistence.Repositories;
+using Rentix.Infrastructure.Services;
 
 namespace Rentix.Infrastructure
 {
     public static class DependencyInjection
     {
         public static IServiceCollection AddInfrastructure(
-            this IServiceCollection services, 
+            this IServiceCollection services,
             IConfiguration configuration,
             IHostEnvironment environment)
         {
@@ -40,10 +42,14 @@ namespace Rentix.Infrastructure
             services.AddScoped<IPropertyRepository, PropertyRepository>();
             services.AddScoped<IAddressRepository, AddressRepository>();
             services.AddScoped<ITenantRepository, TenantRepository>();
+            services.AddScoped<ILeaseRepository, LeaseRepository>();
+            services.AddScoped<IDocumentRepository, DocumentRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IPropertyQueries, PropertyQueries>();
             services.AddScoped<ITenantQueries, TenantQueries>();
-            services.AddScoped<IDocumentRepository, DocumentRepository>();
+            services.AddScoped<ILeaseQueries, LeaseQueries>();
+            services.AddTransient<IDocumentGenerator, DocumentGeneratorService>();
+            services.AddTransient<IFileStorageService, FileStorageService>();
 
             return services;
         }

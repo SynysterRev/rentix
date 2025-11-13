@@ -1,7 +1,6 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Moq;
-using Rentix.Application.Common.Interfaces;
 using Rentix.Application.Exceptions;
 using Rentix.Application.RealEstate.DTOs.Properties;
 using Rentix.Application.RealEstate.DTOs.Documents;
@@ -12,6 +11,7 @@ using FluentAssertions;
 using System;
 using System.Collections.Generic;
 using Rentix.Application.Tenants.DTOs.Tenants;
+using Rentix.Application.Common.Interfaces.Queries;
 
 namespace Rentix.Tests.Unit.RealEstate.Queries.Detail
 {

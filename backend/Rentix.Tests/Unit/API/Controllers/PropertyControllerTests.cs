@@ -16,20 +16,22 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Threading;
 using Rentix.Application.RealEstate.DTOs.Addresses;
+using Rentix.Application.RealEstate.Commands.Create;
+using Rentix.Application.RealEstate.Commands.Create.Property;
 
 namespace Rentix.Tests.Unit.API.Controllers
 {
     public class PropertyControllerTests
     {
         private readonly Mock<IMediator> _mediatorMock;
-        private readonly Mock<ILogger<PropertyController>> _loggerMock;
-        private readonly PropertyController _controller;
+        private readonly Mock<ILogger<PropertiesController>> _loggerMock;
+        private readonly PropertiesController _controller;
 
         public PropertyControllerTests()
         {
             _mediatorMock = new Mock<IMediator>();
-            _loggerMock = new Mock<ILogger<PropertyController>>();
-            _controller = new PropertyController(_mediatorMock.Object, _loggerMock.Object);
+            _loggerMock = new Mock<ILogger<PropertiesController>>();
+            _controller = new PropertiesController(_mediatorMock.Object, _loggerMock.Object);
         }
 
         [Fact]
@@ -212,6 +214,60 @@ namespace Rentix.Tests.Unit.API.Controllers
 
             // Act
             var result = await Record.ExceptionAsync(() => _controller.UpdateProperty(1, command));
+
+            // Assert
+            result.Should().BeOfType<System.Exception>();
+            result.Message.Should().Be("Unexpected error");
+        }
+
+        [Fact]
+        public async Task CreateProperty_ReturnsOk_WithCreatedProperty()
+        {
+            // Arrange
+            var command = new CreatePropertyCommand()
+            {
+                Name = "New Property",
+                MaxRent =1200m,
+                RentNoCharges =1000m,
+                RentCharges =200m,
+                Deposit =500m,
+                PropertyStatus = PropertyStatus.Available,
+                Surface =80m,
+                NumberRooms =3,
+                AddressId =1,
+                LandLordId = Guid.NewGuid()
+            };
+            var createdDto = new PropertyDetailDto { Id =10, Name = "New Property" };
+            _mediatorMock.Setup(m => m.Send(command, It.IsAny<CancellationToken>())).ReturnsAsync(createdDto);
+
+            // Act
+            var actionResult = await _controller.CreateProperty(command);
+
+            // Assert
+            var createdResult = Assert.IsType<CreatedAtActionResult>(actionResult.Result);
+            createdResult.Value.Should().Be(createdDto);
+        }
+
+        [Fact]
+        public async Task CreateProperty_ThrowsNotFoundException_WhenNotFound()
+        {
+            // Arrange
+            var command = new CreatePropertyCommand() { Name = "NotFound" };
+            _mediatorMock.Setup(m => m.Send(command, It.IsAny<CancellationToken>())).ThrowsAsync(new NotFoundException("Property not found"));
+
+            // Act & Assert
+            await Assert.ThrowsAsync<NotFoundException>(() => _controller.CreateProperty(command));
+        }
+
+        [Fact]
+        public async Task CreateProperty_ReturnsInternalServerError_OnUnexpectedException()
+        {
+            // Arrange
+            var command = new CreatePropertyCommand() { Name = "Error" };
+            _mediatorMock.Setup(m => m.Send(command, It.IsAny<CancellationToken>())).ThrowsAsync(new System.Exception("Unexpected error"));
+
+            // Act
+            var result = await Record.ExceptionAsync(() => _controller.CreateProperty(command));
 
             // Assert
             result.Should().BeOfType<System.Exception>();

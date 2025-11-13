@@ -18,12 +18,12 @@ namespace Rentix.Tests.Unit.API.Controllers
     public class TenantControllerTests
     {
         private readonly Mock<IMediator> _mediatorMock = new();
-        private readonly Mock<ILogger<TenantController>> _loggerMock = new();
-        private readonly TenantController _controller;
+        private readonly Mock<ILogger<TenantsController>> _loggerMock = new();
+        private readonly TenantsController _controller;
 
         public TenantControllerTests()
         {
-            _controller = new TenantController(_mediatorMock.Object, _loggerMock.Object);
+            _controller = new TenantsController(_mediatorMock.Object, _loggerMock.Object);
         }
 
         [Fact]
