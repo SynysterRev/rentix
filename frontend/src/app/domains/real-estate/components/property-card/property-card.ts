@@ -17,13 +17,13 @@ export class PropertyCard {
   readonly MapPin = MapPin;
   property = input<PropertyDTO>();
 
-  getPropertyStatus(): string{
+  getPropertyStatus(): string {
     const labels = {
-    [PropertyStatus.Available]: 'Disponible',
-    [PropertyStatus.Rented]: 'Loué',
-    [PropertyStatus.UnderMaintenance]: 'En maintenance',
-    [PropertyStatus.Unavailable]: 'Indisponible'
-  };
+      [PropertyStatus.Available]: 'Disponible',
+      [PropertyStatus.Rented]: 'Loué',
+      [PropertyStatus.UnderMaintenance]: 'En maintenance',
+      [PropertyStatus.Unavailable]: 'Indisponible'
+    };
 
     return labels[this.property()?.propertyStatus!];
   }

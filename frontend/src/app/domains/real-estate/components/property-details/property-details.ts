@@ -4,7 +4,10 @@ import { PropertyDetailsDTO } from '../../models/property.model';
 import { PropertyService } from '../../services/property';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CommonModule, DatePipe } from '@angular/common';
-import { LucideAngularModule, CircleAlert, MapPin, Euro, FileText, UsersRound, Mail, Phone, Calendar, CalendarOff, Trash2 } from "lucide-angular";
+import { LucideAngularModule, CircleAlert, MapPin, Euro, FileText, UsersRound, Mail, Phone, Calendar, CalendarOff, Trash2, UserRoundPlus } from "lucide-angular";
+import { PropertyStatus } from '../../../../shared/models/property-status.model';
+import { MatDialog } from '@angular/material/dialog';
+import { RentPropertyDialog } from '../rent-property-dialog/rent-property-dialog';
 
 @Component({
   selector: 'app-property-details',
@@ -30,8 +33,9 @@ export class PropertyDetails {
   readonly Calendar = Calendar;
   readonly CalendarOff = CalendarOff;
   readonly Trash2 = Trash2;
+  readonly UserRoundPlus = UserRoundPlus;
 
-  constructor(private route: ActivatedRoute) {
+  constructor(private route: ActivatedRoute, private dialog: MatDialog) {
     this.route.paramMap.subscribe(params => {
       const newId = Number(params.get('id'));
       if (newId !== this.propertyId) {
@@ -50,6 +54,27 @@ export class PropertyDetails {
       });
   }
 
+  deleteProperty() {
+    //Message popup de confirmation
+    this.propertyService.deleteProperty(this.propertyId)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(response => {
+        this.property.set(response);
+        //Call le routerLink pour renvoyer sur la page "Mes biens"
+      });
+  }
+
+  getPropertyStatus(): string {
+    const labels = {
+      [PropertyStatus.Available]: 'Disponible',
+      [PropertyStatus.Rented]: 'Loué',
+      [PropertyStatus.UnderMaintenance]: 'En maintenance',
+      [PropertyStatus.Unavailable]: 'Indisponible'
+    };
+
+    return labels[this.property()?.propertyStatus!];
+  }
+
   endLease() {
     console.log("Fin de la location - Actions à déterminer")
   }
@@ -66,15 +91,33 @@ export class PropertyDetails {
     console.log("Generation d'une quittance - Actions à déterminer")
   }
 
-  deleteProperty() {
-    //Message popup de confirmation
-    this.propertyService.deleteProperty(this.propertyId)
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe(response => {
-        this.property.set(response);
-        //Call le routerLink pour renvoyer sur la page "Mes biens"
-      });
+  rentProperty() {
+    const dialogRef = this.dialog.open(RentPropertyDialog, {
+      data: { propertyId: this.propertyId },
+      width: '1000px',
+      disableClose: true, // Prevent closing by clicking outside
+    });
+
+    // dialogRef.afterClosed().subscribe((data: PropertyDetailsDTO) => {
+    //   if (data === undefined) {
+    //     return;
+    //   }
+    // 
+    // const property: PropertyDTO = {
+    //   id: data.id,
+    //   name: data.name,
+    //   totalRent: data.rentWithoutCharges + data.rentCharges,
+    //   tenantsNames: [],
+    //   propertyStatus: data.propertyStatus,
+    //   address: data.address,
+    //   isAvailable: data.isAvailable
+    // }
+    // this.properties.update(list => [...list, property]);
+    // })
   }
 
+  updateRent() {
+    console.log("updateRent - Actions à déterminer")
+  }
 }
 

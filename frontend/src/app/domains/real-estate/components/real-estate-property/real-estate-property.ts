@@ -45,16 +45,21 @@ export class RealEstateProperty {
     });
 
     dialogRef.afterClosed().subscribe((data: PropertyDetailsDTO) => {
-      const property: PropertyDTO = {
-          id: data.id,
-          name: data.name,
-          totalRent: data.rentWithoutCharges + data.rentCharges,
-          tenantsNames: [],
-          propertyStatus: data.propertyStatus,
-          address: data.address,
-          isAvailable: data.isAvailable
+      if (data === undefined) {
+        return;
       }
-      this.properties.update(list =>[...list, property]);
+
+      const property: PropertyDTO = {
+        id: data.id,
+        name: data.name,
+        totalRent: data.rentWithoutCharges + data.rentCharges,
+        tenantsNames: [],
+        propertyStatus: data.propertyStatus,
+        address: data.address,
+        isAvailable: data.isAvailable
+      }
+      this.properties.update(list => [...list, property]);
     })
   }
+
 }

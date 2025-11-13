@@ -40,7 +40,7 @@ export class CreatePropertyDialog {
   constructor(public dialogRef: MatDialogRef<CreatePropertyDialog>) { }
 
   closeDialog() {
-    this.dialogRef.close('Création annulée');
+    this.dialogRef.close();
   }
 
   onSubmitCreatePropertyForm() {

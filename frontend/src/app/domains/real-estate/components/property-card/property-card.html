@@ -28,7 +28,11 @@
 
         </section>
         <section class="flex justify-between border-t">
+            @if(property()?.tenantsNames?.length! >= 1){
             <p>Loyer mensuel</p>
+            }@else {
+            <p>Loyer prévisionnel</p>
+            }
             <p>{{property()?.totalRent}} €</p>
         </section>
     </mat-card-content>

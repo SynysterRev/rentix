@@ -6,3 +6,10 @@ export interface TenantDTO {
     phoneNumber: string,
     fullName: string
 }
+
+export interface TenantCreateDTO {
+    firstName: string,
+    lastName: string,
+    email: string,
+    phone: string,
+}

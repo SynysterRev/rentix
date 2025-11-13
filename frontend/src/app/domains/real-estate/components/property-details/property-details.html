@@ -11,23 +11,17 @@
             <span>{{property()?.address?.city}}</span>
         </h2>
     </section>
-    <p>
-        @if(property()?.isAvailable){
-        <span>Disponible</span>
-        }@else {
-        <span>Louée</span>
-        }
-    </p>
+    <p>{{getPropertyStatus()}}</p>
 </section>
 
 <!-- ZONE LOYER ENCADRE -->
-<section class="bg-border space flex items-center">
+<!-- <section class="bg-border space flex items-center">
     <lucide-angular [img]="CircleAlert"></lucide-angular>
     <section>
         <p>Zone à loyer encadré :</p>
         <p>Loyer maximum autorisé : {{property()?.maxRent}}€ (Zone A)</p>
     </section>
-</section>
+</section> -->
 
 <!-- INFORMATION SUR LA PROPRIETE -->
 <section class="bg-border space">
@@ -42,20 +36,23 @@
 </section>
 
 <!-- ACTIVITE RECENTE -->
-<section class="bg-border space">
+<!-- <section class="bg-border space">
     <h3>Activité récente</h3>
-</section>
+</section> -->
 
 <!-- ACTIONS RAPIDES -->
 <section class="bg-border space">
     <h3>Actions rapides</h3>
     <section>
-        <button (click)="addTransaction()">
-            <lucide-angular [img]="FileText"/> Ajouter une transaction
+        <!-- <button (click)="addTransaction()">
+            <lucide-angular [img]="FileText" /> Ajouter une transaction
+        </button> -->
+        <button (click)="updateRent()">
+            <lucide-angular [img]="Calendar"></lucide-angular> Modifier loyer
         </button>
-        <button (click)="addReminder()">
+        <!-- <button (click)="addReminder()">
             <lucide-angular [img]="Calendar"></lucide-angular> Planifier un rappel
-        </button>
+        </button> -->
         <button (click)="endLease()">
             <lucide-angular [img]="CalendarOff"></lucide-angular> Terminer le bail
         </button>
@@ -65,8 +62,9 @@
     </section>
 </section>
 
-<!-- LOCATAIRE ACTUEL -->
+<!-- LOCATAIRE ACTUEL / AUCUN LOCATAIRE-->
 <section class="bg-border space">
+    @if(property()?.tenants?.length! >= 1){
     <h3 class="flex justify-between items-center">
         <span>Locataire actuel</span>
         <button (click)="generateRentReceipt()">
@@ -106,6 +104,14 @@
                 date:'shortDate'}}</span>
         </p>
     </section>
+    }@else {
+    <h3 class="flex justify-between items-center">
+        <span>Aucun locataire</span>
+        <button (click)="rentProperty()">
+            <lucide-angular [img]="UserRoundPlus"></lucide-angular> Louer le bien
+        </button>
+    </h3>
+    }
 </section>
 
 <!-- DOCUMENTS -->
