@@ -27,4 +27,8 @@
 		<ProjectReference Include="..\Rentix.Infrastructure\Rentix.Infrastructure.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="wwwroot\Documents\" />
+	</ItemGroup>
+
 </Project>

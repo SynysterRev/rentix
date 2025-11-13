@@ -43,6 +43,7 @@ namespace Rentix.Infrastructure
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IPropertyQueries, PropertyQueries>();
             services.AddScoped<ITenantQueries, TenantQueries>();
+            services.AddScoped<IDocumentRepository, DocumentRepository>();
 
             return services;
         }
