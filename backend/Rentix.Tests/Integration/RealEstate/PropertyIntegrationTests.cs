@@ -31,7 +31,7 @@ namespace Rentix.Tests.Integration.RealEstate
         public async Task GetProperties_ReturnsEmptyList_WhenNoPropertiesExist()
         {
             // Act
-            var response = await _client.GetAsync("/api/v1/property");
+            var response = await _client.GetAsync("/api/v1/properties");
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -47,7 +47,7 @@ namespace Rentix.Tests.Integration.RealEstate
             await SeedPropertiesAsync(3);
 
             // Act
-            var response = await _client.GetAsync("/api/v1/property");
+            var response = await _client.GetAsync("/api/v1/properties");
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -63,7 +63,7 @@ namespace Rentix.Tests.Integration.RealEstate
             var propertyId = await SeedSinglePropertyAsync();
 
             // Act
-            var response = await _client.GetAsync($"/api/v1/property/{propertyId}");
+            var response = await _client.GetAsync($"/api/v1/properties/{propertyId}");
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -77,7 +77,7 @@ namespace Rentix.Tests.Integration.RealEstate
         public async Task GetPropertyDetail_ReturnsNotFound_WhenPropertyDoesNotExist()
         {
             // Act
-            var response = await _client.GetAsync("/api/v1/property/999999");
+            var response = await _client.GetAsync("/api/v1/properties/999999");
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.NotFound);
@@ -108,7 +108,7 @@ namespace Rentix.Tests.Integration.RealEstate
             };
 
             // Act
-            var response = await _client.PostAsJsonAsync("/api/v1/property", command);
+            var response = await _client.PostAsJsonAsync("/api/v1/properties", command);
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.Created);
@@ -143,7 +143,7 @@ namespace Rentix.Tests.Integration.RealEstate
             };
 
             // Act
-            var response = await _client.PostAsJsonAsync("/api/v1/property", command);
+            var response = await _client.PostAsJsonAsync("/api/v1/properties", command);
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.Created);
@@ -196,7 +196,7 @@ namespace Rentix.Tests.Integration.RealEstate
             };
 
             // Act
-            var response = await _client.PostAsJsonAsync("/api/v1/property", command);
+            var response = await _client.PostAsJsonAsync("/api/v1/properties", command);
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.InternalServerError);
@@ -227,7 +227,7 @@ namespace Rentix.Tests.Integration.RealEstate
             };
 
             // Act
-            var response = await _client.PostAsJsonAsync("/api/v1/property", command);
+            var response = await _client.PostAsJsonAsync("/api/v1/properties", command);
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
@@ -251,7 +251,7 @@ namespace Rentix.Tests.Integration.RealEstate
             };
 
             // Act
-            var response = await _client.PutAsJsonAsync($"/api/v1/property/{propertyId}", command);
+            var response = await _client.PutAsJsonAsync($"/api/v1/properties/{propertyId}", command);
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -280,7 +280,7 @@ namespace Rentix.Tests.Integration.RealEstate
             };
 
             // Act
-            var response = await _client.PutAsJsonAsync("/api/v1/property/999999", command);
+            var response = await _client.PutAsJsonAsync("/api/v1/properties/999999", command);
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.NotFound);
@@ -304,7 +304,7 @@ namespace Rentix.Tests.Integration.RealEstate
             };
 
             // Act
-            var response = await _client.PutAsJsonAsync($"/api/v1/property/{propertyId}", command);
+            var response = await _client.PutAsJsonAsync($"/api/v1/properties/{propertyId}", command);
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
@@ -328,7 +328,7 @@ namespace Rentix.Tests.Integration.RealEstate
             };
 
             // Act
-            var response = await _client.PutAsJsonAsync($"/api/v1/property/{propertyId}", command);
+            var response = await _client.PutAsJsonAsync($"/api/v1/properties/{propertyId}", command);
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -347,13 +347,13 @@ namespace Rentix.Tests.Integration.RealEstate
             var propertyId = await SeedSinglePropertyAsync();
 
             // Act
-            var response = await _client.DeleteAsync($"/api/v1/property/{propertyId}");
+            var response = await _client.DeleteAsync($"/api/v1/properties/{propertyId}");
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.NoContent);
 
             // Verify property is deleted
-            var getResponse = await _client.GetAsync($"/api/v1/property/{propertyId}");
+            var getResponse = await _client.GetAsync($"/api/v1/properties/{propertyId}");
             getResponse.StatusCode.Should().Be(HttpStatusCode.NotFound);
         }
 
@@ -361,7 +361,7 @@ namespace Rentix.Tests.Integration.RealEstate
         public async Task DeleteProperty_ReturnsNotFound_WhenPropertyDoesNotExist()
         {
             // Act
-            var response = await _client.DeleteAsync("/api/v1/property/999999");
+            var response = await _client.DeleteAsync("/api/v1/properties/999999");
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.NotFound);
@@ -391,14 +391,14 @@ namespace Rentix.Tests.Integration.RealEstate
                 )
             };
 
-            var createResponse = await _client.PostAsJsonAsync("/api/v1/property", createCommand);
+            var createResponse = await _client.PostAsJsonAsync("/api/v1/properties", createCommand);
             createResponse.StatusCode.Should().Be(HttpStatusCode.Created);
             var createdProperty = await createResponse.Content.ReadFromJsonAsync<PropertyDetailDto>();
             createdProperty.Should().NotBeNull();
             var propertyId = createdProperty!.Id;
 
             // Read
-            var getResponse = await _client.GetAsync($"/api/v1/property/{propertyId}");
+            var getResponse = await _client.GetAsync($"/api/v1/properties/{propertyId}");
             getResponse.StatusCode.Should().Be(HttpStatusCode.OK);
 
             // Update
@@ -413,18 +413,18 @@ namespace Rentix.Tests.Integration.RealEstate
                 NumberRooms = null,
                 Address = null
             };
-            var updateResponse = await _client.PutAsJsonAsync($"/api/v1/property/{propertyId}", updateCommand);
+            var updateResponse = await _client.PutAsJsonAsync($"/api/v1/properties/{propertyId}", updateCommand);
             updateResponse.StatusCode.Should().Be(HttpStatusCode.OK);
             var updatedProperty = await updateResponse.Content.ReadFromJsonAsync<PropertyDetailDto>();
             updatedProperty!.Name.Should().Be("Updated Workflow Property");
             updatedProperty.PropertyStatus.Should().Be(PropertyStatus.Rented);
 
             // Delete
-            var deleteResponse = await _client.DeleteAsync($"/api/v1/property/{propertyId}");
+            var deleteResponse = await _client.DeleteAsync($"/api/v1/properties/{propertyId}");
             deleteResponse.StatusCode.Should().Be(HttpStatusCode.NoContent);
 
             // Verify deletion
-            var verifyResponse = await _client.GetAsync($"/api/v1/property/{propertyId}");
+            var verifyResponse = await _client.GetAsync($"/api/v1/properties/{propertyId}");
             verifyResponse.StatusCode.Should().Be(HttpStatusCode.NotFound);
         }
 
