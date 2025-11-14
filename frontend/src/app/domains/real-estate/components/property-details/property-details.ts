@@ -1,4 +1,4 @@
-import { Component, DestroyRef, inject, input, OnInit, signal } from '@angular/core';
+import { Component, DestroyRef, inject, input, LOCALE_ID, OnInit, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { PropertyDetailsDTO } from '../../models/property.model';
 import { PropertyService } from '../../services/property';
@@ -98,22 +98,9 @@ export class PropertyDetails {
       disableClose: true, // Prevent closing by clicking outside
     });
 
-    // dialogRef.afterClosed().subscribe((data: PropertyDetailsDTO) => {
-    //   if (data === undefined) {
-    //     return;
-    //   }
-    // 
-    // const property: PropertyDTO = {
-    //   id: data.id,
-    //   name: data.name,
-    //   totalRent: data.rentWithoutCharges + data.rentCharges,
-    //   tenantsNames: [],
-    //   propertyStatus: data.propertyStatus,
-    //   address: data.address,
-    //   isAvailable: data.isAvailable
-    // }
-    // this.properties.update(list => [...list, property]);
-    // })
+    dialogRef.beforeClosed().subscribe(() => 
+      this.loadPropertyDetails(this.propertyId)
+    )
   }
 
   updateRent() {

@@ -1,13 +1,17 @@
 import { TenantCreateDTO } from "./tenant.model";
 
+export interface LeaseDTO {
+
+}
+
 export interface LeaseCreateDTO {
-    propertyId: number,
-    tenants: TenantCreateDTO,
-    rentWithoutCharges: number,
-    rentCharges: number,
-    leaseStartDate: string,
-    leaseEndDate: string,
-    deposit: number,
-    note: string
-    // document:
+    tenants: TenantCreateDTO[],
+    rentAmount: number,
+    chargesAmount: number,
+    startDate: string,
+    endDate: string,
+    Deposit: number,
+    notes: string,
+    isActive: boolean,
+    leaseDocument: File
 }

@@ -11,5 +11,5 @@ export interface TenantCreateDTO {
     firstName: string,
     lastName: string,
     email: string,
-    phone: string,
+    phoneNumber: string,
 }

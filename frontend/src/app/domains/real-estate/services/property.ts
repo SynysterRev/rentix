@@ -14,18 +14,18 @@ export class PropertyService {
   private headers = { withCredentials: true }
 
   getProperties(): Observable<PropertyDTO[]> {
-    return this.http.get<PropertyDTO[]>(`${this.apiUrl}/property`, this.headers);
+    return this.http.get<PropertyDTO[]>(`${this.apiUrl}/properties`, this.headers);
   }
 
   getPropertyDetails(id: number): Observable<PropertyDetailsDTO> {
-    return this.http.get<PropertyDetailsDTO>(`${this.apiUrl}/property/${id}`, this.headers);
+    return this.http.get<PropertyDetailsDTO>(`${this.apiUrl}/properties/${id}`, this.headers);
   }
 
   deleteProperty(id: number) : Observable<PropertyDetailsDTO>{
-    return this.http.delete<PropertyDetailsDTO>(`${this.apiUrl}/property/${id}`, this.headers);
+    return this.http.delete<PropertyDetailsDTO>(`${this.apiUrl}/properties/${id}`, this.headers);
   }
 
   createProperty(property: PropertyCreateDTO) : Observable<PropertyDetailsDTO>{
-    return this.http.post<PropertyDetailsDTO>(`${this.apiUrl}/property`, property, this.headers);
+    return this.http.post<PropertyDetailsDTO>(`${this.apiUrl}/properties`, property, this.headers);
   }
 }

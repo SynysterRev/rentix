@@ -6,7 +6,8 @@ import { NavigationBar } from "./core/layout/navigation-bar/navigation-bar";
   selector: 'app-root',
   imports: [RouterOutlet, NavigationBar],
   templateUrl: './app.html',
-  styleUrl: '../styles/styles.scss'
+  styleUrl: '../styles/styles.scss',
+  
 })
 export class App {
   protected title = 'frontend';

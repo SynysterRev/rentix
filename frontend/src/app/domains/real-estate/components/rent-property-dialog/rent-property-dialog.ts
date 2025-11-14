@@ -6,7 +6,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormControl, FormGroup, FormGroupDirective, FormsModule, NgForm, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NgTemplateOutlet, NgClass } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
-import { LucideAngularModule, Pencil, Check, FileText, UserRound, Save, ArrowBigRight, ArrowBigLeft, X } from "lucide-angular";
+import { LucideAngularModule, Pencil, Check, FileText, UserRound, Save, ArrowBigRight, ArrowBigLeft, X, Folder } from "lucide-angular";
 import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
 import { MatButtonModule } from '@angular/material/button';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
@@ -16,7 +16,8 @@ import { DateAdapter, ErrorStateMatcher, MatNativeDateModule, NativeDateAdapter,
 import { TenantCreateDTO } from '../../../../shared/models/tenant.model';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { LeaseService } from '../../../../shared/services/lease';
-import { MyErrorStateMatcher } from './my-error-state-matcher';
+import { MyErrorStateMatcher } from '../../../../shared/utils/my-error-state-matcher';
+import { FileUploadService } from '../../../../shared/services/file-upload';
 
 @Component({
   selector: 'app-rent-property-dialog',
@@ -39,14 +40,13 @@ import { MyErrorStateMatcher } from './my-error-state-matcher';
   providers: [
     { provide: STEPPER_GLOBAL_OPTIONS, useValue: { displayDefaultIndicatorType: false } },
     provideNativeDateAdapter(),
-    {provide: ErrorStateMatcher, useClass: ShowOnDirtyErrorStateMatcher}
+    { provide: ErrorStateMatcher, useClass: ShowOnDirtyErrorStateMatcher }
   ]
 })
 
-
-
 export class RentPropertyDialog {
   private leaseService = inject(LeaseService);
+  private fileUploadService = inject(FileUploadService);
   private destroyRef = inject(DestroyRef);
 
   readonly Pencil = Pencil;
@@ -57,23 +57,25 @@ export class RentPropertyDialog {
   readonly ArrowBigRight = ArrowBigRight;
   readonly ArrowBigLeft = ArrowBigLeft;
   readonly X = X;
+  readonly Folder = Folder;
 
   matcher = new MyErrorStateMatcher();
+  selectedFile!: File | null;
 
   createLeaseForm = new FormGroup({
-    rentWithoutCharges: new FormControl('', [Validators.required]),
-    rentCharges: new FormControl('', [Validators.required]),
-    leaseStartDate: new FormControl('', [Validators.required]),
-    leaseEndDate: new FormControl('', [Validators.required]),
-    deposit: new FormControl('', [Validators.required]),
-    note: new FormControl(''),
+    rentAmount: new FormControl('900', [Validators.required]),
+    chargesAmount: new FormControl('100', [Validators.required]),
+    startDate: new FormControl('01/11/2025', [Validators.required]),
+    endDate: new FormControl('01/11/2026', [Validators.required]),
+    deposit: new FormControl('100', [Validators.required]),
+    notes: new FormControl(''),
   });
 
   createTenantForm = new FormGroup({
-    firstName: new FormControl('', [Validators.required, Validators.minLength(3)]),
-    lastName: new FormControl('', [Validators.required, Validators.minLength(3)]),
-    email: new FormControl('', [Validators.required, Validators.email]),
-    phone: new FormControl('', [Validators.required, Validators.maxLength(10)])
+    firstName: new FormControl('Jean', [Validators.required, Validators.minLength(3)]),
+    lastName: new FormControl('Michel', [Validators.required, Validators.minLength(3)]),
+    email: new FormControl('jean.michel@gmail.com', [Validators.required, Validators.email]),
+    phoneNumber: new FormControl('0612131415', [Validators.required, Validators.maxLength(10)])
   });
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: any, public dialogRef: MatDialogRef<RentPropertyDialog>) { }
@@ -84,32 +86,40 @@ export class RentPropertyDialog {
 
   createLease() {
     if (this.createTenantForm.valid && this.createLeaseForm.valid) {
-      const tenant: TenantCreateDTO = {
-        firstName: this.createTenantForm.value.firstName!,
-        lastName: this.createTenantForm.value.lastName!,
-        email: this.createTenantForm.value.email!,
-        phone: this.createTenantForm.value.phone!,
-      };
+      this.fileUploadService.loadTestFile().subscribe(blob => {
+        const file = new File([blob], 'test.txt', { type: blob.type });
 
-      const lease: LeaseCreateDTO = {
-        propertyId: this.data.propertyId!,
-        tenants: tenant,
-        rentWithoutCharges: Number(this.createLeaseForm.value.rentWithoutCharges!),
-        rentCharges: Number(this.createLeaseForm.value.rentCharges!),
-        leaseStartDate: this.createLeaseForm.value.leaseStartDate!,
-        leaseEndDate: this.createLeaseForm.value.leaseEndDate!,
-        deposit: Number(this.createLeaseForm.value.deposit!),
-        note: this.createLeaseForm.value.note!
-      }
+        const formData = new FormData();
 
-      this.leaseService.createLease(lease)
-        .pipe(takeUntilDestroyed(this.destroyRef))
-        .subscribe(response => {
-          this.dialogRef.close(response);
-        });
+        const startDate = new Date(this.createLeaseForm.value.startDate!);
+        const endDate = new Date(this.createLeaseForm.value.endDate!);
+
+        formData.append("LeaseDocument", this.selectedFile!);
+        formData.append("Deposit", this.createLeaseForm.value.deposit!);
+        formData.append("rentAmount", this.createLeaseForm.value.rentAmount!);
+        formData.append("chargesAmount", this.createLeaseForm.value.chargesAmount!);
+        formData.append("startDate", startDate.toISOString());
+        formData.append("endDate", endDate.toISOString());
+        formData.append("notes", this.createLeaseForm.value.notes!);
+        formData.append("isActive", "true");
+        formData.append("Tenants[0].FirstName", this.createTenantForm.value.firstName!);
+        formData.append("Tenants[0].LastName", this.createTenantForm.value.lastName!);
+        formData.append("Tenants[0].Email", this.createTenantForm.value.email!);
+        formData.append("Tenants[0].PhoneNumber", this.createTenantForm.value.phoneNumber!);
+
+        this.leaseService.createLease(formData, this.data.propertyId)
+          .pipe(takeUntilDestroyed(this.destroyRef))
+          .subscribe(response => {
+            this.dialogRef.close(response);
+          });
+      })
 
     } else {
       console.log('Form is invalid :  ');
     }
+  }
+
+  onFileSelected(event: any) {
+    this.selectedFile = event.target.files[0];
   }
 }

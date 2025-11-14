@@ -100,7 +100,7 @@
         <lucide-angular [img]="Calendar"></lucide-angular>
         <p class="flex flex-col p-1">
             <span>Période de bail</span>
-            <span>{{property()?.leaseStartDate | date:'shortDate'}} - {{property()?.leaseStartDate |
+            <span>{{property()?.leaseStartDate | date:'shortDate'}} - {{property()?.leaseEndDate |
                 date:'shortDate'}}</span>
         </p>
     </section>

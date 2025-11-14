@@ -1,17 +1,16 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
-import { LeaseCreateDTO, LeaseDTO } from '../models/lease.model';
 
 @Injectable({
   providedIn: 'root'
 })
-export class LeaseService {
+export class FileUploadService {
   private http = inject(HttpClient);
   private apiUrl = environment.apiUrl;
   private headers = { withCredentials: true };
 
-  createLease(lease: FormData, propertyId: number){
-    return this.http.post<LeaseDTO>(`${this.apiUrl}/properties/${propertyId}/leases`, lease, this.headers);
+  loadTestFile() {
+    return this.http.get('assets/test.txt', { responseType: 'blob' });
   }
 }

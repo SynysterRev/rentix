@@ -64,7 +64,7 @@ export class CreatePropertyDialog {
         numberRooms: Number(this.createPropertyForm.value.numberRooms),
         addressId: null,
         addressDto: address,
-        landlordId: '686f1ef6-fc44-421e-9fc5-07fe080c1dbc'
+        landlordId: 'd176a09f-321c-43e1-8247-20fc6a3cc266'
       };
 
       this.propertyService.createProperty(property)

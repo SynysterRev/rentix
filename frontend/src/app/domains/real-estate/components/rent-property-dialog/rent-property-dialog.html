@@ -20,38 +20,53 @@
         <lucide-angular [img]="Save"></lucide-angular>
     </ng-template>
 
+    <ng-template matStepperIcon="folder">
+        <lucide-angular [img]="Folder"></lucide-angular>
+    </ng-template>
+
     <!-- LEASE FORM -->
     <mat-step [stepControl]="createLeaseForm" state="lease">
         <form [formGroup]="createLeaseForm">
             <ng-template matStepLabel>Bail</ng-template>
             <mat-form-field>
                 <mat-label>Loyer Hors Charges (en €)</mat-label>
-                <input matInput type="number" formControlName="rentWithoutCharges" />
+                <input matInput type="number" formControlName="rentAmount" />
             </mat-form-field>
             <mat-form-field>
                 <mat-label>Charges (en €)</mat-label>
-                <input matInput type="number" formControlName="rentCharges" />
+                <input matInput type="number" formControlName="chargesAmount" />
             </mat-form-field>
             <mat-form-field>
                 <mat-label>Début du bail</mat-label>
-                <input matInput type="date" formControlName="leaseStartDate" />
-                <!-- <input matInput [matDatepicker]="picker" formControlName="leaseStartDate">
+                <input matInput type="date" formControlName="startDate" />
+                <!-- <input matInput [matDatepicker]="picker" formControlName="startDate">
                 <mat-hint>MM/DD/YYYY</mat-hint>
                 <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-datepicker #picker></mat-datepicker> -->
             </mat-form-field>
             <mat-form-field>
                 <mat-label>Fin du bail</mat-label>
-                <input matInput type="date" formControlName="leaseEndDate" />
+                <input matInput type="date" formControlName="endDate" />
             </mat-form-field>
             <mat-form-field>
                 <mat-label>Caution (en €)</mat-label>
                 <input matInput type="number" formControlName="deposit" />
             </mat-form-field>
             <mat-form-field>
-                <mat-label>Note</mat-label>
-                <input matInput type="textarea" formControlName="note" />
+                <mat-label>Notes</mat-label>
+                <input matInput type="textarea" formControlName="notes" />
             </mat-form-field>
+            <mat-form-field>
+                <mat-label>Document</mat-label>
+                <input type="text" matInput [value]="selectedFile?.name || ''" placeholder="Choisir un fichier" readonly
+                    (click)="fileInput.click()" />
+
+                <button mat-icon-button matSuffix (click)="fileInput.click()" >
+                    <!-- <mat-icon>attach_file</mat-icon> -->
+                    <lucide-angular [img]="Folder"></lucide-angular>
+                </button>
+            </mat-form-field>
+            <input #fileInput type="file" (change)="onFileSelected($event)" hidden />
             <div class="flex justify-end">
                 <button matFab matStepperNext>
                     <lucide-angular [img]="ArrowBigRight"></lucide-angular>
@@ -80,7 +95,7 @@
             </mat-form-field>
             <mat-form-field>
                 <mat-label>Numéro de téléphone</mat-label>
-                <input matInput type="text" formControlName="phone" />
+                <input matInput type="text" formControlName="phoneNumber" />
             </mat-form-field>
             <div class="flex justify-between">
                 <button matFab matStepperPrevious>
