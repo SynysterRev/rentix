@@ -1,8 +1,6 @@
 using Microsoft.EntityFrameworkCore;
-using Rentix.Domain.Entities;
-using Rentix.Infrastructure.Persistence;
-using Rentix.Application.Common.Interfaces;
-using Rentix.Application.Lease.DTOs;
+using Rentix.Application.Common.Interfaces.Queries;
+using Rentix.Application.Leases.DTOs;
 
 namespace Rentix.Infrastructure.Persistence.Queries
 {

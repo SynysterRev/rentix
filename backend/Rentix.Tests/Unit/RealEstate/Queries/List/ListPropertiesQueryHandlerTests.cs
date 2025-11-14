@@ -2,12 +2,12 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Moq;
-using Rentix.Application.Common.Interfaces;
 using Rentix.Application.RealEstate.DTOs.Properties;
 using Rentix.Application.RealEstate.Queries.List;
 using Rentix.Domain.Entities;
 using Xunit;
 using FluentAssertions;
+using Rentix.Application.Common.Interfaces.Queries;
 
 namespace Rentix.Tests.Unit.RealEstate.Queries.List
 {

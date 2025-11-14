@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using Rentix.Application.Tenants.DTOs.Tenants;
 
 namespace Rentix.Application.Tenants.Commands.Create
 {
@@ -6,19 +7,9 @@ namespace Rentix.Application.Tenants.Commands.Create
     {
         public CreateTenantCommandValidator()
         {
-            RuleFor(x => x.FirstName)
-                .NotEmpty()
-                .MaximumLength(100);
-
-            RuleFor(x => x.LastName)
-                .NotEmpty()
-                .MaximumLength(100);
-
-            RuleFor(x => x.Email)
-                .NotNull();
-
-            RuleFor(x => x.Phone)
-                .NotNull();
+            RuleFor(x => x.TenantData)
+            .NotNull()
+            .SetValidator(new TenantCreateDtoValidator());
         }
     }
 }
