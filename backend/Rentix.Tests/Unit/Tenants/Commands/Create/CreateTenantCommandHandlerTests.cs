@@ -1,13 +1,10 @@
-using System;
-using System.Threading;
-using System.Threading.Tasks;
 using FluentAssertions;
 using Moq;
 using Rentix.Application.Tenants.Commands.Create;
 using Rentix.Application.Tenants.DTOs.Tenants;
 using Rentix.Domain.Entities;
-using Rentix.Domain.ValueObjects;
 using Rentix.Domain.Repositories;
+using Rentix.Domain.ValueObjects;
 using Xunit;
 
 namespace Rentix.Tests.Unit.Tenants.Commands.Create
@@ -41,12 +38,7 @@ namespace Rentix.Tests.Unit.Tenants.Commands.Create
             // Arrange
             var command = new CreateTenantCommand
             {
-                TenantData = new TenantCreateDto(
-                "John",
-                "Doe",
-                "john@doe.com",
-                "0601020304"
-                )
+                TenantData = new TenantCreateDto { FirstName = "John", LastName = "Doe", Email = "john@doe.com", PhoneNumber = "0601020304" }
             };
             var tenant = CreateTestTenant();
             _tenantRepositoryMock.Setup(r => r.AddAsync(It.IsAny<Tenant>())).ReturnsAsync(tenant);
@@ -71,12 +63,7 @@ namespace Rentix.Tests.Unit.Tenants.Commands.Create
             // Arrange
             var command = new CreateTenantCommand
             {
-                TenantData = new TenantCreateDto(
-                "John",
-                "Doe",
-                "john@doe.com",
-                "0601020304"
-                )
+                TenantData = new TenantCreateDto { FirstName = "John", LastName = "Doe", Email = "john@doe.com", PhoneNumber = "0601020304" }
             };
             _tenantRepositoryMock.Setup(r => r.AddAsync(It.IsAny<Tenant>())).ThrowsAsync(new Exception("DB error"));
 
@@ -93,12 +80,7 @@ namespace Rentix.Tests.Unit.Tenants.Commands.Create
             // Arrange
             var command = new CreateTenantCommand
             {
-                TenantData = new TenantCreateDto(
-                "John",
-                "Doe",
-                "john@doe.com",
-                "0601020304"
-                )
+                TenantData = new TenantCreateDto { FirstName = "John", LastName = "Doe", Email = "john@doe.com", PhoneNumber = "0601020304" }
             };
             var tenant = CreateTestTenant();
             _tenantRepositoryMock.Setup(r => r.AddAsync(It.IsAny<Tenant>())).ReturnsAsync(tenant);

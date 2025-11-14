@@ -2,6 +2,9 @@ using FluentAssertions;
 using FluentValidation.TestHelper;
 using Rentix.Application.Leases.Commands.Create;
 using Rentix.Application.Tenants.DTOs.Tenants;
+using System;
+using System.IO;
+using System.Collections.Generic;
 using System.Text;
 using Xunit;
 
@@ -32,7 +35,7 @@ namespace Rentix.Tests.Unit.Leases.Commands.Create
                 FileSizeInBytes = 1,
                 Tenants = new List<TenantCreateDto>
                 {
-                    new TenantCreateDto("John","Doe","john@doe.com","0601020304")
+                    new TenantCreateDto { FirstName = "John", LastName = "Doe", Email = "john@doe.com", PhoneNumber = "0601020304" }
                 }
             };
         }
@@ -143,7 +146,7 @@ namespace Rentix.Tests.Unit.Leases.Commands.Create
             var command = CreateValidCommand();
             // make a tenant with invalid email and empty firstname
             command.Tenants.Clear();
-            command.Tenants.Add(new TenantCreateDto("", "Doe", "notanemail", ""));
+            command.Tenants.Add(new TenantCreateDto { FirstName = "", LastName = "Doe", Email = "notanemail", PhoneNumber = "" });
 
             var result = _validator.TestValidate(command);
 

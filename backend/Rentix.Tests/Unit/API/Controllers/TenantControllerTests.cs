@@ -31,11 +31,7 @@ namespace Rentix.Tests.Unit.API.Controllers
         {
             return new CreateTenantCommand
             {
-                TenantData = new TenantCreateDto(
-                    firstName,
-                    lastName,
-                    email,
-                    phone)
+                TenantData = new TenantCreateDto { FirstName = firstName, LastName = lastName, Email = email, PhoneNumber = phone }
             };
         }
 

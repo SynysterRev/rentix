@@ -55,7 +55,7 @@ namespace Rentix.Tests.Unit.Tenants.Update
         public async Task Handle_ShouldThrowNotFoundException_WhenTenantNotFound()
         {
             // Arrange
-            _tenantRepositoryMock.Setup(r => r.GetTenantByIdAsync(1)).ReturnsAsync((Tenant)null);
+            _tenantRepositoryMock.Setup(r => r.GetTenantByIdAsync(1)).ReturnsAsync(null as Tenant);
 
             var command = new UpdateTenantCommand(1)
             {

@@ -14,12 +14,7 @@ namespace Rentix.Tests.Unit.Tenants.Commands.Create
         {
             var command = new CreateTenantCommand
             {
-                TenantData = new TenantCreateDto(
-                "John",
-                "Doe",
-                "john@doe.com",
-                "0601020304"
-                )
+                TenantData = new TenantCreateDto { FirstName = "John", LastName = "Doe", Email = "john@doe.com", PhoneNumber = "0601020304" }
             };
             var result = _validator.TestValidate(command);
             result.ShouldNotHaveAnyValidationErrors();
@@ -31,12 +26,7 @@ namespace Rentix.Tests.Unit.Tenants.Commands.Create
         {
             var command = new CreateTenantCommand
             {
-                TenantData = new TenantCreateDto(
-                value,
-                "Doe",
-                "john@doe.com",
-                "0601020304"
-                )
+                TenantData = new TenantCreateDto { FirstName = value, LastName = "Doe", Email = "john@doe.com", PhoneNumber = "0601020304" }
             };
             var result = _validator.TestValidate(command);
             result.ShouldHaveValidationErrorFor("TenantData.FirstName");
@@ -47,12 +37,7 @@ namespace Rentix.Tests.Unit.Tenants.Commands.Create
         {
             var command = new CreateTenantCommand
             {
-                TenantData = new TenantCreateDto(
-                new string('A', 101),
-                "Doe",
-                "john@doe.com",
-                "0601020304"
-                )
+                TenantData = new TenantCreateDto { FirstName = new string('A', 101), LastName = "Doe", Email = "john@doe.com", PhoneNumber = "0601020304" }
             };
             var result = _validator.TestValidate(command);
             result.ShouldHaveValidationErrorFor("TenantData.FirstName");
@@ -64,12 +49,7 @@ namespace Rentix.Tests.Unit.Tenants.Commands.Create
         {
             var command = new CreateTenantCommand
             {
-                TenantData = new TenantCreateDto(
-                "John",
-                value,
-                "john@doe.com",
-                "0601020304"
-                )
+                TenantData = new TenantCreateDto { FirstName = "John", LastName = value, Email = "john@doe.com", PhoneNumber = "0601020304" }
             };
             var result = _validator.TestValidate(command);
             result.ShouldHaveValidationErrorFor("TenantData.LastName");
@@ -80,12 +60,7 @@ namespace Rentix.Tests.Unit.Tenants.Commands.Create
         {
             var command = new CreateTenantCommand
             {
-                TenantData = new TenantCreateDto(
-                "John",
-                new string('A', 101),
-                "john@doe.com",
-                "0601020304"
-                )
+                TenantData = new TenantCreateDto { FirstName = "John", LastName = new string('A', 101), Email = "john@doe.com", PhoneNumber = "0601020304" }
             };
             var result = _validator.TestValidate(command);
             result.ShouldHaveValidationErrorFor("TenantData.LastName");
@@ -96,12 +71,7 @@ namespace Rentix.Tests.Unit.Tenants.Commands.Create
         {
             var command = new CreateTenantCommand
             {
-                TenantData = new TenantCreateDto(
-                "John",
-                "Doe",
-                null!,
-                "0601020304"
-                )
+                TenantData = new TenantCreateDto { FirstName = "John", LastName = "Doe", Email = null!, PhoneNumber = "0601020304" }
             };
             var result = _validator.TestValidate(command);
             result.ShouldHaveValidationErrorFor("TenantData.Email");
@@ -112,12 +82,7 @@ namespace Rentix.Tests.Unit.Tenants.Commands.Create
         {
             var command = new CreateTenantCommand
             {
-                TenantData = new TenantCreateDto(
-                "John",
-                "Doe",
-                "john@doe.com",
-                null!
-                )
+                TenantData = new TenantCreateDto { FirstName = "John", LastName = "Doe", Email = "john@doe.com", PhoneNumber = null! }
             };
             var result = _validator.TestValidate(command);
             result.ShouldHaveValidationErrorFor("TenantData.PhoneNumber");

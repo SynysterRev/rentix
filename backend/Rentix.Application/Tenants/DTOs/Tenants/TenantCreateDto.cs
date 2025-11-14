@@ -6,9 +6,11 @@ using System.Threading.Tasks;
 
 namespace Rentix.Application.Tenants.DTOs.Tenants
 {
-    public record TenantCreateDto(
-        string FirstName,
-        string LastName,
-        string Email,
-        string PhoneNumber);
+    public record TenantCreateDto
+    {
+        public string FirstName { get; init; } = string.Empty;
+        public string LastName { get; init; } = string.Empty;
+        public string Email { get; init; } = string.Empty;
+        public string PhoneNumber { get; init; } = string.Empty;
+    }
 }

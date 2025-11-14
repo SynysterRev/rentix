@@ -109,7 +109,7 @@ namespace Rentix.Tests.Integration.Leases
             var start = DateTime.UtcNow.Date;
             var end = start.AddYears(1);
 
-            var tenantList = new[] { new TenantCreateDto("John", "Doe", "john@doe.com", "0601020304") };
+            var tenantList = new[] { new TenantCreateDto { FirstName = "John", LastName = "Doe", Email = "john@doe.com", PhoneNumber = "0601020304" } };
 
             var fileBytes = Encoding.UTF8.GetBytes("dummy pdf content");
             var multipart = BuildLeaseMultipart(start, end, tenantList, fileBytes);
@@ -136,8 +136,8 @@ namespace Rentix.Tests.Integration.Leases
             var end = start.AddYears(1);
 
             var tenantList = new[] {
-                new TenantCreateDto("John", "Doe", "john@doe.com", "0601020304"),
-                new TenantCreateDto("Jane", "Smith", "jane@smith.com", "0612345678")
+                new TenantCreateDto { FirstName = "John", LastName = "Doe", Email = "john@doe.com", PhoneNumber = "0601020304" },
+                new TenantCreateDto { FirstName = "Jane", LastName = "Smith", Email = "jane@smith.com", PhoneNumber = "0612345678" }
             };
 
             var fileBytes = Encoding.UTF8.GetBytes("dummy pdf content");
@@ -176,7 +176,7 @@ namespace Rentix.Tests.Integration.Leases
             var propertyId = 999999;
             var start = DateTime.UtcNow.Date;
             var end = start.AddYears(1);
-            var tenantList = new[] { new TenantCreateDto("John", "Doe", "john@doe.com", "0601020304") };
+            var tenantList = new[] { new TenantCreateDto { FirstName = "John", LastName = "Doe", Email = "john@doe.com", PhoneNumber = "0601020304" } };
             var fileBytes = Encoding.UTF8.GetBytes("dummy pdf content");
             var multipart = BuildLeaseMultipart(start, end, tenantList, fileBytes);
 
@@ -195,7 +195,7 @@ namespace Rentix.Tests.Integration.Leases
             var start = DateTime.UtcNow.Date;
             var end = start.AddYears(1);
             // invalid email and missing firstname
-            var tenantList = new[] { new TenantCreateDto("", "Doe", "notanemail", "") };
+            var tenantList = new[] { new TenantCreateDto { FirstName = "", LastName = "Doe", Email = "notanemail", PhoneNumber = "" } };
             var fileBytes = Encoding.UTF8.GetBytes("dummy pdf content");
             var multipart = BuildLeaseMultipart(start, end, tenantList, fileBytes);
 
@@ -233,7 +233,7 @@ namespace Rentix.Tests.Integration.Leases
             var start = DateTime.UtcNow.Date;
             var end = start.AddYears(1);
 
-            var tenantList = new[] { new TenantCreateDto("John", "Doe", "john@doe.com", "0601020304") };
+            var tenantList = new[] { new TenantCreateDto { FirstName = "John", LastName = "Doe", Email = "john@doe.com", PhoneNumber = "0601020304" } };
             var multipart = BuildLeaseMultipart(start, end, tenantList, null);
 
             // Act
@@ -252,7 +252,7 @@ namespace Rentix.Tests.Integration.Leases
             var start = DateTime.UtcNow.Date.AddDays(10);
             var end = DateTime.UtcNow.Date; // end before start
 
-            var tenantList = new[] { new TenantCreateDto("John", "Doe", "john@doe.com", "0601020304") };
+            var tenantList = new[] { new TenantCreateDto { FirstName = "John", LastName = "Doe", Email = "john@doe.com", PhoneNumber = "0601020304" } };
             var fileBytes = Encoding.UTF8.GetBytes("dummy pdf content");
             var multipart = BuildLeaseMultipart(start, end, tenantList, fileBytes);
 

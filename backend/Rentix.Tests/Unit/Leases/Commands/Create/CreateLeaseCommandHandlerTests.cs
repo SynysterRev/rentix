@@ -88,7 +88,7 @@ namespace Rentix.Tests.Unit.Leases.Commands.Create
                 FileSizeInBytes = content.LongLength,
                 Tenants = new List<TenantCreateDto>
                 {
-                    new TenantCreateDto("Test", "Test", "test@test.com", "0123456789")
+                    new TenantCreateDto { FirstName = "Test", LastName = "Test", Email = "test@test.com", PhoneNumber = "0123456789" }
                 }
                 // Tenants left as default (empty list) — override in tests if needed
             };
