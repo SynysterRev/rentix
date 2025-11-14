@@ -37,14 +37,14 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
     app.UseDeveloperExceptionPage();
 }
-else
-{
-    app.UseExceptionHandlingMiddleware();
-}
+
+app.UseExceptionHandler();
 
 app.UseHttpsRedirection();
 
 app.UseCors();
+
+app.UseStaticFiles();
 
 app.UseAuthorization();
 

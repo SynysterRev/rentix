@@ -24,6 +24,10 @@ namespace Rentix.Infrastructure.Persistence.Configurations
                    .IsRequired()
                    .HasMaxLength(500);
 
+            builder.Property(d => d.ContentType)
+                   .IsRequired()
+                   .HasMaxLength(255);
+
             builder.Property(d => d.Description)
                    .HasMaxLength(500);
 
@@ -32,6 +36,9 @@ namespace Rentix.Infrastructure.Persistence.Configurations
 
             builder.Property(d => d.UploadAt)
                    .HasDefaultValueSql("NOW()")
+                   .IsRequired();
+
+            builder.Property(d => d.FileSizeInBytes)
                    .IsRequired();
 
             builder.HasOne(d => d.Property)

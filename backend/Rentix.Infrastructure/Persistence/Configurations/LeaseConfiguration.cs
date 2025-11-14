@@ -22,6 +22,10 @@ namespace Rentix.Infrastructure.Persistence.Configurations
                    .IsRequired()
                    .HasPrecision(10, 2);
 
+            builder.Property(l => l.ChargesAmount)
+                   .IsRequired()
+                   .HasPrecision(10, 2);
+
             builder.Property(l => l.Deposit)
                    .IsRequired()
                    .HasPrecision(10, 2);
@@ -37,6 +41,11 @@ namespace Rentix.Infrastructure.Persistence.Configurations
             builder.HasOne(l => l.Property)
                    .WithMany(p => p.Leases)
                    .HasForeignKey(l => l.PropertyId)
+                   .OnDelete(DeleteBehavior.Restrict);
+
+            builder.HasOne(l => l.LeaseDocument)
+                   .WithMany()
+                   .HasForeignKey(l => l.LeaseDocumentId)
                    .OnDelete(DeleteBehavior.Restrict);
         }
     }

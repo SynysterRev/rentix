@@ -1,6 +1,6 @@
 using Rentix.Application.Tenants.DTOs.Tenants;
 
-namespace Rentix.Application.Common.Interfaces
+namespace Rentix.Application.Common.Interfaces.Queries
 {
     /// <summary>
     /// Provides query methods for retrieving Tenant data.

@@ -17,7 +17,7 @@ namespace Rentix.Infrastructure.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.10")
+                .HasAnnotation("ProductVersion", "8.0.21")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -228,6 +228,11 @@ namespace Rentix.Infrastructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("ContentType")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)");
+
                     b.Property<string>("Description")
                         .HasMaxLength(500)
                         .HasColumnType("character varying(500)");
@@ -250,6 +255,9 @@ namespace Rentix.Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(500)
                         .HasColumnType("character varying(500)");
+
+                    b.Property<long>("FileSizeInBytes")
+                        .HasColumnType("bigint");
 
                     b.Property<int>("PropertyId")
                         .HasColumnType("integer");
@@ -274,6 +282,10 @@ namespace Rentix.Infrastructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<decimal>("ChargesAmount")
+                        .HasPrecision(10, 2)
+                        .HasColumnType("numeric(10,2)");
+
                     b.Property<decimal>("Deposit")
                         .HasPrecision(10, 2)
                         .HasColumnType("numeric(10,2)");
@@ -283,6 +295,9 @@ namespace Rentix.Infrastructure.Migrations
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("boolean");
+
+                    b.Property<int>("LeaseDocumentId")
+                        .HasColumnType("integer");
 
                     b.Property<string>("Notes")
                         .HasColumnType("text");
@@ -298,6 +313,8 @@ namespace Rentix.Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("LeaseDocumentId");
 
                     b.HasIndex("PropertyId");
 
@@ -633,11 +650,19 @@ namespace Rentix.Infrastructure.Migrations
 
             modelBuilder.Entity("Rentix.Domain.Entities.Lease", b =>
                 {
+                    b.HasOne("Rentix.Domain.Entities.Document", "LeaseDocument")
+                        .WithMany()
+                        .HasForeignKey("LeaseDocumentId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("Rentix.Domain.Entities.Property", "Property")
                         .WithMany("Leases")
                         .HasForeignKey("PropertyId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("LeaseDocument");
 
                     b.Navigation("Property");
                 });

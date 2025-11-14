@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Rentix.Application.Common.Interfaces;
+using Rentix.Application.Common.Interfaces.Queries;
 using Rentix.Application.RealEstate.DTOs.Addresses;
 using Rentix.Application.RealEstate.DTOs.Documents;
 using Rentix.Application.RealEstate.DTOs.Properties;

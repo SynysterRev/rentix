@@ -9,12 +9,12 @@ using Rentix.Application.RealEstate.Queries.List;
 
 namespace Rentix.API.Controllers.v1
 {
-    public class PropertyController : BaseController
+    public class PropertiesController : BaseController
     {
         private readonly IMediator _mediator;
-        private readonly ILogger<PropertyController> _logger;
+        private readonly ILogger<PropertiesController> _logger;
 
-        public PropertyController(IMediator mediator, ILogger<PropertyController> logger)
+        public PropertiesController(IMediator mediator, ILogger<PropertiesController> logger)
         {
             _mediator = mediator;
             _logger = logger;

@@ -33,7 +33,7 @@ namespace Rentix.Application.RealEstate.Commands.Create.Property
 
             try
             {
-                Domain.Entities.Address? address = null;
+                Address? address = null;
                 if (command.AddressId.HasValue)
                 {
                     address = await _addressRepository.GetByIdAsync(command.AddressId.Value);

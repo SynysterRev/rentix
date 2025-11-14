@@ -1,8 +1,8 @@
 using System.Threading.Tasks;
 using System.Collections.Generic;
-using Rentix.Application.Lease.DTOs;
+using Rentix.Application.Leases.DTOs;
 
-namespace Rentix.Application.Common.Interfaces
+namespace Rentix.Application.Common.Interfaces.Queries
 {
     /// <summary>
     /// Provides query methods for retrieving Lease data (projections, filters, etc.).

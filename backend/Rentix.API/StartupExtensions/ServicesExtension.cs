@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Rentix.API.Middlewares;
 using Rentix.Application;
 using Rentix.Domain.IdentityEntities;
 using Rentix.Infrastructure;
@@ -45,6 +46,9 @@ namespace Rentix.API.StartupExtensions
                     .AllowCredentials();
                 });
             });
+
+            services.AddExceptionHandler<GlobalExceptionHandler>();
+            services.AddProblemDetails();
         }
     }
 }

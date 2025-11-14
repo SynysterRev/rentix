@@ -1,6 +1,6 @@
 using System;
 
-namespace Rentix.Application.Lease.DTOs
+namespace Rentix.Application.Leases.DTOs
 {
     public class LeaseSummaryDto
     {
