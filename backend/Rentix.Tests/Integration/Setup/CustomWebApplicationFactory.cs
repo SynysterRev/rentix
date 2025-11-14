@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
-using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.FileProviders;
+using Moq;
 using Rentix.Domain.Entities;
 using Rentix.Domain.IdentityEntities;
 using Rentix.Infrastructure.Persistence;
@@ -22,10 +22,15 @@ namespace Rentix.Tests.Integration.Setup
         .WithPassword("postgres")
         .Build();
 
+        public string TestFilesPath { get; private set; } = null!;
+
         protected override void ConfigureWebHost(IWebHostBuilder builder)
         {
 
             builder.UseEnvironment("Production");
+
+            TestFilesPath = Path.Combine(Path.GetTempPath(), $"IntegrationTests_{Guid.NewGuid()}");
+            Directory.CreateDirectory(TestFilesPath);
 
             builder.ConfigureTestServices(services =>
             {
@@ -42,6 +47,20 @@ namespace Rentix.Tests.Integration.Setup
                 services.AddDbContext<ApplicationDbContext>(options =>
                 {
                     options.UseNpgsql(_dbContainer.GetConnectionString());
+                });
+
+                services.AddSingleton<IWebHostEnvironment>(sp =>
+                {
+                    var env = new Mock<IWebHostEnvironment>();
+                    env.Setup(e => e.ContentRootPath).Returns(TestFilesPath);
+                    env.Setup(e => e.EnvironmentName).Returns("Test");
+
+                    var fileProvider = new PhysicalFileProvider(TestFilesPath);
+                    env.Setup(e => e.ContentRootFileProvider).Returns(fileProvider);
+                    env.Setup(e => e.WebRootPath).Returns(TestFilesPath);
+                    env.Setup(e => e.WebRootFileProvider).Returns(fileProvider);
+
+                    return env.Object;
                 });
 
                 // Ensure database is created and seeded
@@ -98,24 +117,29 @@ namespace Rentix.Tests.Integration.Setup
 
         public new async Task DisposeAsync()
         {
+            if (Directory.Exists(TestFilesPath))
+            {
+                try
+                {
+                    Directory.Delete(TestFilesPath, recursive: true);
+                }
+                catch
+                {
+                    // Ignore cleanup errors in tests
+                }
+            }
             await _dbContainer.StopAsync();
             await _dbContainer.DisposeAsync();
         }
         public async Task ResetDatabaseAsync()
         {
-            // Obtient un nouveau scope de service
             using var scope = Services.CreateScope();
             var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
-            // 1. Supprime la base de données existante (si elle existe)
             await dbContext.Database.EnsureDeletedAsync();
 
-            // 2. Recrée la base de données et applique le schéma
-            // Si vous utilisez des migrations, remplacez EnsureCreatedAsync() par MigrateAsync()
             await dbContext.Database.EnsureCreatedAsync();
-            // ou await dbContext.Database.MigrateAsync(); si vous utilisez des migrations
 
-            // 3. Réensemencer les données de base (Seed)
             Seed(dbContext);
         }
     }

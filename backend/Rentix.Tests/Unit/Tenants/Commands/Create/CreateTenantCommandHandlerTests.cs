@@ -41,10 +41,12 @@ namespace Rentix.Tests.Unit.Tenants.Commands.Create
             // Arrange
             var command = new CreateTenantCommand
             {
-                FirstName = "John",
-                LastName = "Doe",
-                Email = "john@doe.com",
-                Phone = "0601020304"
+                TenantData = new TenantCreateDto(
+                "John",
+                "Doe",
+                "john@doe.com",
+                "0601020304"
+                )
             };
             var tenant = CreateTestTenant();
             _tenantRepositoryMock.Setup(r => r.AddAsync(It.IsAny<Tenant>())).ReturnsAsync(tenant);
@@ -69,10 +71,12 @@ namespace Rentix.Tests.Unit.Tenants.Commands.Create
             // Arrange
             var command = new CreateTenantCommand
             {
-                FirstName = "John",
-                LastName = "Doe",
-                Email = "john@doe.com",
-                Phone = "0601020304"
+                TenantData = new TenantCreateDto(
+                "John",
+                "Doe",
+                "john@doe.com",
+                "0601020304"
+                )
             };
             _tenantRepositoryMock.Setup(r => r.AddAsync(It.IsAny<Tenant>())).ThrowsAsync(new Exception("DB error"));
 
@@ -89,10 +93,12 @@ namespace Rentix.Tests.Unit.Tenants.Commands.Create
             // Arrange
             var command = new CreateTenantCommand
             {
-                FirstName = "John",
-                LastName = "Doe",
-                Email = "john@doe.com",
-                Phone = "0601020304"
+                TenantData = new TenantCreateDto(
+                "John",
+                "Doe",
+                "john@doe.com",
+                "0601020304"
+                )
             };
             var tenant = CreateTestTenant();
             _tenantRepositoryMock.Setup(r => r.AddAsync(It.IsAny<Tenant>())).ReturnsAsync(tenant);

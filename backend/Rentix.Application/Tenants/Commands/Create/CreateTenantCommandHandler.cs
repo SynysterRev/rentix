@@ -18,9 +18,9 @@ namespace Rentix.Application.Tenants.Commands.Create
 
         public async Task<TenantDto> Handle(CreateTenantCommand request, CancellationToken cancellationToken)
         {
-            var email = Email.Create(request.Email);
-            var phone = Phone.Create(request.Phone);
-            var tenant = Domain.Entities.Tenant.Create(request.FirstName, request.LastName, email, phone);
+            var email = Email.Create(request.TenantData.Email);
+            var phone = Phone.Create(request.TenantData.PhoneNumber);
+            var tenant = Domain.Entities.Tenant.Create(request.TenantData.FirstName, request.TenantData.LastName, email, phone);
 
             var createdTenant = await _tenantRepository.AddAsync(tenant);
             await _unitOfWork.SaveChangesAsync(cancellationToken);

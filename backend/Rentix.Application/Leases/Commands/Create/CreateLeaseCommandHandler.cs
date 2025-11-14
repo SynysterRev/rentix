@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.Extensions.Logging;
 using Rentix.Application.Common.Interfaces;
+using Rentix.Application.Common.Interfaces.Queries;
 using Rentix.Application.Exceptions;
 using Rentix.Application.Leases.DTOs;
 using Rentix.Domain.Entities;
@@ -13,6 +14,7 @@ namespace Rentix.Application.Leases.Commands.Create
     {
         private readonly ILeaseRepository _leaseRepository;
         private readonly IDocumentRepository _documentRepository;
+        private readonly IPropertyQueries _propertyQueries;
         private readonly ITenantRepository _tenantRepository;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IFileStorageService _fileStorageService;
@@ -20,6 +22,7 @@ namespace Rentix.Application.Leases.Commands.Create
 
         public CreateLeaseCommandHandler(ILeaseRepository leaseRepository,
             IDocumentRepository documentRepository,
+            IPropertyQueries propertyQueries,
             ITenantRepository tenantRepository,
             IUnitOfWork unitOfWork,
             IFileStorageService fileStorageService,
@@ -27,6 +30,7 @@ namespace Rentix.Application.Leases.Commands.Create
         {
             _leaseRepository = leaseRepository;
             _documentRepository = documentRepository;
+            _propertyQueries = propertyQueries;
             _tenantRepository = tenantRepository;
             _unitOfWork = unitOfWork;
             _fileStorageService = fileStorageService;
@@ -34,6 +38,10 @@ namespace Rentix.Application.Leases.Commands.Create
         }
         public async Task<LeaseDto> Handle(CreateLeaseCommand request, CancellationToken cancellationToken)
         {
+            if (!await _propertyQueries.ExistsAsync(request.PropertyId))
+            {
+                throw new NotFoundException($"The property with ID {request.PropertyId} does not exist.");
+            }
             await _unitOfWork.BeginTransactionAsync(cancellationToken);
 
             try

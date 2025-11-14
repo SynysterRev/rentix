@@ -199,7 +199,7 @@ namespace Rentix.Tests.Integration.RealEstate
             var response = await _client.PostAsJsonAsync("/api/v1/properties", command);
 
             // Assert
-            response.StatusCode.Should().Be(HttpStatusCode.InternalServerError);
+            response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
         }
 
         [Fact]

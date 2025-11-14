@@ -48,8 +48,8 @@ namespace Rentix.Infrastructure
             services.AddScoped<IPropertyQueries, PropertyQueries>();
             services.AddScoped<ITenantQueries, TenantQueries>();
             services.AddScoped<ILeaseQueries, LeaseQueries>();
-            services.AddTransient<IDocumentGenerator, DocumentGeneratorService>();
-            services.AddTransient<IFileStorageService, FileStorageService>();
+            //services.AddTransient<IDocumentGenerator, DocumentGeneratorService>();
+            services.AddSingleton<IFileStorageService, FileStorageService>();
 
             return services;
         }

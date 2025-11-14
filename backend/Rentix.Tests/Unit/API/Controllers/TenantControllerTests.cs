@@ -8,10 +8,7 @@ using Rentix.Application.Tenants.Commands.Create;
 using Rentix.Application.Tenants.Commands.Delete;
 using Rentix.Application.Tenants.Commands.Update;
 using Rentix.Application.Tenants.DTOs.Tenants;
-using Rentix.Domain.ValueObjects;
 using Xunit;
-using System.Threading.Tasks;
-using System.Threading;
 
 namespace Rentix.Tests.Unit.API.Controllers
 {
@@ -26,18 +23,28 @@ namespace Rentix.Tests.Unit.API.Controllers
             _controller = new TenantsController(_mediatorMock.Object, _loggerMock.Object);
         }
 
+        private CreateTenantCommand CreateValidCommand(
+            string firstName = "John",
+            string lastName = "Doe",
+            string email = "john@doe.com",
+            string phone = "0601020304")
+        {
+            return new CreateTenantCommand
+            {
+                TenantData = new TenantCreateDto(
+                    firstName,
+                    lastName,
+                    email,
+                    phone)
+            };
+        }
+
         [Fact]
         public async Task CreateTenant_ReturnsCreated_WhenSuccess()
         {
             // Arrange
-            var command = new CreateTenantCommand
-            {
-                FirstName = "John",
-                LastName = "Doe",
-                Email = "john@doe.com",
-                Phone = "0601020304"
-            };
-            var tenantDto = new TenantDto(1, "John", "Doe", command.Email, command.Phone);
+            var command = CreateValidCommand();
+            var tenantDto = new TenantDto(1, "John", "Doe", command.TenantData.Email, command.TenantData.PhoneNumber);
             _mediatorMock.Setup(m => m.Send(command, It.IsAny<CancellationToken>())).ReturnsAsync(tenantDto);
 
             // Act
@@ -54,14 +61,8 @@ namespace Rentix.Tests.Unit.API.Controllers
         public async Task CreateTenant_CallsMediatorWithCorrectCommand()
         {
             // Arrange
-            var command = new CreateTenantCommand
-            {
-                FirstName = "John",
-                LastName = "Doe",
-                Email = "john@doe.com",
-                Phone = "0601020304"
-            };
-            var tenantDto = new TenantDto(1, "John", "Doe", command.Email, command.Phone);
+            var command = CreateValidCommand(firstName: "John", lastName: "Doe", email: "john@doe.com", phone: "0601020304");
+            var tenantDto = new TenantDto(1, "John", "Doe", command.TenantData.Email, command.TenantData.PhoneNumber);
             _mediatorMock.Setup(m => m.Send(command, It.IsAny<CancellationToken>())).ReturnsAsync(tenantDto);
 
             // Act
@@ -75,13 +76,7 @@ namespace Rentix.Tests.Unit.API.Controllers
         public async Task CreateTenant_ReturnsBadRequest_WhenEmailIsInvalid()
         {
             // Arrange
-            var command = new CreateTenantCommand
-            {
-                FirstName = "John",
-                LastName = "Doe",
-                Email = "notanemail",
-                Phone = "0601020304"
-            };
+            var command = CreateValidCommand(email: "notanemail");
             _mediatorMock.Setup(m => m.Send(command, It.IsAny<CancellationToken>())).ThrowsAsync(new System.ArgumentException("Invalid email format"));
 
             // Act
@@ -96,13 +91,7 @@ namespace Rentix.Tests.Unit.API.Controllers
         public async Task CreateTenant_ReturnsBadRequest_WhenPhoneIsInvalid()
         {
             // Arrange
-            var command = new CreateTenantCommand
-            {
-                FirstName = "John",
-                LastName = "Doe",
-                Email = "john@doe.com",
-                Phone = "notaphone"
-            };
+            var command = CreateValidCommand(phone: "notaphone");
             _mediatorMock.Setup(m => m.Send(command, It.IsAny<CancellationToken>())).ThrowsAsync(new System.ArgumentException("Invalid phone format"));
 
             // Act
@@ -117,13 +106,7 @@ namespace Rentix.Tests.Unit.API.Controllers
         public async Task CreateTenant_ReturnsInternalServerError_OnException()
         {
             // Arrange
-            var command = new CreateTenantCommand
-            {
-                FirstName = "John",
-                LastName = "Doe",
-                Email = "john@doe.com",
-                Phone = "0601020304"
-            };
+            var command = CreateValidCommand();
             _mediatorMock.Setup(m => m.Send(command, It.IsAny<CancellationToken>())).ThrowsAsync(new System.Exception("Unexpected error"));
 
             // Act
