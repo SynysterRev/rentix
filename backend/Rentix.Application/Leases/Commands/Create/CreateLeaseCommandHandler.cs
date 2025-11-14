@@ -46,11 +46,9 @@ namespace Rentix.Application.Leases.Commands.Create
 
             try
             {
-                var filePath = await _fileStorageService.SaveFileAsync(request.FileStream, request.FileName);
-
                 var newLeaseDocument = Document.Create(LeaseDocumentType.LeaseAgreement,
                     request.FileName,
-                    filePath,
+                    string.Empty,
                     request.ContentType,
                     request.FileSizeInBytes,
                     request.PropertyId,
@@ -74,7 +72,7 @@ namespace Rentix.Application.Leases.Commands.Create
                 var createdLease = await _leaseRepository.AddAsync(newLease);
 
 
-                foreach(var tenantDto in request.Tenants)
+                foreach (var tenantDto in request.Tenants)
                 {
                     var email = Email.Create(tenantDto.Email);
                     var phone = Phone.Create(tenantDto.PhoneNumber);
@@ -85,23 +83,37 @@ namespace Rentix.Application.Leases.Commands.Create
                     createdLease.Tenants.Add(createdTenant);
                 }
                 await _unitOfWork.SaveChangesAsync(cancellationToken);
+                var filePath = await _fileStorageService.SaveFileAsync(request.FileStream, request.FileName);
+                createdDocument.FilePath = filePath;
 
                 // needed because of the polymorphic relationship
                 createdDocument.EntityId = createdLease.Id;
+                _logger.LogInformation(
+                    "Lease {LeaseId} created with {TenantCount} tenants for property {PropertyId}",
+                    createdLease.Id,
+                    newLease.Tenants.Count,
+                    request.PropertyId);
                 await _unitOfWork.SaveChangesAsync(cancellationToken);
                 await _unitOfWork.CommitTransactionAsync(cancellationToken);
+
+                _logger.LogInformation("Lease {LeaseId} created successfully with document at {FilePath}",
+                    newLease.Id,
+                    filePath);
 
                 return LeaseDto.FromEntity(createdLease);
             }
             catch (NotFoundException)
             {
+                _logger.LogError("Not found exception - rolling back.");
                 await _unitOfWork.RollbackTransactionAsync(cancellationToken);
+
                 throw;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error creating lease");
+                _logger.LogError(ex, "Error creating lease - rolling back.");
                 await _unitOfWork.RollbackTransactionAsync(cancellationToken);
+
                 throw;
             }
         }

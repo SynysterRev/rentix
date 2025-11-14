@@ -17,5 +17,10 @@
         /// <param name="filePath">Path or URL of the file in the storage system.</param>
         /// <returns>A task that resolves to the file content as a byte array.</returns>
         public Task<byte[]> GetFileAsync(string filePath);
+
+        /// <summary>
+        /// Delete a file (used for cleanup of temp or failed promotions).
+        /// </summary>
+        public Task DeleteFileAsync(string filePath);
     }
 }

@@ -103,10 +103,10 @@ namespace Rentix.Domain.Entities
                 throw new ValidationException("The file name is required");
             }
 
-            if (string.IsNullOrWhiteSpace(filePath))
-            {
-                throw new ValidationException("The file path is required");
-            }
+            //if (string.IsNullOrWhiteSpace(filePath))
+            //{
+            //    throw new ValidationException("The file path is required");
+            //}
 
             if (string.IsNullOrWhiteSpace(contentType))
             {

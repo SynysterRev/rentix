@@ -46,6 +46,8 @@ app.UseCors();
 
 app.UseStaticFiles();
 
+app.UseRequestLoggingMiddleware();
+
 app.UseAuthorization();
 
 app.MapControllers();
