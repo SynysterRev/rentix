@@ -1,0 +1,39 @@
+<mat-card class="m-3 p-3 w-80" routerLink="/tenants/{{tenant()?.id}}">
+    <mat-card-header class="flex-col-reverse">
+        <section class="flex items-center justify-between">
+            <mat-card-title>{{tenant()?.lastName}}</mat-card-title>
+        </section>
+        <mat-card-subtitle><span>{{tenant()?.firstName}}</span>
+            <!-- <section class="flex items-center">
+                <lucide-angular [img]="MapPin" class="size-4 rounded-4xl mr-2"></lucide-angular>
+                <span class="text-sm">{{property()?.address?.city}}</span>
+            </section> -->
+        </mat-card-subtitle>
+    </mat-card-header>
+
+    <!-- <mat-card-content>
+        <section class="flex items-center bg-background rounded-2xl w-full pt-2 pb-2 mt-2 mb-2">
+            <lucide-angular [img]="UsersRound" class="w-6px h-6px m-2 bg-secondary rounded-4xl"></lucide-angular>
+            @if(property()?.tenantsNames?.length == 0){
+            <p class="text-sm ml-4">Aucun locataire</p>
+            }@else {
+            <p class="flex flex-col text-sm ml-4 mr-4">
+                @for (tenant of property()?.tenantsNames; track property()?.id) {
+                <span>{{tenant}}</span>
+                }
+                <span>Locataire actuel</span>
+            </p>
+            }
+
+        </section>
+        <section class="flex justify-between border-t">
+            @if(property()?.tenantsNames?.length! >= 1){
+            <p>Loyer mensuel</p>
+            }@else {
+            <p>Loyer prévisionnel</p>
+            }
+            <p>{{property()?.totalRent}} €</p>
+        </section>
+    </mat-card-content> -->
+    <a class="hidden">Voir les détails</a>
+</mat-card>

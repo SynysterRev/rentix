@@ -1,0 +1,6 @@
+@use "../../../../styles/styles.scss";
+@reference "#tailwind.css";
+
+a.active {
+  @apply bg-background;
+}

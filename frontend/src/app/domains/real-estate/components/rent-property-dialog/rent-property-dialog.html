@@ -1,3 +1,9 @@
+<header class="flex justify-between items-center pr-6 pl-6">
+    <p>Louer le bien</p>
+    <button matFab>
+        <lucide-angular [img]="X" (click)="closeDialog()"></lucide-angular>
+    </button>
+</header>
 <mat-horizontal-stepper #stepper [linear]="true">
     <!-- CHANGE DEFAULT ICONS -->
     <ng-template matStepperIcon="edit">
@@ -27,18 +33,27 @@
     <!-- LEASE FORM -->
     <mat-step [stepControl]="createLeaseForm" state="lease">
         <form [formGroup]="createLeaseForm">
-            <ng-template matStepLabel>Bail</ng-template>
+            <!-- <ng-template matStepLabel>Bail</ng-template> -->
             <mat-form-field>
                 <mat-label>Loyer Hors Charges (en €)</mat-label>
                 <input matInput type="number" formControlName="rentAmount" />
+                @if (createLeaseForm.get('rentAmount')?.hasError('required')) {
+                <mat-error>Le montant du loyer HC est <strong>obligatoire</strong></mat-error>
+                }
             </mat-form-field>
             <mat-form-field>
                 <mat-label>Charges (en €)</mat-label>
                 <input matInput type="number" formControlName="chargesAmount" />
+                @if (createLeaseForm.get('chargesAmount')?.hasError('required')) {
+                <mat-error>Le montant des charges est <strong>obligatoire</strong></mat-error>
+                }
             </mat-form-field>
             <mat-form-field>
                 <mat-label>Début du bail</mat-label>
                 <input matInput type="date" formControlName="startDate" />
+                @if (createLeaseForm.get('startDate')?.hasError('required')) {
+                <mat-error>La date de début est <strong>obligatoire</strong></mat-error>
+                }
                 <!-- <input matInput [matDatepicker]="picker" formControlName="startDate">
                 <mat-hint>MM/DD/YYYY</mat-hint>
                 <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
@@ -47,26 +62,33 @@
             <mat-form-field>
                 <mat-label>Fin du bail</mat-label>
                 <input matInput type="date" formControlName="endDate" />
+                @if (createLeaseForm.get('endDate')?.hasError('required')) {
+                <mat-error>La date de fin est <strong>obligatoire</strong></mat-error>
+                }
             </mat-form-field>
             <mat-form-field>
                 <mat-label>Caution (en €)</mat-label>
                 <input matInput type="number" formControlName="deposit" />
+                @if (createLeaseForm.get('deposit')?.hasError('required')) {
+                <mat-error>La montant de la caution est <strong>obligatoire</strong></mat-error>
+                }
             </mat-form-field>
             <mat-form-field>
                 <mat-label>Notes</mat-label>
                 <input matInput type="textarea" formControlName="notes" />
             </mat-form-field>
+            <!-- File -->
             <mat-form-field>
-                <mat-label>Document</mat-label>
+                <mat-label>Télécharger le bail</mat-label>
                 <input type="text" matInput [value]="selectedFile?.name || ''" placeholder="Choisir un fichier" readonly
                     (click)="fileInput.click()" />
 
-                <button mat-icon-button matSuffix (click)="fileInput.click()" >
-                    <!-- <mat-icon>attach_file</mat-icon> -->
+                <button mat-icon-button matSuffix (click)="fileInput.click()">
                     <lucide-angular [img]="Folder"></lucide-angular>
                 </button>
             </mat-form-field>
             <input #fileInput type="file" (change)="onFileSelected($event)" hidden />
+            <!-- Buttons -->
             <div class="flex justify-end">
                 <button matFab matStepperNext>
                     <lucide-angular [img]="ArrowBigRight"></lucide-angular>
@@ -77,25 +99,46 @@
     <!-- TENANT FORM -->
     <mat-step [stepControl]="createTenantForm" state="tenant">
         <form [formGroup]="createTenantForm">
-            <ng-template matStepLabel>Locataire</ng-template>
+            <!-- <ng-template matStepLabel>Locataire</ng-template> -->
             <mat-form-field>
                 <mat-label>Nom</mat-label>
-                <input matInput type="text" [errorStateMatcher]="matcher" formControlName="lastName" />
+                <input matInput [errorStateMatcher]="matcher" formControlName="lastName" />
                 @if (createTenantForm.get('lastName')?.hasError('required')) {
                 <mat-error>Le nom est <strong>obligatoire</strong></mat-error>
+                }
+                @if (createTenantForm.get('lastName')?.hasError('minlength')) {
+                <mat-error>Le nom doit faire au moins <strong>3 caractères</strong></mat-error>
                 }
             </mat-form-field>
             <mat-form-field>
                 <mat-label>Prénom</mat-label>
-                <input matInput type="text" formControlName="firstName" />
+                <input matInput [errorStateMatcher]="matcher" formControlName="firstName" />
+                @if (createTenantForm.get('firstName')?.hasError('required')) {
+                <mat-error>Le prénom est <strong>obligatoire</strong></mat-error>
+                }
+                @if (createTenantForm.get('firstName')?.hasError('minlength')) {
+                <mat-error>Le prénom doit faire au moins <strong>3 caractères</strong></mat-error>
+                }
             </mat-form-field>
             <mat-form-field>
                 <mat-label>Adresse mail</mat-label>
-                <input matInput type="text" formControlName="email" />
+                <input matInput [errorStateMatcher]="matcher" formControlName="email" />
+                @if (createTenantForm.get('email')?.hasError('required')) {
+                <mat-error>L'adresse mail est <strong>obligatoire</strong></mat-error>
+                }
+                @if (createTenantForm.get('email')?.hasError('email')) {
+                <mat-error>L'adresse mail doit respectée le format: <strong>xxx@xxx.xxx</strong></mat-error>
+                }
             </mat-form-field>
             <mat-form-field>
                 <mat-label>Numéro de téléphone</mat-label>
-                <input matInput type="text" formControlName="phoneNumber" />
+                <input matInput [errorStateMatcher]="matcher" formControlName="phoneNumber" />
+                @if (createTenantForm.get('phoneNumber')?.hasError('required')) {
+                <mat-error>Le numéro de téléphone est <strong>obligatoire</strong></mat-error>
+                }
+                @if (createTenantForm.get('phoneNumber')?.hasError('minlength')) {
+                <mat-error>Le numéro de téléphone doit contenir <strong>10 chiffres</strong></mat-error>
+                }
             </mat-form-field>
             <div class="flex justify-between">
                 <button matFab matStepperPrevious>
@@ -109,7 +152,7 @@
     </mat-step>
     <!-- SAVE -->
     <mat-step state="save">
-        <ng-template matStepLabel>Confirmer</ng-template>
+        <!-- <ng-template matStepLabel>Confirmer</ng-template> -->
         <p>Avez-vous vérifié les informations avant de sauvegarder ?</p>
         <div class="flex justify-between">
             <button matFab matStepperPrevious>
@@ -118,9 +161,6 @@
             <!-- <button matButton (click)="stepper.reset()">Reset</button> -->
             <button matFab>
                 <lucide-angular [img]="Save" (click)="createLease()"></lucide-angular>
-            </button>
-            <button matFab>
-                <lucide-angular [img]="X" (click)="closeDialog()"></lucide-angular>
             </button>
         </div>
     </mat-step>

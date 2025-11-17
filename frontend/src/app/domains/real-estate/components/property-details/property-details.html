@@ -1,15 +1,31 @@
-<!-- HEADER -->
+<section class="bg-border space">
+    <p>{{property()?.name}}</p>
+    <button (click)="deleteProperty()">
+        <lucide-angular [img]="Trash2"></lucide-angular> Supprimer le bien
+    </button>
+    <button (click)="switchReadEditMode()">
+        @if(this.isEditable){
+            <lucide-angular [img]="Glasses"/>
+            Quitter mode édition
+        }@else {
+            <lucide-angular [img]="Pencil"/>
+            Modifier le bien
+        }
+    </button>
+</section>
+
+<!-- ADRESS & STATUS -->
 <section class="bg-border space flex justify-between items-center">
     <section>
-        <h1>{{property()?.address?.street}}
+        <h2>{{property()?.address?.street}}
             @if(property()?.address?.complement !== ""){
             , {{property()?.address?.complement}}
             }
-        </h1>
-        <h2 class="flex items-center">
+        </h2>
+        <h3 class="flex items-center">
             <lucide-angular [img]="MapPin"></lucide-angular>
             <span>{{property()?.address?.city}}</span>
-        </h2>
+        </h3>
     </section>
     <p>{{getPropertyStatus()}}</p>
 </section>
@@ -55,9 +71,6 @@
         </button> -->
         <button (click)="endLease()">
             <lucide-angular [img]="CalendarOff"></lucide-angular> Terminer le bail
-        </button>
-        <button (click)="deleteProperty()">
-            <lucide-angular [img]="Trash2"></lucide-angular> Supprimer le bien
         </button>
     </section>
 </section>

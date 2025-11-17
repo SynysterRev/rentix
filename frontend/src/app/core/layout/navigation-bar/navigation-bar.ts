@@ -1,6 +1,6 @@
 import { Component, ElementRef, QueryList, Renderer2, ViewChildren } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
-import { LucideAngularModule, House, ChartLine, Building2, Settings, HandCoins, PanelRight } from 'lucide-angular'
+import { LucideAngularModule, House, ChartLine, Building2, Settings, HandCoins, PanelRight, UserRoundSearch } from 'lucide-angular'
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -21,6 +21,7 @@ export class NavigationBar {
   readonly Settings = Settings;
   readonly HandCoins = HandCoins;
   readonly PanelRight = PanelRight;
+  readonly UserRoundSearch = UserRoundSearch;
 
   isVisible = true;
 }

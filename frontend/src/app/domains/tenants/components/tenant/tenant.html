@@ -1,0 +1,13 @@
+<section>
+    <header>
+        <h1 class="text-3xl font-bold">Mes locataires</h1>
+        <p class="text-sm font-light">Gérer tous mes locataires</p>
+    </header>
+    <main class="flex justify-center">
+        <section class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+            @for (tenant of tenants(); track tenant.id) {
+            <app-tenant-card [tenant]="tenant"></app-tenant-card>
+            }
+        </section>
+    </main>
+</section>

@@ -72,10 +72,10 @@ export class RentPropertyDialog {
   });
 
   createTenantForm = new FormGroup({
-    firstName: new FormControl('Jean', [Validators.required, Validators.minLength(3)]),
-    lastName: new FormControl('Michel', [Validators.required, Validators.minLength(3)]),
+    firstName: new FormControl('', [Validators.required, Validators.minLength(3)]),
+    lastName: new FormControl('', [Validators.required, Validators.minLength(3)]),
     email: new FormControl('jean.michel@gmail.com', [Validators.required, Validators.email]),
-    phoneNumber: new FormControl('0612131415', [Validators.required, Validators.maxLength(10)])
+    phoneNumber: new FormControl('0612131415', [Validators.required, Validators.minLength(10), Validators.maxLength(10)])
   });
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: any, public dialogRef: MatDialogRef<RentPropertyDialog>) { }
@@ -86,33 +86,28 @@ export class RentPropertyDialog {
 
   createLease() {
     if (this.createTenantForm.valid && this.createLeaseForm.valid) {
-      this.fileUploadService.loadTestFile().subscribe(blob => {
-        const file = new File([blob], 'test.txt', { type: blob.type });
+      const formData = new FormData();
+      const startDate = new Date(this.createLeaseForm.value.startDate!);
+      const endDate = new Date(this.createLeaseForm.value.endDate!);
 
-        const formData = new FormData();
+      formData.append("LeaseDocument", this.selectedFile!);
+      formData.append("Deposit", this.createLeaseForm.value.deposit!);
+      formData.append("rentAmount", this.createLeaseForm.value.rentAmount!);
+      formData.append("chargesAmount", this.createLeaseForm.value.chargesAmount!);
+      formData.append("startDate", startDate.toISOString());
+      formData.append("endDate", endDate.toISOString());
+      formData.append("notes", this.createLeaseForm.value.notes!);
+      formData.append("isActive", "true");
+      formData.append("Tenants[0].FirstName", this.createTenantForm.value.firstName!);
+      formData.append("Tenants[0].LastName", this.createTenantForm.value.lastName!);
+      formData.append("Tenants[0].Email", this.createTenantForm.value.email!);
+      formData.append("Tenants[0].PhoneNumber", this.createTenantForm.value.phoneNumber!);
 
-        const startDate = new Date(this.createLeaseForm.value.startDate!);
-        const endDate = new Date(this.createLeaseForm.value.endDate!);
-
-        formData.append("LeaseDocument", this.selectedFile!);
-        formData.append("Deposit", this.createLeaseForm.value.deposit!);
-        formData.append("rentAmount", this.createLeaseForm.value.rentAmount!);
-        formData.append("chargesAmount", this.createLeaseForm.value.chargesAmount!);
-        formData.append("startDate", startDate.toISOString());
-        formData.append("endDate", endDate.toISOString());
-        formData.append("notes", this.createLeaseForm.value.notes!);
-        formData.append("isActive", "true");
-        formData.append("Tenants[0].FirstName", this.createTenantForm.value.firstName!);
-        formData.append("Tenants[0].LastName", this.createTenantForm.value.lastName!);
-        formData.append("Tenants[0].Email", this.createTenantForm.value.email!);
-        formData.append("Tenants[0].PhoneNumber", this.createTenantForm.value.phoneNumber!);
-
-        this.leaseService.createLease(formData, this.data.propertyId)
-          .pipe(takeUntilDestroyed(this.destroyRef))
-          .subscribe(response => {
-            this.dialogRef.close(response);
-          });
-      })
+      this.leaseService.createLease(formData, this.data.propertyId)
+        .pipe(takeUntilDestroyed(this.destroyRef))
+        .subscribe(response => {
+          this.dialogRef.close(response);
+        });
 
     } else {
       console.log('Form is invalid :  ');

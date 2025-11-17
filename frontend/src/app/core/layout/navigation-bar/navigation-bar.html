@@ -22,6 +22,12 @@
                 <span [ngClass]="isVisible ? 'visible' : 'hidden'" class="w-60">Mes biens</span>
             </a>
         </li>
+        <li class="m-2">
+            <a routerLink="/tenants" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" class="flex items-center hover:bg-background rounded-4xl">
+                <lucide-angular [img]="UserRoundSearch" class="w-12px h-12px m-2"></lucide-angular>
+                <span [ngClass]="isVisible ? 'visible' : 'hidden'" class="w-60">Mes locataires</span>
+            </a>
+        </li>
         <li class="m-2"> 
             <a routerLink="/settings" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" class="flex items-center hover:bg-background rounded-4xl">
                 <lucide-angular [img]="Settings" class="w-12px h-12px m-2"></lucide-angular>

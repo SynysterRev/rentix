@@ -4,10 +4,11 @@ import { PropertyDetailsDTO } from '../../models/property.model';
 import { PropertyService } from '../../services/property';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CommonModule, DatePipe } from '@angular/common';
-import { LucideAngularModule, CircleAlert, MapPin, Euro, FileText, UsersRound, Mail, Phone, Calendar, CalendarOff, Trash2, UserRoundPlus } from "lucide-angular";
+import { LucideAngularModule, CircleAlert, MapPin, Euro, FileText, UsersRound, Mail, Phone, Calendar, CalendarOff, Trash2, UserRoundPlus, Pencil, Glasses } from "lucide-angular";
 import { PropertyStatus } from '../../../../shared/models/property-status.model';
 import { MatDialog } from '@angular/material/dialog';
 import { RentPropertyDialog } from '../rent-property-dialog/rent-property-dialog';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-property-details',
@@ -18,6 +19,7 @@ import { RentPropertyDialog } from '../rent-property-dialog/rent-property-dialog
 export class PropertyDetails {
 
   propertyId: number = 0;
+  isEditable: boolean = false;
 
   private propertyService = inject(PropertyService);
   private destroyRef = inject(DestroyRef);
@@ -34,6 +36,8 @@ export class PropertyDetails {
   readonly CalendarOff = CalendarOff;
   readonly Trash2 = Trash2;
   readonly UserRoundPlus = UserRoundPlus;
+  readonly Pencil = Pencil;
+  readonly Glasses = Glasses;
 
   constructor(private route: ActivatedRoute, private dialog: MatDialog) {
     this.route.paramMap.subscribe(params => {
@@ -94,7 +98,7 @@ export class PropertyDetails {
   rentProperty() {
     const dialogRef = this.dialog.open(RentPropertyDialog, {
       data: { propertyId: this.propertyId },
-      width: '1000px',
+      //Pour la taille il y a un calcul auto dans ce css .cdk-overlay-pane.mat-mdc-dialog-panel
       disableClose: true, // Prevent closing by clicking outside
     });
 
@@ -105,6 +109,10 @@ export class PropertyDetails {
 
   updateRent() {
     console.log("updateRent - Actions à déterminer")
+  }
+
+  switchReadEditMode(){
+    this.isEditable = !this.isEditable;
   }
 }
 
