@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 using Rentix.Application.Common.Behaviors;
+using Rentix.Application.RealEstate.Mappers;
 using System.Reflection;
 
 namespace Rentix.Application
@@ -18,6 +19,8 @@ namespace Rentix.Application
             });
 
             services.AddValidatorsFromAssembly(assembly);
+
+            services.AddScoped<IPropertyMapper, PropertyMapper>();
 
             return services;
         }

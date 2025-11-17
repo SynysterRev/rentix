@@ -7,15 +7,21 @@ namespace Rentix.Infrastructure.Services
     public class FileStorageOptions
     {
         public string UploadPath { get; set; } = string.Empty;
+        public string BaseUrl { get; set; } = string.Empty;
+        public string DocumentsPath { get; set; } = string.Empty;
     }
 
     public class FileStorageService : IFileStorageService
     {
         private readonly string _uploadPath;
+        private readonly string _baseUrl;
+        private readonly string _documentsPath;
 
         public FileStorageService(IOptions<FileStorageOptions> options)
         {
             _uploadPath = options.Value.UploadPath;
+            _baseUrl = options.Value.BaseUrl;
+            _documentsPath = options.Value.DocumentsPath;
 
             Directory.CreateDirectory(_uploadPath);
         }
@@ -52,6 +58,11 @@ namespace Rentix.Infrastructure.Services
             }
 
             return Task.CompletedTask;
+        }
+
+        public string GetPublicUrl(int documentId)
+        {
+            return $"{_baseUrl}{_documentsPath}{documentId}";
         }
     }
 }

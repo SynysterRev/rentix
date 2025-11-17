@@ -1,32 +1,24 @@
-﻿using Rentix.Application.RealEstate.DTOs.Addresses;
+﻿using Rentix.Application.Common.Interfaces;
+using Rentix.Application.RealEstate.DTOs.Addresses;
 using Rentix.Application.RealEstate.DTOs.Documents;
+using Rentix.Application.RealEstate.DTOs.Properties;
 using Rentix.Application.Tenants.DTOs.Tenants;
 using Rentix.Domain.Entities;
 
-namespace Rentix.Application.RealEstate.DTOs.Properties
+namespace Rentix.Application.RealEstate.Mappers
 {
-    public record PropertyDetailDto
+    public class PropertyMapper : IPropertyMapper
     {
-        public int Id { get; init; }
-        public string Name { get; init; } = string.Empty;
-        public decimal MaxRent { get; init; }
-        public decimal RentWithoutCharges { get; init; }
-        public decimal RentCharges { get; init; }
-        public decimal Deposit { get; init; }
-        public DateTime LeaseStartDate { get; init; }
-        public DateTime LeaseEndDate { get; init; }
-        public PropertyStatus PropertyStatus { get; init; }
-        public decimal Surface { get; init; }
-        public int NumberRooms { get; init; }
-        public List<TenantDto> Tenants { get; init; } = null!;
-        public AddressDto Address { get; init; } = null!;
-        public List<DocumentDto> Documents { get; init; } = new List<DocumentDto>();
+        private readonly IFileStorageService _fileStorageService;
 
-        public static PropertyDetailDto FromEntity(Property property)
+        public PropertyMapper(IFileStorageService fileStorageService)
+        {
+            _fileStorageService = fileStorageService;
+        }
+
+        public PropertyDetailDto Map(Property property)
         {
             var activeLease = property.Leases?.FirstOrDefault(l => l.IsActive);
-
-            const string downloadRouteBase = "/api/documents/";
 
             return new PropertyDetailDto
             {
@@ -56,7 +48,7 @@ namespace Rentix.Application.RealEstate.DTOs.Properties
                 Documents = property.Documents != null
                     ? property.Documents.Select(d =>
                     {
-                        string downloadUrl = $"{downloadRouteBase}{d.Id}/download";
+                        string downloadUrl = _fileStorageService.GetPublicUrl(d.Id);
                         return new DocumentDto(
                             d.Id,
                             d.FileName,

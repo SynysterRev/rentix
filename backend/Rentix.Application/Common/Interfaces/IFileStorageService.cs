@@ -22,5 +22,7 @@
         /// Delete a file (used for cleanup of temp or failed promotions).
         /// </summary>
         public Task DeleteFileAsync(string filePath);
+
+        public string GetPublicUrl(int documentId);
     }
 }

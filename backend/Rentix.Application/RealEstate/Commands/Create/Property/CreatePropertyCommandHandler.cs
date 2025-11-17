@@ -2,9 +2,9 @@
 using Microsoft.Extensions.Logging;
 using Rentix.Application.Exceptions;
 using Rentix.Application.RealEstate.DTOs.Properties;
+using Rentix.Application.RealEstate.Mappers;
 using Rentix.Domain.Entities;
 using Rentix.Domain.Repositories;
-using System.Net;
 
 namespace Rentix.Application.RealEstate.Commands.Create.Property
 {
@@ -13,17 +13,20 @@ namespace Rentix.Application.RealEstate.Commands.Create.Property
         private readonly IPropertyRepository _propertyRepository;
         private readonly IAddressRepository _addressRepository;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IPropertyMapper _propertyMapper;
         private readonly ILogger<CreatePropertyCommandHandler> _logger;
 
         public CreatePropertyCommandHandler(
             IPropertyRepository propertyRepository,
             IAddressRepository addressRepository,
             IUnitOfWork unitOfWork,
+            IPropertyMapper propertyMapper,
             ILogger<CreatePropertyCommandHandler> logger)
         {
             _propertyRepository = propertyRepository;
             _addressRepository = addressRepository;
             _unitOfWork = unitOfWork;
+            _propertyMapper = propertyMapper;
             _logger = logger;
         }
 
@@ -72,7 +75,7 @@ namespace Rentix.Application.RealEstate.Commands.Create.Property
                 await _unitOfWork.CommitTransactionAsync(cancellationToken);
 
                 createdProperty.Address = address;
-                return PropertyDetailDto.FromEntity(createdProperty);
+                return _propertyMapper.Map(createdProperty);
             }
             catch (NotFoundException)
             {
