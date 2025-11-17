@@ -4,6 +4,7 @@ using Rentix.Application.Tenants.Commands.Create;
 using Rentix.Application.Tenants.Commands.Delete;
 using Rentix.Application.Tenants.Commands.Update;
 using Rentix.Application.Tenants.DTOs.Tenants;
+using Rentix.Application.Tenants.Queries.List;
 
 namespace Rentix.API.Controllers.v1
 {
@@ -16,6 +17,14 @@ namespace Rentix.API.Controllers.v1
         {
             _mediator = mediator;
             _logger = logger;
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<List<TenantDto>>> GetTenants()
+        {
+            var tenants = await _mediator.Send(new ListTenantsQuery());
+            _logger.LogInformation($"Get all tenant");
+            return Ok(tenants);
         }
 
         [HttpGet("{id}")]
