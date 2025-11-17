@@ -6,9 +6,9 @@ namespace Rentix.Application.RealEstate.DTOs.Documents
         int Id,
         string FileName,
         LeaseDocumentType FileType,
-        string FilePath,
         string? Description,
-        DateTime UploadAt
+        DateTime UploadAt,
+        string DownloadUrl
     )
     {
 
@@ -19,13 +19,15 @@ namespace Rentix.Application.RealEstate.DTOs.Documents
                 throw new ArgumentNullException(nameof(document));
             }
 
+            string downloadUrl = $"/api/documents/{document.Id}/download";
+
             return new DocumentDto(
                 document.Id,
                 document.FileName,
                 document.DocumentType,
-                document.FilePath,
                 document.Description,
-                document.UploadAt
+                document.UploadAt,
+                downloadUrl
             );
         }
     }
