@@ -27,8 +27,6 @@ namespace Rentix.Tests.Integration.Setup
         protected override void ConfigureWebHost(IWebHostBuilder builder)
         {
 
-            builder.UseEnvironment("Production");
-
             TestFilesPath = Path.Combine(Path.GetTempPath(), $"IntegrationTests_{Guid.NewGuid()}");
             Directory.CreateDirectory(TestFilesPath);
 

@@ -41,7 +41,7 @@ namespace Rentix.Tests.Unit.Leases.Commands.Create
                 _loggerMock.Object);
         }
 
-        private Tenant CreateTestTenant(int id = 1, string firstName = "John", string lastName = "Doe", string email = "john@doe.com", string phone = "0601020304")
+        private Tenant CreateTestTenant(int id = 1, string firstName = "Test", string lastName = "Test", string email = "test@test.com", string phone = "0123456789")
         {
             var tenant = Tenant.Create(
             firstName,
@@ -90,7 +90,6 @@ namespace Rentix.Tests.Unit.Leases.Commands.Create
                 {
                     new TenantCreateDto { FirstName = "Test", LastName = "Test", Email = "test@test.com", PhoneNumber = "0123456789" }
                 }
-                // Tenants left as default (empty list) — override in tests if needed
             };
         }
 
@@ -119,6 +118,7 @@ namespace Rentix.Tests.Unit.Leases.Commands.Create
                 document,
                 null);
             lease.Id = leaseId;
+            var tenant = CreateTestTenant();
             var command = CreateValidCommand();
 
             _unitOfWorkMock.Setup(u => u.BeginTransactionAsync(It.IsAny<CancellationToken>())).Returns(Task.CompletedTask);
@@ -132,6 +132,7 @@ namespace Rentix.Tests.Unit.Leases.Commands.Create
             _fileStorageServiceMock
                 .Setup(f => f.SaveFileAsync(It.IsAny<Stream>(), It.IsAny<string>()))
                 .ReturnsAsync(document.FilePath);
+            _tenantRepositoryMock.Setup(t => t.AddAsync(It.IsAny<Tenant>())).ReturnsAsync(tenant);
 
             var result = await _handler.Handle(command, CancellationToken.None);
 
@@ -163,17 +164,42 @@ namespace Rentix.Tests.Unit.Leases.Commands.Create
         [Fact]
         public async Task Should_Rollback_When_FileStorageThrows()
         {
+            int leaseId = 1;
+            var document = Document.Create(
+                LeaseDocumentType.LeaseAgreement,
+                "lease.pdf",
+                "Documents/lease.pdf",
+                "application/pdf",
+                10,
+                1,
+                DocumentEntityType.Lease,
+                leaseId,
+                null);
+            var lease = Lease.Create(
+                DateTime.UtcNow.Date,
+                DateTime.UtcNow.Date.AddYears(1),
+                1000m,
+                100m,
+                1000m,
+                true,
+                1,
+                document,
+                null);
+            lease.Id = leaseId;
             var command = CreateValidCommand();
+            var tenant = CreateTestTenant();
 
             _unitOfWorkMock.Setup(u => u.BeginTransactionAsync(It.IsAny<CancellationToken>())).Returns(Task.CompletedTask);
             _unitOfWorkMock.Setup(u => u.RollbackTransactionAsync(It.IsAny<CancellationToken>())).Returns(Task.CompletedTask);
             _propertyQueriesMock.Setup(d => d.ExistsAsync(1)).ReturnsAsync(true);
+            _leaseRepositoryMock.Setup(l => l.AddAsync(It.IsAny<Lease>())).ReturnsAsync(lease);
+            _tenantRepositoryMock.Setup(t => t.AddAsync(It.IsAny<Tenant>())).ReturnsAsync(tenant);
 
             _fileStorageServiceMock
                 .Setup(f => f.SaveFileAsync(It.IsAny<Stream>(), It.IsAny<string>()))
                 .ThrowsAsync(new Exception("Storage error"));
 
-            var ex = await Assert.ThrowsAsync<System.Exception>(() => _handler.Handle(command, CancellationToken.None));
+            var ex = await Assert.ThrowsAsync<Exception>(() => _handler.Handle(command, CancellationToken.None));
 
             ex.Message.Should().Be("Storage error");
             _unitOfWorkMock.Verify(u => u.RollbackTransactionAsync(It.IsAny<CancellationToken>()), Times.Once);

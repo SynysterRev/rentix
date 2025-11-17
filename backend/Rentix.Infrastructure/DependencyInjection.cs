@@ -49,6 +49,7 @@ namespace Rentix.Infrastructure
             services.AddScoped<ITenantQueries, TenantQueries>();
             services.AddScoped<ILeaseQueries, LeaseQueries>();
             //services.AddTransient<IDocumentGenerator, DocumentGeneratorService>();
+            services.Configure<FileStorageOptions>(configuration.GetSection("FileStorage"));
             services.AddSingleton<IFileStorageService, FileStorageService>();
 
             return services;
