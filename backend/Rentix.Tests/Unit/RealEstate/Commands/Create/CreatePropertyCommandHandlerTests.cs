@@ -2,9 +2,12 @@ using FluentAssertions;
 using Microsoft.Extensions.Logging;
 using Moq;
 using Rentix.API.Controllers.v1;
+using Rentix.Application.Common.Interfaces;
 using Rentix.Application.Exceptions;
 using Rentix.Application.RealEstate.Commands.Create.Property;
 using Rentix.Application.RealEstate.DTOs.Addresses;
+using Rentix.Application.RealEstate.DTOs.Properties;
+using Rentix.Application.RealEstate.Mappers;
 using Rentix.Domain.Entities;
 using Rentix.Domain.Repositories;
 using System.ComponentModel.DataAnnotations;
@@ -16,6 +19,7 @@ namespace Rentix.Tests.Unit.RealEstate.Commands.Create
     {
         private readonly Mock<IAddressRepository> _addressRepoMock;
         private readonly Mock<IPropertyRepository> _propertyRepoMock;
+        private readonly Mock<IFileStorageService> _fileStorageMock;
         private readonly Mock<ILogger<CreatePropertyCommandHandler>> _loggerMock;
         private readonly Mock<IUnitOfWork> _unitOfWorkMock;
 
@@ -24,12 +28,14 @@ namespace Rentix.Tests.Unit.RealEstate.Commands.Create
             _addressRepoMock = new Mock<IAddressRepository>();
             _propertyRepoMock = new Mock<IPropertyRepository>();
             _unitOfWorkMock = new Mock<IUnitOfWork>();
+            _fileStorageMock = new Mock<IFileStorageService>();
             _loggerMock = new Mock<ILogger<CreatePropertyCommandHandler>>();
         }
 
         private CreatePropertyCommandHandler CreateHandler()
         {
-            return new CreatePropertyCommandHandler(_propertyRepoMock.Object, _addressRepoMock.Object, _unitOfWorkMock.Object, _loggerMock.Object);
+            var mapper = new PropertyMapper(_fileStorageMock.Object);
+            return new CreatePropertyCommandHandler(_propertyRepoMock.Object, _addressRepoMock.Object, _unitOfWorkMock.Object, mapper, _loggerMock.Object);
         }
 
         private CreatePropertyCommand CreateValidCommand(int addressId, Guid landlordId)
@@ -133,6 +139,7 @@ namespace Rentix.Tests.Unit.RealEstate.Commands.Create
             _addressRepoMock.Setup(r => r.AddAsync(It.IsAny<Address>())).ReturnsAsync(address);
             _propertyRepoMock.Setup(r => r.AddAsync(It.IsAny<Property>())).ReturnsAsync(property);
             _unitOfWorkMock.Setup(u => u.SaveChangesAsync(default)).Returns(Task.CompletedTask);
+            _fileStorageMock.Setup(s => s.GetPublicUrl(It.IsAny<int>())).Returns("fake-url");
 
             var handler = CreateHandler();
             var command = new CreatePropertyCommand

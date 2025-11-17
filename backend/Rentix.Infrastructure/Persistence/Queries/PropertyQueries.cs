@@ -1,19 +1,23 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Rentix.Application.Common.Interfaces;
 using Rentix.Application.Common.Interfaces.Queries;
 using Rentix.Application.RealEstate.DTOs.Addresses;
 using Rentix.Application.RealEstate.DTOs.Documents;
 using Rentix.Application.RealEstate.DTOs.Properties;
 using Rentix.Application.Tenants.DTOs.Tenants;
+using System.Linq;
 
 namespace Rentix.Infrastructure.Persistence.Queries
 {
     public class PropertyQueries : IPropertyQueries
     {
         private readonly ApplicationDbContext _dbContext;
+        private readonly IFileStorageService _fileStorageService;
 
-        public PropertyQueries(ApplicationDbContext dbContext)
+        public PropertyQueries(ApplicationDbContext dbContext, IFileStorageService fileStorageService)
         {
             _dbContext = dbContext;
+            _fileStorageService = fileStorageService;
         }
 
         public async Task<bool> ExistsAsync(int propertyId)
@@ -60,10 +64,10 @@ namespace Rentix.Infrastructure.Persistence.Queries
                         .Select(d => new DocumentDto(
                             d.Id, 
                             d.FileName, 
-                            d.DocumentType, 
-                            d.FilePath, 
+                            d.DocumentType,
                             d.Description, 
-                            d.UploadAt))
+                            d.UploadAt,
+                            _fileStorageService.GetPublicUrl(d.Id)))
                         .ToList(),
                 })
                 .FirstOrDefaultAsync();

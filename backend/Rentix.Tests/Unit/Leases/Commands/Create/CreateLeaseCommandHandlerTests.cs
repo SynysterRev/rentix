@@ -148,7 +148,6 @@ namespace Rentix.Tests.Unit.Leases.Commands.Create
             // Assert - document mapping
             result.LeaseDocument.Should().NotBeNull();
             result.LeaseDocument.FileName.Should().Be(document.FileName);
-            result.LeaseDocument.FilePath.Should().Be(document.FilePath);
             result.LeaseDocument.FileType.Should().Be(document.DocumentType);
             result.LeaseDocument.Description.Should().Be(document.Description);
 
