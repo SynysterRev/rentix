@@ -1,12 +1,16 @@
-<div class="flex justify-between items-center">
-    <a routerLink="/real-estate-property"  class="flex items-center justify-center text-center hover:bg-primary-accent rounded-2xl pr-4 cursor-pointer">
+<div class="flex justify-between items-center mb-6">
+    <a routerLink="/real-estate-property"
+        class="flex items-center justify-center text-center hover:bg-primary-accent rounded-2xl pr-4 cursor-pointer">
         <lucide-angular class="back-arrow" [img]="ArrowLeft" />
-       <span class="text-center">Retour au tableau de bord</span> 
+        <span class="text-center">Retour au tableau de bord</span>
     </a>
-    <p class="text-dark rounded-2xl bg-teal-500">{{getPropertyStatus()}}</p>
+</div>
+
+<div class="flex justify-between items-center pl-5 mb-8">
+    <h1 class="text-3xl font-bold">{{property()?.name}}</h1>
+    <p class="text-dark rounded-2xl bg-primary px-4 py-2">{{getPropertyStatus()}}</p>
 </div>
 <section class="bg-border space">
-    <p>{{property()?.name}}</p>
     <button (click)="deleteProperty()">
         <lucide-angular [img]="Trash2"></lucide-angular> Supprimer le bien
     </button>
@@ -31,7 +35,7 @@
         </h2>
         <h3 class="flex items-center">
             <lucide-angular [img]="MapPin"></lucide-angular>
-            <span>{{property()?.address?.city}}</span>
+            <span>{{property()?.address?.postalCode}} {{property()?.address?.city}}</span>
         </h3>
     </section>
 </section>
@@ -50,10 +54,16 @@
     <h3>Information sur la propriété</h3>
     <section class="flex items-center">
         <lucide-angular [img]="Euro"></lucide-angular>
-        <section>
-            <p>Loyer mensuel : </p>
-            <p>{{property()?.maxRent}} €</p>
-        </section>
+        <div class="flex space-x-12">
+            <div class="flex flex-col">
+                <p>Loyer sans charges : </p>
+                <p>{{property()?.rentWithoutCharges}} €</p>
+            </div>
+            <div class="flex flex-col">
+                <p>Charges : </p>
+                <p>{{property()?.rentCharges}} €</p>
+            </div>
+        </div>
     </section>
 </section>
 
