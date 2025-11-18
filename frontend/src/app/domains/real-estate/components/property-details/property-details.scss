@@ -7,7 +7,7 @@
 }
 
 @mixin bg-white-rounded-border-green {
-    @apply bg-white rounded-xl border-2 border-green-700;
+    @apply bg-white rounded-xl border-2 border-primary;
 }
 
 
@@ -21,10 +21,14 @@
 
 lucide-angular {
     @include padding-margin(2, 2);
-    @apply bg-secondary rounded-4xl;
+    @apply bg-primary rounded-4xl;
 }
 
 button{
     @include padding-margin(1, 1);
-    @apply flex items-center rounded-xl border-2 border-secondary hover:cursor-pointer hover:bg-background;
+    @apply flex items-center rounded-xl border-2 border-primary hover:cursor-pointer hover:bg-primary-accent hover:border-primary-accent;
+}
+
+.back-arrow {
+    background-color: transparent;
 }

@@ -8,5 +8,5 @@
 
 button{
     @include padding-margin(1, 1);
-    @apply flex items-center rounded-xl border-2 border-secondary hover:cursor-pointer hover:bg-background;
+    @apply flex items-center rounded-xl bg-primary hover:cursor-pointer hover:bg-primary-accent p-2;
 }

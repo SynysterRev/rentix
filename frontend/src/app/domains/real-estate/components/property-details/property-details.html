@@ -1,3 +1,10 @@
+<div class="flex justify-between items-center">
+    <a routerLink="/real-estate-property"  class="flex items-center justify-center text-center hover:bg-primary-accent rounded-2xl pr-4 cursor-pointer">
+        <lucide-angular class="back-arrow" [img]="ArrowLeft" />
+       <span class="text-center">Retour au tableau de bord</span> 
+    </a>
+    <p class="text-dark rounded-2xl bg-teal-500">{{getPropertyStatus()}}</p>
+</div>
 <section class="bg-border space">
     <p>{{property()?.name}}</p>
     <button (click)="deleteProperty()">
@@ -5,11 +12,11 @@
     </button>
     <button (click)="switchReadEditMode()">
         @if(this.isEditable){
-            <lucide-angular [img]="Glasses"/>
-            Quitter mode édition
+        <lucide-angular [img]="Glasses" />
+        Quitter mode édition
         }@else {
-            <lucide-angular [img]="Pencil"/>
-            Modifier le bien
+        <lucide-angular [img]="Pencil" />
+        Modifier le bien
         }
     </button>
 </section>
@@ -27,7 +34,6 @@
             <span>{{property()?.address?.city}}</span>
         </h3>
     </section>
-    <p>{{getPropertyStatus()}}</p>
 </section>
 
 <!-- ZONE LOYER ENCADRE -->

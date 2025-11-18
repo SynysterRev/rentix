@@ -1,18 +1,17 @@
-import { Component, DestroyRef, inject, input, LOCALE_ID, OnInit, signal } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component, DestroyRef, inject, signal } from '@angular/core';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { PropertyDetailsDTO } from '../../models/property.model';
 import { PropertyService } from '../../services/property';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { CommonModule, DatePipe } from '@angular/common';
-import { LucideAngularModule, CircleAlert, MapPin, Euro, FileText, UsersRound, Mail, Phone, Calendar, CalendarOff, Trash2, UserRoundPlus, Pencil, Glasses } from "lucide-angular";
+import { DatePipe } from '@angular/common';
+import { LucideAngularModule, CircleAlert, MapPin, Euro, FileText, UsersRound, Mail, Phone, Calendar, CalendarOff, Trash2, UserRoundPlus, Pencil, Glasses, ArrowLeft } from "lucide-angular";
 import { PropertyStatus } from '../../../../shared/models/property-status.model';
 import { MatDialog } from '@angular/material/dialog';
 import { RentPropertyDialog } from '../rent-property-dialog/rent-property-dialog';
-import { ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-property-details',
-  imports: [LucideAngularModule, DatePipe],
+  imports: [LucideAngularModule, DatePipe, RouterLink],
   templateUrl: './property-details.html',
   styleUrl: './property-details.scss',
 })
@@ -38,6 +37,7 @@ export class PropertyDetails {
   readonly UserRoundPlus = UserRoundPlus;
   readonly Pencil = Pencil;
   readonly Glasses = Glasses;
+  readonly ArrowLeft = ArrowLeft;
 
   constructor(private route: ActivatedRoute, private dialog: MatDialog) {
     this.route.paramMap.subscribe(params => {
